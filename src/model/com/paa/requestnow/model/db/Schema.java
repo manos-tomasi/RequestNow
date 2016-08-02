@@ -1,6 +1,7 @@
 package com.paa.requestnow.model.db;
 
 import com.paa.requestnow.model.db.fetcher.AttachmentFetcher;
+import com.paa.requestnow.model.db.fetcher.SectorFetcher;
 import com.paa.requestnow.model.db.fetcher.UserFetcher;
 /**
  * @author artur
@@ -84,6 +85,58 @@ public class Schema
             select = "select " + columns + " from " + this.name;
         }
     }
+    
+    public static class Sectors
+    {
+        public static Sectors alias( String alias )
+        {
+            return new Sectors( alias );
+        }
+        
+        public  class Columns
+        {
+            public String ID;
+            public String NAME;
+            public String STATE;
+            
+            public Columns( String alias ) 
+            {
+                ID           = alias + "id";
+                NAME         = alias + "name";
+                STATE        = alias + "state";
+            }
+            
+            @Override
+            public String toString() 
+            {
+                return ID           + ", " +
+                       NAME         + ", " +
+                       STATE;
+            }
+        }
+        
+        private final String TABLE_NAME =  "sectors";
+
+        public String name = TABLE_NAME;
+
+        public final String select;
+        
+        public final SectorFetcher fetcher = new SectorFetcher();
+        
+        public static final Sectors table = new Sectors( null );
+        
+        public final Columns columns;
+
+        private Sectors( String alias ) 
+        {
+            this.name = alias != null ? TABLE_NAME + " " + alias : TABLE_NAME;
+            
+            columns = new Columns( alias != null ? alias + "." : "" );
+            
+            select = "select " + columns + " from " + this.name;
+        }
+    }
+    
     
     public static class Attachments
     {

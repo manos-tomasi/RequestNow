@@ -71,8 +71,8 @@ public class EntriePane
         if( index != VIEW_EMPTY )
         {
             backLabel.autosize();
-            entriePane.setSelectedEntrie( index );
-            getChildren().addAll( backBar, entriePane  );
+            entrieCenterPane.setSelectedEntrie( index );
+            getChildren().addAll( backBar, entrieCenterPane  );
         }
         
         else 
@@ -88,7 +88,7 @@ public class EntriePane
     @Override
     public List<Button> getActions()
     {
-        return index != VIEW_EMPTY ? entriePane.getActions() : Collections.EMPTY_LIST;
+        return index != VIEW_EMPTY ? entrieCenterPane.getActions() : Collections.EMPTY_LIST;
     }
 
     
@@ -98,7 +98,7 @@ public class EntriePane
     {
         if( index != VIEW_EMPTY )
         {
-            entriePane.refreshContent();
+            entrieCenterPane.refreshContent();
         }
     }
 
@@ -118,8 +118,8 @@ public class EntriePane
             
             backBar.setSpacing( width - labelWidth - backButton.getMaxWidth() - 20 /*padding*/ );
             
-            entriePane.setLayoutY( 35 );
-            entriePane.resizeComponents( height - 35, width );
+            entrieCenterPane.setLayoutY( 35 );
+            entrieCenterPane.resizeComponents( height - 35, width );
         }
         
         requestParentLayout();
@@ -151,7 +151,7 @@ public class EntriePane
             }
         } );
         
-        getChildren().add( view );
+            getChildren().add( view );
     }
     
     private ActionButton backButton = new ActionButton( "Voltar", "back.png", new EventHandler() 
@@ -169,5 +169,5 @@ public class EntriePane
     private WebView view = new WebView();
     private WebEngine engine = view.getEngine();
     
-    private EntrieCenterPane entriePane = new EntrieCenterPane();
+    private EntrieCenterPane entrieCenterPane = new EntrieCenterPane();
 }

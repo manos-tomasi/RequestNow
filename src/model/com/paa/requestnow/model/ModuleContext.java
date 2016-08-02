@@ -1,7 +1,6 @@
 package com.paa.requestnow.model;
 
-import com.paa.requestnow.model.db.service.UserManagerService;
-import com.paa.requestnow.model.db.service.AttachmentManagerService;
+import com.paa.requestnow.model.db.service.*;
 
 /**
  * @author artur
@@ -27,6 +26,11 @@ public class ModuleContext
     public UserManagerService getUserManager()
     {
         return UserManagerService.getInstance();
+    }
+    
+    public SectorManagerService getSectorManager()
+    {
+        return SectorManagerService.getInstance();
     }
     
     public AttachmentManagerService getAttachmentManager()

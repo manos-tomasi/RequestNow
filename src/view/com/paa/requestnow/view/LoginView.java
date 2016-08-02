@@ -146,7 +146,7 @@ public class LoginView
             public void changed( ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) 
             {
                 resize();
-            }
+            }   
         });
         
         txPassword.setOnKeyPressed( new EventHandler<KeyEvent>()
@@ -160,6 +160,18 @@ public class LoginView
                 }
             }
         } );
+        
+        pane.setOnKeyPressed( new EventHandler<KeyEvent>()
+        {
+            @Override
+            public void handle(KeyEvent t) 
+            {
+                if( t.getCode().equals( KeyCode.ENTER ) )
+                {
+                    validLogin();
+                }
+            }
+        });
     }
     
     private AnchorPane pane = new AnchorPane();

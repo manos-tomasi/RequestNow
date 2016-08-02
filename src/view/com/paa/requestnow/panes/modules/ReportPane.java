@@ -1,6 +1,6 @@
 package com.paa.requestnow.panes.modules;
 
-import com.paa.requestnow.control.reports.MonthlyBalanceReport;
+//import com.paa.requestnow.control.reports.MonthlyBalanceReport;
 import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.ResourceLocator;
 import com.paa.requestnow.panes.reports.ReportCenterPane;
@@ -64,8 +64,8 @@ public class ReportPane
                 {
                     try
                     {
-                        MonthlyBalanceReport report = new MonthlyBalanceReport();
-                        report.generatePDF( file );
+  //                      MonthlyBalanceReport report = new MonthlyBalanceReport();
+//                        report.generatePDF( file );
                     }
 
                     catch ( Exception e )
