@@ -122,7 +122,7 @@ public class ApplicationUtilities
     
     public String getCompanny()
     {
-        return "HelpFin";
+        return "RequestNow";
     }
     
     public void logout()
