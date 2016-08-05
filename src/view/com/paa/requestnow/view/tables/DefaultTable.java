@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.control.Labeled;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -151,7 +152,7 @@ public class DefaultTable<T>
     {
         private String label = "";
         private String attribute = "";
-        private Callback callback;
+        private ColumnCallback callback;
         private Double width;
         
         public ItemColumn( String label, String attribute )
@@ -164,12 +165,12 @@ public class DefaultTable<T>
             this( label, attribute, width, null );
         }
         
-        public ItemColumn( String label, String attribute, Callback calback )
+        public ItemColumn( String label, String attribute, ColumnCallback calback )
         {
             this( label, attribute, Double.NaN, calback );
         }
         
-        public ItemColumn( String label, String attribute, Double width, Callback calback ) 
+        public ItemColumn( String label, String attribute, Double width, ColumnCallback calback ) 
         {
             this.label = label;
             this.attribute = attribute;
@@ -187,7 +188,7 @@ public class DefaultTable<T>
             return attribute;
         }
 
-        public Callback getCallback()
+        public ColumnCallback getCallback()
         {
             return callback;
         }
@@ -213,21 +214,21 @@ public class DefaultTable<T>
                         
                         if ( bln || t == null )
                         {
-                            setText(null);
-                            setTextFill(null);
+                            setText( null);
+                            setTextFill( null);
                             setGraphic( null );
                         }
 
                         else if( ! bln )
                         {
-                            renderer( this );
+                            renderer( t, this );
                         }
                     }
                   
                 };
             }
             
-            public abstract void renderer( Node cell );
+            public abstract void renderer( T value, Labeled cell );
         }
     }
 }
