@@ -9,6 +9,7 @@ public class Sector
         Core<Sector>
 {
     private String name;
+    private int    state;
 
     public Sector(){}
     
@@ -25,6 +26,16 @@ public class Sector
     public void setName( String name ) 
     {
         this.name = name;
+    }
+    
+    public void setState( int state )
+    {
+        this.state = state;
+    }
+    
+    public int getState()
+    {
+        return this.state;
     }
 
     @Override
