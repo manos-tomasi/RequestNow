@@ -151,7 +151,7 @@ public class DefaultTable<T>
     {
         private String label = "";
         private String attribute = "";
-        private Callback callback;
+        private ColumnCallback callback;
         private Double width;
         
         public ItemColumn( String label, String attribute )
@@ -164,12 +164,12 @@ public class DefaultTable<T>
             this( label, attribute, width, null );
         }
         
-        public ItemColumn( String label, String attribute, Callback calback )
+        public ItemColumn( String label, String attribute, ColumnCallback calback )
         {
             this( label, attribute, Double.NaN, calback );
         }
         
-        public ItemColumn( String label, String attribute, Double width, Callback calback ) 
+        public ItemColumn( String label, String attribute, Double width, ColumnCallback calback ) 
         {
             this.label = label;
             this.attribute = attribute;
@@ -187,7 +187,7 @@ public class DefaultTable<T>
             return attribute;
         }
 
-        public Callback getCallback()
+        public ColumnCallback getCallback()
         {
             return callback;
         }
