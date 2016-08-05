@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Pagination;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -194,6 +195,39 @@ public class DefaultTable<T>
         public Double getWidth()
         {
             return width;
+        }
+        
+        public abstract static class ColumnCallback<A, T>
+            implements 
+                Callback< TableColumn<A,T>, TableCell<A,T>> 
+        {
+            @Override
+            public TableCell<A, T> call( TableColumn<A, T> p ) 
+            {
+                return new TableCell<A, T>()
+                {
+                    @Override
+                    protected void updateItem( T t, boolean bln ) 
+                    {
+                        super.updateItem( t, bln );
+                        
+                        if ( bln || t == null )
+                        {
+                            setText(null);
+                            setTextFill(null);
+                            setGraphic( null );
+                        }
+
+                        else if( ! bln )
+                        {
+                            renderer( this );
+                        }
+                    }
+                  
+                };
+            }
+            
+            public abstract void renderer( Node cell );
         }
     }
 }
