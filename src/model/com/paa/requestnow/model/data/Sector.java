@@ -43,6 +43,4 @@ public class Sector
     {
         return this.name;
     }
-    
-    
 }
