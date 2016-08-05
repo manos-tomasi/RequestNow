@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.control.Labeled;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -213,21 +214,21 @@ public class DefaultTable<T>
                         
                         if ( bln || t == null )
                         {
-                            setText(null);
-                            setTextFill(null);
+                            setText( null);
+                            setTextFill( null);
                             setGraphic( null );
                         }
 
                         else if( ! bln )
                         {
-                            renderer( this );
+                            renderer( t, this );
                         }
                     }
                   
                 };
             }
             
-            public abstract void renderer( Node cell );
+            public abstract void renderer( T value, Labeled cell );
         }
     }
 }
