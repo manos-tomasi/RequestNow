@@ -36,7 +36,7 @@ public class HomeView
         initListeners();
         
         stage.setMaximized( true );
-        stage.setTitle( "HelpFin Application" );
+        stage.setTitle( "RequestNow Application" );
         stage.setScene( scene );
         stage.getIcons().add( new Image( ResourceLocator.getInstance().getImageResource( "helpFin.png") ) );
         stage.show();

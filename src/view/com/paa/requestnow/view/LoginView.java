@@ -148,19 +148,7 @@ public class LoginView
                 resize();
             }   
         });
-        
-        txPassword.setOnKeyPressed( new EventHandler<KeyEvent>()
-        {
-            @Override
-            public void handle( KeyEvent t ) 
-            {
-                if ( t.getCode().equals( KeyCode.ENTER ) )
-                {
-                    validLogin();
-                }
-            }
-        } );
-        
+                
         pane.setOnKeyPressed( new EventHandler<KeyEvent>()
         {
             @Override

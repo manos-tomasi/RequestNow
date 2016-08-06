@@ -34,10 +34,7 @@ public class EntriePane
 {
     public static final int VIEW_EMPTY      = -1;
     public static final int VIEW_USERS      = 0;
-    public static final int VIEW_ENTITY     = 1;
-    public static final int VIEW_COMPLETION = 2;
-    public static final int VIEW_CATEGORY   = 3;
-    public static final int VIEW_TYPE       = 4;
+    public static final int VIEW_SECTORS    = 1;
     
     private int index = VIEW_EMPTY;
     
@@ -59,11 +56,8 @@ public class EntriePane
             return;
         }
             
-        backLabel.setText( index == VIEW_USERS      ? "Cadastro de Usuários"                  :
-                           index == VIEW_ENTITY     ? "Cadastro de Entidades"                 :
-                           index == VIEW_COMPLETION ? "Cadastro de Tipos de Finalizações"     :
-                           index == VIEW_CATEGORY   ? "Cadastro de Categorias de Lançamentos" :
-                           index == VIEW_TYPE       ? "Cadastro de Tipos de Lançamentos"      : "" );
+        backLabel.setText( index == VIEW_USERS      ? "Cadastro de Usuários" :
+                           index == VIEW_SECTORS    ? "Cadastro de Setores"  : "" );
            
         
         getChildren().clear();

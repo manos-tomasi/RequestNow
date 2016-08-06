@@ -1,5 +1,6 @@
 package com.paa.requestnow.model.db.service;
 
+import com.paa.requestnow.model.data.DefaultFilter;
 import com.paa.requestnow.model.data.User;
 import com.paa.requestnow.model.data.UserFilter;
 import com.paa.requestnow.model.db.Database;
@@ -112,7 +113,6 @@ public class UserManagerService
         }
     }
 
-    @Override
     public List<User> getValues( boolean showInactives ) throws Exception 
     {
         Database db = Database.getInstance();
@@ -143,7 +143,6 @@ public class UserManagerService
         }
     }
 
-    @Override
     public User getValue( String name ) throws Exception 
     {
         Database db = Database.getInstance();
@@ -188,5 +187,10 @@ public class UserManagerService
         {
             db.release();
         }
+    }
+
+    @Override
+    public List<User> getValues(DefaultFilter filter) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

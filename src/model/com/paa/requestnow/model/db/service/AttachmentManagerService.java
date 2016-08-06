@@ -1,6 +1,7 @@
 package com.paa.requestnow.model.db.service;
 
 import com.paa.requestnow.model.data.Attachment;
+import com.paa.requestnow.model.data.DefaultFilter;
 import com.paa.requestnow.model.db.Database;
 import com.paa.requestnow.model.db.transactions.AttachmentManagerTransactions;
 import java.util.List;
@@ -95,7 +96,6 @@ public class AttachmentManagerService
         }
     }
 
-    @Override
     public Attachment getValue( String value ) throws Exception 
     {
         Database db = Database.getInstance();
@@ -126,8 +126,7 @@ public class AttachmentManagerService
             db.release();
         }
     }
-
-    @Override
+    
     public List<Attachment> getValues( boolean showInactives ) throws Exception 
     {
         Database db = Database.getInstance();
@@ -162,5 +161,10 @@ public class AttachmentManagerService
     public List<String> isUnique( Attachment value ) throws Exception 
     {
         return null;
+    }
+
+    @Override
+    public List<Attachment> getValues(DefaultFilter filter) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

@@ -32,7 +32,7 @@ public class ApplicationUtilities
         try
         {   
             FileUtilities.logException( e );
-            
+            System.out.println( e );
             Prompts.error( "Ocorreu um Erro Inesperado !", e.getMessage() );
         } 
         

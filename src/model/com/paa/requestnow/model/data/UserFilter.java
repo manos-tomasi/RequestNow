@@ -23,14 +23,14 @@ public class UserFilter
     @Override
     public List<FilterItem> getComponents() 
     {
-        return Arrays.asList( new FilterItem( NAME,       "Nome",              "com.pa.helpfin.view.util.MaskTextField" ),
-                              new FilterItem( CPF,        "CPF",               "com.pa.helpfin.view.util.MaskTextField" ),
-                              new FilterItem( ROLE,       "Categoria",         "com.pa.helpfin.view.selectors.RoleSelector" ),
-                              new FilterItem( PHONE,      "Telefone",          "com.pa.helpfin.view.util.MaskTextField" ),
-                              new FilterItem( MAIL,       "Email",             "com.pa.helpfin.view.util.MaskTextField" ),
-                              new FilterItem( RG,         "RG",                "com.pa.helpfin.view.util.MaskTextField" ),
-                              new FilterItem( GENDER,     "Sexo",              "com.pa.helpfin.view.selectors.GenderSelector" ),
-                              new FilterItem( BIRTH_DATE, "Ano de Nascimento", "com.pa.helpfin.view.util.DateBetweenField" ),
-                              new FilterItem( STATE,      "Situação",          "com.pa.helpfin.view.selectors.StateSelector" ) );
+        return Arrays.asList( new FilterItem( NAME,       "Nome",              "com.paa.requestnow.view.util.MaskTextField" ),
+                              new FilterItem( CPF,        "CPF",               "com.paa.requestnow.view.util.MaskTextField" ),
+                              new FilterItem( ROLE,       "Categoria",         "com.paa.requestnow.view.selectors.RoleSelector" ),
+                              new FilterItem( PHONE,      "Telefone",          "com.paa.requestnow.view.util.MaskTextField" ),
+                              new FilterItem( MAIL,       "Email",             "com.paa.requestnow.view.util.MaskTextField" ),
+                              new FilterItem( RG,         "RG",                "com.paa.requestnow.view.util.MaskTextField" ),
+                              new FilterItem( GENDER,     "Sexo",              "com.paa.requestnow.view.selectors.GenderSelector" ),
+                              new FilterItem( BIRTH_DATE, "Ano de Nascimento", "com.paa.requestnow.view.util.DateBetweenField" ),
+                              new FilterItem( STATE,      "Situação",          "com.paa.requestnow.view.selectors.StateSelector" ) );
     }
 }

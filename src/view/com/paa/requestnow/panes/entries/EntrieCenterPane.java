@@ -38,6 +38,11 @@ public class EntrieCenterPane <T extends Core>
             }      
           
             break;
+            
+            case VIEW_SECTORS:
+            {
+                controller = sectorController;
+            }
         }
     }
     
@@ -220,6 +225,7 @@ public class EntrieCenterPane <T extends Core>
     private LegendPane legendPane =  new LegendPane();
     
     private UserController   userController       = new UserController();
+    private SectorController sectorController     = new SectorController();
     
     private EntrieController controller = userController;
 }

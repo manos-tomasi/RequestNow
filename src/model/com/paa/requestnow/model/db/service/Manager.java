@@ -1,6 +1,7 @@
 package com.paa.requestnow.model.db.service;
 
 import com.paa.requestnow.model.data.Core;
+import com.paa.requestnow.model.data.DefaultFilter;
 import java.util.List;
 
 /**
@@ -17,13 +18,10 @@ public interface Manager<T extends Core>
     
     public T getValue( int id ) throws Exception;
     
-    public T getValue( String value ) throws Exception;
-    
     public List<T> getValues() throws Exception;
     
-    public List<T> getValues( boolean showInactives ) throws Exception;
-    
-    /**
+    public List<T> getValues( DefaultFilter filter ) throws Exception;
+    /**  
      * isUnique( T Value )
      * 
      * valida se os valores a serem incluidos são unicos
