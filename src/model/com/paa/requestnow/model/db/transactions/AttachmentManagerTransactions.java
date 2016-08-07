@@ -3,6 +3,7 @@ package com.paa.requestnow.model.db.transactions;
 import com.paa.requestnow.model.data.Attachment;
 import com.paa.requestnow.model.db.Database;
 import com.paa.requestnow.model.db.Schema.Attachments;
+import com.paa.requestnow.model.filter.DefaultFilter;
 import com.paa.requestnow.view.util.FileUtilities;
 import java.util.List;
 
@@ -10,8 +11,10 @@ import java.util.List;
  * @author artur
  */
 public class AttachmentManagerTransactions 
+        extends 
+            ManagerTransaction<Attachment>
 {
-    public void addAttachment( Database db,  Attachment attachment ) throws Exception
+    public void add( Database db,  Attachment attachment ) throws Exception
     {
         Attachments A = Attachments.table;
         
@@ -29,11 +32,9 @@ public class AttachmentManagerTransactions
                      " ) ";
         
         db.executeCommand( sql );
-    }
-    
-    
+    }   
 
-    public void updateAttachment( Database db,  Attachment attachment ) throws Exception
+    public void update( Database db,  Attachment attachment ) throws Exception
     {
         Attachments A = Attachments.table;
         
@@ -48,8 +49,7 @@ public class AttachmentManagerTransactions
         db.executeCommand( sql );
     }
     
-    
-    public void deleteAttachment( Database db,  Attachment attachment ) throws Exception
+    public void delete( Database db,  Attachment attachment ) throws Exception
     {
         Attachments A = Attachments.table;
         
@@ -62,9 +62,7 @@ public class AttachmentManagerTransactions
         FileUtilities.deleteFile( attachment.getUrl() );
     }
     
-    
-
-    public Attachment getAttachment( Database db,  int attachmentId ) throws Exception
+    public Attachment get( Database db,  int attachmentId ) throws Exception
     {
         Attachments A = Attachments.table;
         
@@ -74,9 +72,8 @@ public class AttachmentManagerTransactions
         
         return db.fetchOne( sql, A.fetcher );
     }
-
     
-    public Attachment getAttachment( Database db, String name ) throws Exception
+    public Attachment get( Database db, String name ) throws Exception
     {
         Attachments A = Attachments.table;
        
@@ -88,27 +85,17 @@ public class AttachmentManagerTransactions
        
         return db.fetchOne( sql, A.fetcher );
     }
-
     
-    
-    public List<Attachment> getAttachments( Database db ) throws Exception
+    public List<Attachment> get( Database db ) throws Exception
     {
         Attachments A = Attachments.table;
        
         return db.fetchAll( A.select, A.fetcher );
     }
 
-    
-    
-//    public List<Attachment> getAttachments( Database db, Posting posting ) throws Exception
-//    {
-//        Attachments A = Attachments.table;
-//        
-//        String sql = A.select  +
-//                     " where " + 
-//                     A.columns.REF_POSTING + " = " + posting.getId();
-//        
-//        return db.fetchAll( sql, A.fetcher );
-//    }
-   
+    @Override
+    public List get(Database db, DefaultFilter filter) throws Exception 
+    {
+        throw new Exception("Not implemented");
+    }
 }

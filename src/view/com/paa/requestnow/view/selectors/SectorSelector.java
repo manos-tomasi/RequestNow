@@ -1,24 +1,25 @@
 package com.paa.requestnow.view.selectors;
 
 import com.paa.requestnow.model.ApplicationUtilities;
-import com.paa.requestnow.model.data.User;
+import com.paa.requestnow.model.data.Sector;
 
 /**
- * @author artur
+ *
+ * @author lucas
  */
-public class UserSelector
-   extends 
-        ItemSelector<User>
+public class SectorSelector
+        extends 
+            ItemSelector<Sector>
 {
-    public UserSelector() 
+    public SectorSelector() 
     {
-        super( "Responsável do Lançamento" );
+         super( "Setor" );
         
         try
         {
             setItems(com.paa.requestnow.model.ModuleContext
                             .getInstance()
-                            .getUserManager()
+                            .getSectorManager()
                             .get() );
         }
         

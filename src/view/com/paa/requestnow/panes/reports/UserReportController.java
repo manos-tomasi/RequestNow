@@ -2,9 +2,9 @@ package com.paa.requestnow.panes.reports;
 
 import com.paa.requestnow.control.reports.UserReport;
 import com.paa.requestnow.model.ApplicationUtilities;
-import com.paa.requestnow.model.data.DefaultFilter;
+import com.paa.requestnow.model.filter.DefaultFilter;
 import com.paa.requestnow.model.data.User;
-import com.paa.requestnow.model.data.UserFilter;
+import com.paa.requestnow.model.filter.UserFilter;
 import com.paa.requestnow.view.editor.FilterEditor;
 import com.paa.requestnow.view.tables.DefaultTable;
 import com.paa.requestnow.view.tables.UserTable;
@@ -41,7 +41,7 @@ public class UserReportController
             table.setItems(com.paa.requestnow.model.ModuleContext
                                                 .getInstance()
                                                 .getUserManager()
-                                                .getValues( filter ) );
+                                                .get( filter ) );
         }
         catch ( Exception e )
         {
@@ -58,7 +58,7 @@ public class UserReportController
         report.setSource(com.paa.requestnow.model.ModuleContext
                                                 .getInstance()
                                                 .getUserManager()
-                                                .getValues( filter ) );
+                                                .get( filter ) );
         report.generatePDF( file );
     }
     

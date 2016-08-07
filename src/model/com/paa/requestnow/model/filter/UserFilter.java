@@ -1,4 +1,4 @@
-package com.paa.requestnow.model.data;
+package com.paa.requestnow.model.filter;
 
 import java.util.Arrays;
 import java.util.List;

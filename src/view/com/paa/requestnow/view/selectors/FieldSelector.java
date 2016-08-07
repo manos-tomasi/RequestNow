@@ -1,24 +1,26 @@
 package com.paa.requestnow.view.selectors;
 
 import com.paa.requestnow.model.ApplicationUtilities;
-import com.paa.requestnow.model.data.User;
+import com.paa.requestnow.model.data.Field;
 
 /**
- * @author artur
+ *
+ * @author lucas
  */
-public class UserSelector
-   extends 
-        ItemSelector<User>
+public class FieldSelector 
+        extends 
+            ItemSelector<Field>
 {
-    public UserSelector() 
+
+    public FieldSelector() 
     {
-        super( "Responsável do Lançamento" );
+        super( "Campo" );
         
         try
         {
             setItems(com.paa.requestnow.model.ModuleContext
                             .getInstance()
-                            .getUserManager()
+                            .getFieldManager()
                             .get() );
         }
         
@@ -26,5 +28,5 @@ public class UserSelector
         {
             ApplicationUtilities.logException( e );
         }
-    }
+    }    
 }

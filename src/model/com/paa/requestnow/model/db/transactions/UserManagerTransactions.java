@@ -1,8 +1,9 @@
 package com.paa.requestnow.model.db.transactions;
 
+import com.paa.requestnow.model.filter.DefaultFilter;
 import com.paa.requestnow.model.data.Option;
 import com.paa.requestnow.model.data.User;
-import com.paa.requestnow.model.data.UserFilter;
+import com.paa.requestnow.model.filter.UserFilter;
 import com.paa.requestnow.model.db.Database;
 import com.paa.requestnow.model.db.Schema.Users.Columns;
 import com.paa.requestnow.model.db.Schema.Users;
@@ -14,8 +15,10 @@ import java.util.List;
  * @author artur
  */
 public class UserManagerTransactions 
+        extends 
+            ManagerTransaction<User>
 {
-    public void addUser( Database db, User user ) throws Exception
+    public void add( Database db, User user ) throws Exception
     {
         if( user == null )
         {
@@ -59,7 +62,7 @@ public class UserManagerTransactions
         db.executeCommand( sql );
     }
     
-    public void deleteUser( Database db, User user ) throws Exception
+    public void delete( Database db, User user ) throws Exception
     {
         if( user == null )
         {
@@ -76,7 +79,7 @@ public class UserManagerTransactions
         db.executeCommand( sql );
     }
     
-    public void updateUser( Database db, User user ) throws Exception
+    public void update( Database db, User user ) throws Exception
     {
         if( user == null )
         {
@@ -103,7 +106,7 @@ public class UserManagerTransactions
         db.executeCommand( sql );
     }
     
-    public User getUser( Database db, int userId ) throws Exception
+    public User get( Database db, int userId ) throws Exception
     {
         Users U = Users.table;
         
@@ -116,7 +119,7 @@ public class UserManagerTransactions
         return db.fetchOne( sql , U.fetcher );
     }
     
-    public List<User> getUsers( Database db, boolean showInactives ) throws Exception
+    public List<User> get( Database db, boolean showInactives ) throws Exception
     {
         Users U = Users.table;
         
@@ -132,7 +135,7 @@ public class UserManagerTransactions
         return db.fetchAll( sql , U.fetcher );
     }
     
-    public List<User> getUsers( Database db, UserFilter filter ) throws Exception
+    public List<User> get( Database db, DefaultFilter filter ) throws Exception
     {
         Users U = Users.table;
         
@@ -307,7 +310,7 @@ public class UserManagerTransactions
         return notUnique;
     }
     
-    private boolean isUnique( Database db, User user, String value, String column ) throws Exception
+    public boolean isUnique( Database db, User user, String value, String column ) throws Exception
     {
         Users U = Users.table;
         
@@ -320,4 +323,11 @@ public class UserManagerTransactions
         
         return db.queryInteger( sql ) == 0;
     }
+
+    @Override
+    public List get(Database db) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+
 }

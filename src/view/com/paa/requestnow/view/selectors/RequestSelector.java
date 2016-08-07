@@ -1,24 +1,25 @@
 package com.paa.requestnow.view.selectors;
 
 import com.paa.requestnow.model.ApplicationUtilities;
-import com.paa.requestnow.model.data.User;
+import com.paa.requestnow.model.data.Request;
 
 /**
- * @author artur
+ *
+ * @author lucas
  */
-public class UserSelector
-   extends 
-        ItemSelector<User>
+public class RequestSelector 
+        extends 
+            ItemSelector<Request>
 {
-    public UserSelector() 
+    public RequestSelector() 
     {
-        super( "Responsável do Lançamento" );
+         super( "Requisição" );
         
         try
         {
             setItems(com.paa.requestnow.model.ModuleContext
                             .getInstance()
-                            .getUserManager()
+                            .getRequestManager()
                             .get() );
         }
         

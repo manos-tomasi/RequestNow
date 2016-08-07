@@ -1,8 +1,8 @@
 package com.paa.requestnow.view.editor;
 
 import com.paa.requestnow.model.ApplicationUtilities;
-import com.paa.requestnow.model.data.DefaultFilter;
-import com.paa.requestnow.model.data.DefaultFilter.FilterItem;
+import com.paa.requestnow.model.filter.DefaultFilter;
+import com.paa.requestnow.model.filter.DefaultFilter.FilterItem;
 import com.paa.requestnow.panes.ActionPane;
 import com.paa.requestnow.view.selectors.ListPicker;
 import com.paa.requestnow.view.util.ActionButton;

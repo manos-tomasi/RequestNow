@@ -1,9 +1,9 @@
 package com.paa.requestnow.panes.entries;
 
 import com.paa.requestnow.model.ApplicationUtilities;
-import com.paa.requestnow.model.data.DefaultFilter;
+import com.paa.requestnow.model.filter.DefaultFilter;
 import com.paa.requestnow.model.data.Sector;
-import com.paa.requestnow.model.data.SectorFilter;
+import com.paa.requestnow.model.filter.SectorFilter;
 import com.paa.requestnow.view.editor.FilterEditor;
 import com.paa.requestnow.view.editor.SectorEditor;
 import com.paa.requestnow.view.tables.DefaultTable;
@@ -34,7 +34,7 @@ public class SectorController
                 {
                     com.paa.requestnow.model.ModuleContext.getInstance()
                                                         .getSectorManager()
-                                                        .addValue( source );
+                                                        .add( source );
                     
                     table.setSelectedItem( source );
                     
@@ -61,7 +61,7 @@ public class SectorController
                 {
                     com.paa.requestnow.model.ModuleContext.getInstance()
                                                         .getSectorManager()
-                                                        .updateValue( source );
+                                                        .update( source );
                     refresh();
                 }
                 
@@ -93,7 +93,7 @@ public class SectorController
     {   
         com.paa.requestnow.model.ModuleContext.getInstance()
                                               .getSectorManager()
-                                              .deleteValue( item );
+                                              .delete( item );
 
         refresh();
     }
@@ -106,7 +106,7 @@ public class SectorController
             table.setItems(com.paa.requestnow.model.ModuleContext
                                                     .getInstance()
                                                     .getSectorManager()
-                                                    .getValues( filter ) );
+                                                    .get( filter ) );
         }
         
         catch( Exception e )

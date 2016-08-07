@@ -22,6 +22,7 @@ public class TypeFetcher
         type.setName(resultSet.getString(++i));
         type.setState(resultSet.getInt(++i));
         type.setInfo(resultSet.getString(++i));
+        type.setCategory(resultSet.getInt(++i));
         
         return type;
     }

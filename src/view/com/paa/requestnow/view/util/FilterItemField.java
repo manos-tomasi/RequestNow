@@ -1,7 +1,7 @@
 package com.paa.requestnow.view.util;
 
 import com.paa.requestnow.model.ApplicationUtilities;
-import com.paa.requestnow.model.data.DefaultFilter.FilterItem;
+import com.paa.requestnow.model.filter.DefaultFilter.FilterItem;
 import com.paa.requestnow.view.selectors.ItemSelector;
 import java.sql.Date;
 import java.util.List;

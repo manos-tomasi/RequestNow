@@ -203,6 +203,7 @@ public class Schema
             public String NAME;
             public String STATE;
             public String INFO;
+            public String CATEGORY;
             
             public Columns( String alias )
             {
@@ -210,6 +211,7 @@ public class Schema
                 NAME  = alias + "name";
                 STATE = alias + "state";
                 INFO  = alias + "info";
+                INFO  = alias + "ref_category";
             }
 
             @Override
@@ -218,7 +220,8 @@ public class Schema
                 return ID    + ", " +
                        NAME  + ", " +
                        STATE + ", " +
-                       INFO;
+                       INFO  + ", " +
+                       CATEGORY;
             }
         }
 
@@ -381,6 +384,7 @@ public class Schema
             public String USER;
             public String START;
             public String END;
+            public String STATE;
             
             public Columns( String alias )
             {
@@ -389,6 +393,7 @@ public class Schema
                 USER     = alias + "ref_user";
                 START    = alias + "d_start";
                 END      = alias + "dt_end";
+                STATE    = alias + "state";
             }
 
             @Override
@@ -398,7 +403,8 @@ public class Schema
                        TYPE     + ", " +
                        USER     + ", " +
                        START    + ", " +
-                       END;
+                       END      + ", " +
+                       STATE;
             }
         }
 
@@ -464,7 +470,7 @@ public class Schema
         
         public final ValueRequestFetcher fetcher = new ValueRequestFetcher();
         
-        public static final Types table = new Types( null );
+        public static final ValuesRequests table = new ValuesRequests( null );
         
         public final Columns columns;
         
@@ -573,7 +579,7 @@ public class Schema
         
         public final FieldValueFetcher fetcher = new FieldValueFetcher();
         
-        public static final Fields table = new Fields( null );
+        public static final FieldsValues table = new FieldsValues( null );
         
         public final Columns columns;
         
@@ -638,9 +644,9 @@ public class Schema
 
         public final String select;
         
-        public final FieldValueFetcher fetcher = new FieldValueFetcher();
+        public final RequestRouteFetcher fetcher = new RequestRouteFetcher();
         
-        public static final Fields table = new Fields( null );
+        public static final RequestsRoutes table = new RequestsRoutes( null );
         
         public final Columns columns;
         

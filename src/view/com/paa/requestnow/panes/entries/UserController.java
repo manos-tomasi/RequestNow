@@ -2,10 +2,10 @@ package com.paa.requestnow.panes.entries;
 
 import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.data.Core;
-import com.paa.requestnow.model.data.DefaultFilter;
+import com.paa.requestnow.model.filter.DefaultFilter;
 import com.paa.requestnow.model.data.Option;
 import com.paa.requestnow.model.data.User;
-import com.paa.requestnow.model.data.UserFilter;
+import com.paa.requestnow.model.filter.UserFilter;
 import com.paa.requestnow.view.editor.FilterEditor;
 import com.paa.requestnow.view.editor.UserEditor;
 import com.paa.requestnow.view.tables.DefaultTable;
@@ -59,7 +59,7 @@ public class UserController
                 {
                     com.paa.requestnow.model.ModuleContext.getInstance()
                                                         .getUserManager()
-                                                        .addValue( source );
+                                                        .add( source );
                     
                     table.setSelectedItem( source );
                     
@@ -88,7 +88,7 @@ public class UserController
                 {
                     com.paa.requestnow.model.ModuleContext.getInstance()
                                                         .getUserManager()
-                                                        .updateValue( source );
+                                                        .update( source );
                     refresh();
                 }
                 
@@ -114,7 +114,7 @@ public class UserController
         
         com.paa.requestnow.model.ModuleContext.getInstance()
                         .getUserManager()
-                        .deleteValue( item );
+                        .delete( item );
 
         refresh();
     }
@@ -129,7 +129,7 @@ public class UserController
             table.setItems(com.paa.requestnow.model.ModuleContext
                                                     .getInstance()
                                                     .getUserManager()
-                                                    .getValues( filter ) );
+                                                    .get( filter ) );
         }
         
         catch( Exception e )

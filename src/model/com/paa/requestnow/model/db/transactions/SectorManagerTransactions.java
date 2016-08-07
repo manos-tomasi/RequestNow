@@ -1,21 +1,21 @@
 package com.paa.requestnow.model.db.transactions;
 
-import com.paa.requestnow.model.data.DefaultFilter;
+import com.paa.requestnow.model.filter.DefaultFilter;
 import com.paa.requestnow.model.data.Sector;
-import com.paa.requestnow.model.data.SectorFilter;
+import com.paa.requestnow.model.filter.SectorFilter;
 import com.paa.requestnow.model.db.Database;
 import com.paa.requestnow.model.db.Schema;
 import java.util.List;
-import javafx.beans.binding.StringBinding;
 
 /**
  *
  * @author lucas
  */
 public class SectorManagerTransactions
+        extends 
+            ManagerTransaction<Sector>
 {
-    
-    public void addSector( Database db, Sector sector ) throws Exception
+    public void add( Database db, Sector sector ) throws Exception
     {    
         Schema.Sectors S = Schema.Sectors.table;
         
@@ -30,7 +30,7 @@ public class SectorManagerTransactions
         db.executeCommand(sql);
     }
     
-    public List getSectors( Database db ) throws Exception
+    public List get( Database db ) throws Exception
     {
         Schema.Sectors S = Schema.Sectors.table;
         
@@ -39,7 +39,7 @@ public class SectorManagerTransactions
         return db.fetchAll(sql, S.fetcher );
     }
     
-    public List getSectors( Database db, DefaultFilter filter ) throws Exception
+    public List get( Database db, DefaultFilter filter ) throws Exception
     {
         Schema.Sectors S = Schema.Sectors.table;
         
@@ -78,30 +78,20 @@ public class SectorManagerTransactions
         return db.fetchAll(sql.toString() , S.fetcher );
     }
     
-    public void deleteSector( Database db, Sector sector ) throws Exception
-    {
-        Schema.Sectors S = Schema.Sectors.table;
-        
-        String sql = " delete from "+ S.name +
-                     " where " + S.columns.ID + " = " + sector.getId();
-        
-        db.executeCommand(sql);
-    }
-    
-    public Sector getSector( Database db, int id ) throws Exception
+    public Sector get( Database db, int id ) throws Exception
     {
         Schema.Sectors S = Schema.Sectors.table;
         
         String sql = S.select + " where " + S.columns.ID + " = " + id;
         
         return  db.fetchOne( sql , S.fetcher );
-    }
+    }    
     
-    public void updateSector( Database db, Sector sector ) throws Exception
+    public void update( Database db, Sector sector ) throws Exception
     {
         if( sector == null )
         {
-            throw new Exception( "User cannot be null" );
+            throw new Exception( "Sector cannot be null" );
         }
         
         Schema.Sectors S = Schema.Sectors.table;
