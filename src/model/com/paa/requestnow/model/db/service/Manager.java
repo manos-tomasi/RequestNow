@@ -1,26 +1,111 @@
 package com.paa.requestnow.model.db.service;
 
 import com.paa.requestnow.model.data.Core;
-import com.paa.requestnow.model.data.DefaultFilter;
+import com.paa.requestnow.model.filter.DefaultFilter;
+import com.paa.requestnow.model.db.Database;
+import com.paa.requestnow.model.db.transactions.ManagerTransaction;
 import java.util.List;
 
 /**
- * @author artur
- * @param <T>
+ * @author lucas
+ * @param <T> Transaction
+ * @param <X> Core
  */
-public interface Manager<T extends Core>
+public class Manager<T extends Core, X extends ManagerTransaction<T> >
 {
-    public void addValue( T value ) throws Exception;
+    protected X transactions;
     
-    public void deleteValue( T value ) throws Exception;
+    public void add( T obj ) throws Exception
+    {
+        Database db = Database.getInstance();
     
-    public void updateValue( T value ) throws Exception;
+        try
+        {
+            transactions.add( db , obj );
+        }
+
+        finally
+        {
+            db.release();
+        }
+    }
+
     
-    public T getValue( int id ) throws Exception;
+    public void delete( T obj ) throws Exception
+    {
+        Database db = Database.getInstance();
     
-    public List<T> getValues() throws Exception;
+        try
+        {
+            transactions.delete(db , obj );
+        }
+
+        finally
+        {
+            db.release();
+        }   
+    }
     
-    public List<T> getValues( DefaultFilter filter ) throws Exception;
+    public void update( T obj ) throws Exception
+    {
+        Database db = Database.getInstance();
+    
+        try
+        {
+            transactions.update(db , obj );
+        }
+
+        finally
+        {
+            db.release();
+        }
+    }
+    
+    public T get( int id ) throws Exception
+    {
+        Database db = Database.getInstance();
+    
+        try
+        {
+            return transactions.get( db , id );
+        }
+
+        finally
+        {
+            db.release();
+        }
+    }
+    
+    public List<T> get() throws Exception
+    {
+        Database db = Database.getInstance();
+    
+        try
+        {
+            return transactions.get( db );
+        }
+
+        finally
+        {
+            db.release();
+        }
+    }
+    
+    public List<T> get( DefaultFilter filter ) throws Exception
+    {
+        Database db = Database.getInstance();
+    
+        try
+        {
+            return transactions.get( db , filter );
+        }
+
+        finally
+        {
+            db.release();
+        }
+    }
+    
     /**  
      * isUnique( T Value )
      * 
@@ -31,5 +116,8 @@ public interface Manager<T extends Core>
      * @return List
      * @throws Exception 
      */
-    public List<String> isUnique( T value ) throws Exception;
+    public List<String> isUnique( T value ) throws Exception
+    {
+        throw new Exception("method cannot be implemented!");
+    }
 }
