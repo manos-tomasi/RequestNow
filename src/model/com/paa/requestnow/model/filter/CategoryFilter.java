@@ -1,7 +1,6 @@
-package com.paa.requestnow.model.data;
+package com.paa.requestnow.model.filter;
 
-import static com.paa.requestnow.model.data.SectorFilter.NAME;
-import static com.paa.requestnow.model.data.SectorFilter.STATE;
+import com.paa.requestnow.model.filter.DefaultFilter;
 import java.util.Arrays;
 import java.util.List;
 
@@ -9,7 +8,7 @@ import java.util.List;
  *
  * @author lucas
  */
-public class SectorFilter 
+public class CategoryFilter 
         extends 
             DefaultFilter
 {
