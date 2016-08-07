@@ -6,7 +6,7 @@ public class TESTE
 {
     public static void main(String[] args) throws Exception{
         Sector s = new Sector( "Lucas" );
-        System.out.println( com.paa.requestnow.model.ModuleContext.getInstance().getSectorManager().getValues() );
+        System.out.println( com.paa.requestnow.model.ModuleContext.getInstance().getSectorManager().get() );
     }
      
 }

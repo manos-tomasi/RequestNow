@@ -18,9 +18,9 @@ public class UserCache
         {
             if( user == null )
             {
-                user = com.paa.requestnow.model.ModuleContext.getInstance()
+                user = (User) com.paa.requestnow.model.ModuleContext.getInstance()
                                                    .getUserManager()
-                                                   .getValue( id ); 
+                                                   .get( id ); 
 
                 if( user != null )
                 {

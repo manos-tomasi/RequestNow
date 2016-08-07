@@ -1,5 +1,7 @@
 package com.paa.requestnow.model.data;
 
+import com.paa.requestnow.model.db.Schema;
+
 /**
  * @author artur
  * @param <T>
@@ -20,7 +22,7 @@ public abstract class Core<T>
     
     protected int id;   
     protected int state;
-    
+        
     public int getId() 
     {
         return id;
@@ -40,7 +42,7 @@ public abstract class Core<T>
     {
         this.state = state;
     }
-
+    
     @Override
     public boolean equals( Object source ) 
     {

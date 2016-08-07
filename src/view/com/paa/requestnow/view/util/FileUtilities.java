@@ -28,7 +28,7 @@ public class FileUtilities
     
     static 
     {
-        String homePath = ConfigurationManager.getInstance().getProperty( "helpFin.home" );
+        String homePath = ConfigurationManager.getInstance().getProperty( "requestnow.home" );
         
         if( homePath != null && ! homePath.isEmpty() )
         {
@@ -125,12 +125,12 @@ public class FileUtilities
                 pb.start();
             }
 
-            //copy attachments
-            com.paa.requestnow.model.ModuleContext.getInstance().getAttachmentManager().getValues().forEach( (attachment) -> 
-            {
-                //validar url
-                download( attachment.getUrl(), file.getParent() + File.separator + attachment.getUrl(), false );
-            } );
+//            copy attachments
+//            com.paa.requestnow.model.ModuleContext.getInstance().getAttachmentManager().get().forEach( (attachment) -> 
+//            {
+//                //validar url
+//                download( attachment.getUrl(), file.getParent() + File.separator + attachment.getUrl(), false );
+//            } );
         }
         
         catch( Exception ex )

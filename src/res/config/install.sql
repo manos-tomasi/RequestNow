@@ -1,4 +1,4 @@
-REATE TABLE categories (
+CREATE TABLE categories (
   id SERIAL NOT NULL PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
   state INT NOT NULL,
@@ -83,7 +83,7 @@ CREATE TABLE requests_routes (
 CREATE TABLE fields_values (
   id SERIAL NOT NULL PRIMARY KEY,
   ref_field INT NOT NULL REFERENCES fields (id),
-  state INT NOT NULL
+  state INT NOT NULL,
   value VARCHAR(255) NULL );
 
 
