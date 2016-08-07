@@ -19,7 +19,7 @@ public class UserSelector
             setItems(com.paa.requestnow.model.ModuleContext
                             .getInstance()
                             .getUserManager()
-                            .getValues() );
+                            .get() );
         }
         
         catch( Exception e )
