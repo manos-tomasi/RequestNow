@@ -28,7 +28,7 @@ public class FileUtilities
     
     static 
     {
-        String homePath = ConfigurationManager.getInstance().getProperty( "helpFin.home" );
+        String homePath = ConfigurationManager.getInstance().getProperty( "home" );
         
         if( homePath != null && ! homePath.isEmpty() )
         {
@@ -145,7 +145,7 @@ public class FileUtilities
     {
         try
         {
-            if( Boolean.valueOf( ConfigurationManager.getInstance().getProperty( "showLog" ) ) && home != null && ! home.isEmpty() )
+            if( Boolean.valueOf( ConfigurationManager.getInstance().getProperty( "show.log" ) ) && home != null && ! home.isEmpty() )
             {
                 File file = new File(  home + "logs/log.log" );
 
@@ -191,7 +191,7 @@ public class FileUtilities
     {
         try
         {
-            if( Boolean.valueOf( ConfigurationManager.getInstance().getProperty( "showSql" ) ) && home != null && ! home.isEmpty() )
+            if( Boolean.valueOf( ConfigurationManager.getInstance().getProperty( "show.sql" ) ) && home != null && ! home.isEmpty() )
             {
                 File file = new File(  home + "logs/sql.log" );
 
