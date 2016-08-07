@@ -61,6 +61,19 @@ public class TypeManagerTransactions
         return  db.fetchOne( sql , S.fetcher );
     }    
 
+    public List<Type> getTypesCategory( Database db, int id ) throws Exception
+    {
+        Schema.Types S = Schema.Types.table;
+        
+        String sql = S.select + 
+                     " where " + 
+                     S.columns.CATEGORY + " = " + id +
+                     " and " +
+                    S.columns.STATE +  " = " + Type.STATE_ACTIVE;
+       
+        return  db.fetchAll( sql , S.fetcher );
+    }    
+
     @Override
     public List get(Database db) throws Exception
     {

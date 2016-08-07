@@ -63,6 +63,19 @@ public class FieldManagerTransactions
         
         return  db.fetchOne( sql , S.fetcher );
     }
+
+    public List<Field> getFieldsType( Database db, int id ) throws Exception 
+    {
+        Schema.Fields S = Schema.Fields.table;
+        
+        String sql = S.select + 
+                     " where " + 
+                     S.columns.TYPE_REQUEST + " = " + id +
+                     " and " +
+                     S.columns.STATE        + " = " +  Field.STATE_ACTIVE;
+        
+        return  db.fetchAll( sql , S.fetcher );
+    }
     
     @Override
     public List get(Database db) throws Exception 

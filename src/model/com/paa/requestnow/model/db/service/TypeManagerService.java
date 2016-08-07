@@ -1,7 +1,9 @@
 package com.paa.requestnow.model.db.service;
 
 import com.paa.requestnow.model.data.Type;
+import com.paa.requestnow.model.db.Database;
 import com.paa.requestnow.model.db.transactions.TypeManagerTransactions;
+import java.util.List;
 
 /**
  *
@@ -26,5 +28,20 @@ public class TypeManagerService
     private TypeManagerService()
     {
         transactions = new TypeManagerTransactions();
+    }
+    
+    public List<Type> getTypesCategory( int categoryId ) throws Exception
+    {
+        Database db = Database.getInstance();
+    
+        try
+        {
+            return transactions.getTypesCategory( db , categoryId );
+        }
+
+        finally
+        {
+            db.release();
+        }
     }
 }

@@ -207,11 +207,11 @@ public class Schema
             
             public Columns( String alias )
             {
-                ID    = alias + "id";
-                NAME  = alias + "name";
-                STATE = alias + "state";
-                INFO  = alias + "info";
-                INFO  = alias + "ref_category";
+                ID        = alias + "id";
+                NAME      = alias + "name";
+                STATE     = alias + "state";
+                INFO      = alias + "info";
+                CATEGORY  = alias + "ref_category";
             }
 
             @Override
@@ -270,7 +270,7 @@ public class Schema
                 REQUIRED     = alias + "required";
                 STATE        = alias + "state";
                 TYPE         = alias + "type";
-                TYPE_REQUEST = alias + "type_request";
+                TYPE_REQUEST = alias + "ref_type";
             }
 
             @Override

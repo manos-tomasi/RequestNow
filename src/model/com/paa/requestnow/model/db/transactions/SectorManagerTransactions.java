@@ -1,5 +1,6 @@
 package com.paa.requestnow.model.db.transactions;
 
+import com.paa.requestnow.model.data.Option;
 import com.paa.requestnow.model.filter.DefaultFilter;
 import com.paa.requestnow.model.data.Sector;
 import com.paa.requestnow.model.filter.SectorFilter;
@@ -15,6 +16,7 @@ public class SectorManagerTransactions
         extends 
             ManagerTransaction<Sector>
 {
+    @Override
     public void add( Database db, Sector sector ) throws Exception
     {    
         Schema.Sectors S = Schema.Sectors.table;
@@ -30,6 +32,7 @@ public class SectorManagerTransactions
         db.executeCommand(sql);
     }
     
+    @Override
     public List get( Database db ) throws Exception
     {
         Schema.Sectors S = Schema.Sectors.table;
@@ -39,6 +42,7 @@ public class SectorManagerTransactions
         return db.fetchAll(sql, S.fetcher );
     }
     
+    @Override
     public List get( Database db, DefaultFilter filter ) throws Exception
     {
         Schema.Sectors S = Schema.Sectors.table;
@@ -64,7 +68,12 @@ public class SectorManagerTransactions
                     
                     case SectorFilter.STATE :
                     {
-                        conditions += S.columns.STATE + " = " + values.get(i);
+                        if( values.get( i ) instanceof Option )
+                        {
+                            Option option = (Option) values.get( i );
+                            
+                            conditions += S.columns.STATE + " = " + option.getId();
+                        }
                     }
                     break;
 
@@ -78,6 +87,7 @@ public class SectorManagerTransactions
         return db.fetchAll(sql.toString() , S.fetcher );
     }
     
+    @Override
     public Sector get( Database db, int id ) throws Exception
     {
         Schema.Sectors S = Schema.Sectors.table;
@@ -87,6 +97,7 @@ public class SectorManagerTransactions
         return  db.fetchOne( sql , S.fetcher );
     }    
     
+    @Override
     public void update( Database db, Sector sector ) throws Exception
     {
         if( sector == null )
