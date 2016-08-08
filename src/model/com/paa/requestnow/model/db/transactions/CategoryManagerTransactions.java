@@ -65,7 +65,7 @@ public class CategoryManagerTransactions
     {
         Schema.Categories S = Schema.Categories.table;
         
-        String sql = S.select + "where state = " + Category.STATE_ACTIVE;
+        String sql = S.select + " where state = " + Category.STATE_ACTIVE;
         
         return db.fetchAll(sql, S.fetcher );
     }
