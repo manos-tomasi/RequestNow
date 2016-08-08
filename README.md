@@ -1,2 +1,2 @@
-# requestnow
-JavaFx Application Routes by Artur Tomasi
+# RequestNow
+JavaFx Application Routes by Artur Tomasi, Lucas Tomasi
