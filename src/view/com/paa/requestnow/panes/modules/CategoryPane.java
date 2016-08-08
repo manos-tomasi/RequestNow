@@ -35,6 +35,7 @@ public class CategoryPane
     {
         Object source = tree.getSelectedNode();
         
+        tree.refreshContent();
 //        pane.getTabs().clear();
         
         {

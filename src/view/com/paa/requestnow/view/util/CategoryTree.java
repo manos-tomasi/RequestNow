@@ -41,6 +41,11 @@ public class CategoryTree
         loadData();
     }
     
+    public void refreshContent()
+    {
+        loadData();
+    }
+    
     private void loadData()
     {
         try
