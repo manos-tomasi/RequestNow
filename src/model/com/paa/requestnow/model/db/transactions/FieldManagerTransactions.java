@@ -45,11 +45,11 @@ public class FieldManagerTransactions
         Schema.Fields S = Schema.Fields.table;
         
         String sql = " update " + S.name       + " set " +
-                        S.columns.LABEL        + " = " + db.quote( obj.getLabel())      + ", " +
-                        S.columns.STATE        + " = " + obj.getState()                 + ", " + 
-                        S.columns.REQUIRED     + " = " + obj.isRequired()               + ", " + 
-                        S.columns.TYPE_REQUEST + " = " + obj.getTypeRequest()           + ", " +
-                        S.columns.TYPE         + " = " + obj.getType()                  + 
+                        S.columns.LABEL        + " = " + db.quote( obj.getLabel() )  + ", " +
+                        S.columns.STATE        + " = " + obj.getState()              + ", " + 
+                        S.columns.REQUIRED     + " = " + db.flag( obj.isRequired() ) + ", " + 
+                        S.columns.TYPE_REQUEST + " = " + obj.getTypeRequest()        + ", " +
+                        S.columns.TYPE         + " = " + obj.getType()               + 
                      " where " + 
                         S.columns.ID           + " = " + obj.getId();
         
@@ -124,25 +124,29 @@ public class FieldManagerTransactions
                     
                     case FieldFilter.TYPE :
                     {
-                        if( values.get(i) instanceof Type )
+                        if ( values.get( i ) instanceof Option )
                         {
-                            conditions += S.columns.TYPE + " = " + ((Type)values.get(i)).getId();
+                            conditions += S.columns.TYPE + " = " + ( (Option) values.get(i) ).getId();
                         }
                     }
                     break;
                     
                     case FieldFilter.TYPE_REQUEST :
                     {
-                        conditions += S.columns.STATE + " = " + values.get(i);
+                        if( values.get(i) instanceof Type )
+                        {
+                            conditions += S.columns.TYPE_REQUEST + " = " + ( (Type)values.get(i) ).getId();
+                        }
                     }
                     break;
                 }
+                
                 conditions += i == values.size() - 1 ? " ) " : " or ";    
             }
             
-            sql.append(conditions);
-        });
+            sql.append( conditions );
+        } );
         
-        return db.fetchAll(sql.toString() , S.fetcher );
+        return db.fetchAll( sql.toString() , S.fetcher );
     }    
 }

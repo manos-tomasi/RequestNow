@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.paa.requestnow.model.filter;
 
 import java.util.Arrays;
@@ -23,10 +18,13 @@ public class FieldFilter
     public static final int TYPE_REQUEST = 4;
     
     @Override
-    public List<FilterItem> getComponents() {
-                return Arrays.asList(   new FilterItem( LABEL,      "Label",          "com.paa.requestnow.view.util.MaskTextField" ),
-                                        new FilterItem( REQUIRED,   "Required",      "com.paa.requestnow.view.selectors.YesNoSelector"),
-                                        new FilterItem( STATE,      "Situação",      "com.paa.requestnow.view.selectors.StateSelector" ) );
+    public List<FilterItem> getComponents() 
+    {
+                return Arrays.asList(   new FilterItem( LABEL,        "Label",            "com.paa.requestnow.view.util.MaskTextField" ),
+                                        new FilterItem( REQUIRED,     "Requerido",        "com.paa.requestnow.view.selectors.YesNoSelector"),
+                                        new FilterItem( STATE,        "Situação",         "com.paa.requestnow.view.selectors.StateSelector" ),
+                                        new FilterItem( TYPE,         "Tipo",             "com.paa.requestnow.view.selectors.handlerSelector" ),
+                                        new FilterItem( TYPE_REQUEST, "Tipo Requisição",  "com.paa.requestnow.view.selectors.TypeSelector" ) );
     }
     
 }

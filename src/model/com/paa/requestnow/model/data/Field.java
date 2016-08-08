@@ -19,6 +19,11 @@ public class Field
     public final static int TYPE_FILE        = 4;
     public final static int TYPE_SIMPLE_TEXT = 5;
     
+    public final static String TYPES [] =
+    {
+        "Texto", "Lista", "Número", "Data", "Arquivos", "Texto Simples"
+    };
+    
     public Field() 
     {
     }
