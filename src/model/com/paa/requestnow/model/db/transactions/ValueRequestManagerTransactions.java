@@ -1,5 +1,7 @@
 package com.paa.requestnow.model.db.transactions;
 
+import com.paa.requestnow.model.data.Field;
+import com.paa.requestnow.model.data.Request;
 import com.paa.requestnow.model.data.ValueRequest;
 import com.paa.requestnow.model.db.Database;
 import com.paa.requestnow.model.db.Schema;
@@ -90,13 +92,19 @@ public class ValueRequestManagerTransactions
                 {                    
                     case ValueRequestFilter.FIELD :
                     {
-                        conditions += S.columns.FIELD + " = " + values.get(i);
+                        if( values.get(i) instanceof Field )
+                        {
+                            conditions += S.columns.FIELD + " = " + ((Field)values.get(i)).getId();
+                        }
                     }
                     break;
                     
                     case ValueRequestFilter.REQUEST :
                     {
-                        conditions += S.columns.REQUEST + " = " + values.get(i);
+                        if( values.get(i) instanceof Request )
+                        {
+                            conditions += S.columns.REQUEST + " = " + ((Request)values.get(i)).getId();
+                        }
                     }
                     break;
                 }

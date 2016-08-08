@@ -1,6 +1,9 @@
 package com.paa.requestnow.model.db.transactions;
 
+import com.paa.requestnow.model.data.Option;
+import com.paa.requestnow.model.data.Request;
 import com.paa.requestnow.model.data.RequestRoute;
+import com.paa.requestnow.model.data.User;
 import com.paa.requestnow.model.db.Database;
 import com.paa.requestnow.model.db.Schema;
 import com.paa.requestnow.model.filter.DefaultFilter;
@@ -100,19 +103,28 @@ public class RequestRouteManagerTransaction
                 {                    
                     case RequestRouteFilter.STATE :
                     {
-                        conditions += S.columns.STATE + " = " + values.get(i);
+                        if( values.get(i) instanceof Option )
+                        {
+                            conditions += S.columns.STATE + " = " + ((Option)values.get(i)).getId();
+                        }
                     }
                     break;
                     
                     case RequestRouteFilter.REQUEST :
                     {
-                        conditions += S.columns.REQUEST + " = " + values.get(i);
+                        if( values.get(i) instanceof Request )
+                        {
+                            conditions += S.columns.REQUEST + " = " + ((Request)values.get(i)).getId();
+                        }
                     }
                     break;
                     
                     case RequestFilter.USER :
                     {
-                        conditions += S.columns.USER + " = " + values.get(i);
+                        if( values.get(i) instanceof User )
+                        {
+                            conditions += S.columns.USER + " = " + ((User)values.get(i)).getId();
+                        }
                     }
                     break;
                     

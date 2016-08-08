@@ -1,5 +1,7 @@
 package com.paa.requestnow.model.db.transactions;
 
+import com.paa.requestnow.model.data.Category;
+import com.paa.requestnow.model.data.Option;
 import com.paa.requestnow.model.data.Type;
 import com.paa.requestnow.model.db.Database;
 import com.paa.requestnow.model.db.Schema;
@@ -79,7 +81,7 @@ public class TypeManagerTransactions
     {
         Schema.Types S = Schema.Types.table;
         
-        String sql = S.select;
+        String sql = S.select + " where state " +  Type.STATE_ACTIVE;
         
         return db.fetchAll(sql, S.fetcher );
     }
@@ -110,13 +112,19 @@ public class TypeManagerTransactions
                     
                     case TypeFilter.STATE :
                     {
-                        conditions += S.columns.STATE + " = " + values.get(i);
+                        if( values.get(i) instanceof Option )
+                        {
+                            conditions += S.columns.STATE + " = " + ((Option)values.get(i)).getId();
+                        }
                     }
                     break;
                     
                     case TypeFilter.CATEGORY :
                     {
-                        conditions += S.columns.CATEGORY + " = " + values.get(i);
+                        if( values.get(i) instanceof Category )
+                        {
+                            conditions += S.columns.CATEGORY + " = " + ((Category)values.get(i)).getId();
+                        }
                     }
                     break;
                 }

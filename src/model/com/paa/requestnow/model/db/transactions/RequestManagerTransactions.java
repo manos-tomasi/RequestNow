@@ -1,6 +1,9 @@
 package com.paa.requestnow.model.db.transactions;
 
+import com.paa.requestnow.model.data.Option;
 import com.paa.requestnow.model.data.Request;
+import com.paa.requestnow.model.data.Type;
+import com.paa.requestnow.model.data.User;
 import com.paa.requestnow.model.db.Database;
 import com.paa.requestnow.model.db.Schema;
 import com.paa.requestnow.model.filter.DefaultFilter;
@@ -95,19 +98,28 @@ public class RequestManagerTransactions
                 {                    
                     case RequestFilter.STATE :
                     {
-                        conditions += S.columns.STATE + " = " + values.get(i);
+                        if(  values.get(i) instanceof Option )
+                        {
+                            conditions += S.columns.STATE + " = " + ((Option)values.get(i)).getId();
+                        }
                     }
                     break;
                     
                     case RequestFilter.TYPE :
                     {
-                        conditions += S.columns.TYPE + " = " + values.get(i);
+                        if( values.get(i) instanceof Type )
+                        {
+                            conditions += S.columns.TYPE + " = " + ((Type)values.get(i)).getId();
+                        }
                     }
                     break;
                     
                     case RequestFilter.USER :
                     {
-                        conditions += S.columns.USER + " = " + values.get(i);
+                        if( values.get(i) instanceof User )
+                        {
+                            conditions += S.columns.USER + " = " + ((User)values.get(i)).getId();
+                        }
                     }
                     break;
                     

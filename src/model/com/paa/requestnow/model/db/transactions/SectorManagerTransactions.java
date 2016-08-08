@@ -37,7 +37,7 @@ public class SectorManagerTransactions
     {
         Schema.Sectors S = Schema.Sectors.table;
         
-        String sql = S.select;
+        String sql = S.select + " where state = " + Sector.STATE_ACTIVE;
         
         return db.fetchAll(sql, S.fetcher );
     }

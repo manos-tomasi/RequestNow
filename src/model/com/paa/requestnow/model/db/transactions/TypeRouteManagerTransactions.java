@@ -1,10 +1,13 @@
 package com.paa.requestnow.model.db.transactions;
 
+import com.paa.requestnow.model.data.Option;
+import com.paa.requestnow.model.data.Sector;
+import com.paa.requestnow.model.data.Type;
 import com.paa.requestnow.model.data.TypeRoute;
+import com.paa.requestnow.model.data.User;
 import com.paa.requestnow.model.db.Database;
 import com.paa.requestnow.model.db.Schema;
 import com.paa.requestnow.model.filter.DefaultFilter;
-import com.paa.requestnow.model.filter.TypeFilter;
 import com.paa.requestnow.model.filter.TypeRouteFilter;
 import java.util.List;
 
@@ -98,25 +101,37 @@ public class TypeRouteManagerTransactions
                 {                   
                     case TypeRouteFilter.STATE :
                     {
-                        conditions += S.columns.STATE + " = " + values.get(i);
+                        if( values.get(i) instanceof Option )
+                        {
+                            conditions += S.columns.STATE + " = " + ((Option)values.get(i)).getId();
+                        }
                     }
                     break;
                     
                     case TypeRouteFilter.SECTOR :
                     {
-                        conditions += S.columns.SECTOR + " = " + values.get(i);
+                        if( values.get(i) instanceof Sector )
+                        {
+                            conditions += S.columns.SECTOR + " = " + ((Sector)values.get(i)).getId();
+                        }
                     }
                     break;
                     
                     case TypeRouteFilter.TYPE :
                     {
-                        conditions += S.columns.TYPE + " = " + values.get(i);
+                        if( values.get(i) instanceof Type )
+                        {
+                            conditions += S.columns.TYPE + " = " + ((Type)values.get(i)).getId();
+                        }
                     }
                     break;
                     
                     case TypeRouteFilter.USER :
                     {
-                        conditions += S.columns.USER + " = " + values.get(i);
+                        if( values.get(i) instanceof User )
+                        {
+                            conditions += S.columns.USER + " = " + ((User)values.get(i)).getId();
+                        }
                     }
                     break;
                 }

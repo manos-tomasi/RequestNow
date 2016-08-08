@@ -1,6 +1,7 @@
 package com.paa.requestnow.model.db.transactions;
 
 import com.paa.requestnow.model.data.Category;
+import com.paa.requestnow.model.data.Option;
 import com.paa.requestnow.model.filter.CategoryFilter;
 import com.paa.requestnow.model.filter.DefaultFilter;
 import com.paa.requestnow.model.db.Database;
@@ -64,7 +65,7 @@ public class CategoryManagerTransactions
     {
         Schema.Categories S = Schema.Categories.table;
         
-        String sql = S.select;
+        String sql = S.select + "where state = " + Category.STATE_ACTIVE;
         
         return db.fetchAll(sql, S.fetcher );
     }
@@ -96,7 +97,10 @@ public class CategoryManagerTransactions
                     
                     case CategoryFilter.STATE :
                     {
-                        conditions += S.columns.STATE + " = " + values.get(i);
+                        if( values.get(i) instanceof Option )
+                        {
+                            conditions += S.columns.STATE + " = " + ((Option)values.get(i)).getId();
+                        }
                     }
                     break;
                 }

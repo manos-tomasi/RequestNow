@@ -2,6 +2,8 @@ package com.paa.requestnow.model.db.transactions;
 
 import com.paa.requestnow.model.filter.DefaultFilter;
 import com.paa.requestnow.model.data.Field;
+import com.paa.requestnow.model.data.Option;
+import com.paa.requestnow.model.data.Type;
 import com.paa.requestnow.model.filter.FieldFilter;
 import com.paa.requestnow.model.db.Database;
 import com.paa.requestnow.model.db.Schema;
@@ -82,7 +84,7 @@ public class FieldManagerTransactions
     {
         Schema.Fields S = Schema.Fields.table;
         
-        String sql = S.select;
+        String sql = S.select + "where state = " + Field.STATE_ACTIVE;
         
         return db.fetchAll(sql, S.fetcher );
     }
@@ -113,13 +115,19 @@ public class FieldManagerTransactions
                     
                     case FieldFilter.STATE :
                     {
-                        conditions += S.columns.STATE + " = " + values.get(i);
+                        if( values.get(i) instanceof Option )
+                        {
+                            conditions += S.columns.STATE + " = " + ((Option)values.get(i)).getId();
+                        }
                     }
                     break;
                     
                     case FieldFilter.TYPE :
                     {
-                        conditions += S.columns.TYPE + " = " + values.get(i);
+                        if( values.get(i) instanceof Type )
+                        {
+                            conditions += S.columns.TYPE + " = " + ((Type)values.get(i)).getId();
+                        }
                     }
                     break;
                     
