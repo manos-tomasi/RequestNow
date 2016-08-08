@@ -21,7 +21,6 @@ public class Encryption
             }
 
             messageDigest = MessageDigest.getInstance( "SHA1" );
-            System.out.println("<" + String.format( "%040x", new BigInteger( messageDigest.digest( value.getBytes() ) ).abs() ) + ">");
             return "<" + String.format( "%040x", new BigInteger( messageDigest.digest( value.getBytes() ) ).abs() ) + ">";
         }
         catch ( Exception e )

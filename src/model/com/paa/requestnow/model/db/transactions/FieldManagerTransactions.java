@@ -27,7 +27,7 @@ public class FieldManagerTransactions
                      " DEFAULT"                + ", "   +
                       db.quote(obj.getLabel()) + ", "   +
                       obj.getType()            + ", "   +
-                      obj.isRequired()         + ", "   +
+                      db.flag(obj.isRequired())+ ", "   +
                       obj.getState()           + ", "   +
                       obj.getTypeRequest()     + ")";
         

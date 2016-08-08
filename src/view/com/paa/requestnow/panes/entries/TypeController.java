@@ -114,7 +114,7 @@ public class TypeController
     @Override
     public String getEntrieName() 
     {
-        return "tipos";
+        return "tipos de requisições";
     }
 
     @Override
