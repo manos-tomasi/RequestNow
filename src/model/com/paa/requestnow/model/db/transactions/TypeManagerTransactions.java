@@ -81,7 +81,7 @@ public class TypeManagerTransactions
     {
         Schema.Types S = Schema.Types.table;
         
-        String sql = S.select + " where state " +  Type.STATE_ACTIVE;
+        String sql = S.select + " where state = " +  Type.STATE_ACTIVE;
         
         return db.fetchAll(sql, S.fetcher );
     }
