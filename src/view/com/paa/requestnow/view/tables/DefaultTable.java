@@ -221,14 +221,22 @@ public class DefaultTable<T>
 
                         else if( ! bln )
                         {
-                            renderer( t, this );
+                            try
+                            {
+                                renderer( t, this );
+                            }
+                            
+                            catch ( Exception e )
+                            {
+                                ApplicationUtilities.logException( e );
+                            }
                         }
                     }
                   
                 };
             }
             
-            public abstract void renderer( T value, Labeled cell );
+            public abstract void renderer( T value, Labeled cell ) throws Exception;
         }
     }
 }

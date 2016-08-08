@@ -15,4 +15,14 @@ public class YesNoSelector
         
         setItems( new Option( 1, "Sim" ), new Option( 0, "Não" ) );
     }
+    
+    public void setOption( boolean yes )
+    {
+        setSelectedIndex( yes ? 0 : 1 );
+    }
+    
+    public boolean isYesOption()
+    {
+        return getSelectedIndex() == 0;
+    }
 }

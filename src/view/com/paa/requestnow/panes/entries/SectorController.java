@@ -9,7 +9,6 @@ import com.paa.requestnow.view.editor.SectorEditor;
 import com.paa.requestnow.view.tables.DefaultTable;
 import com.paa.requestnow.view.tables.SectorTable;
 import com.paa.requestnow.view.util.EditorCallback;
-import com.paa.requestnow.view.util.Prompts;
 import javafx.event.Event;
 
 /**
@@ -21,11 +20,12 @@ public class SectorController
             EntrieController<Sector>
 {
 
-    SectorFilter filter =  new SectorFilter();
+    private SectorFilter filter =  new SectorFilter();
     
     @Override
-    public void addItem() throws Exception {
-                new SectorEditor( new EditorCallback<Sector>( new Sector() ) 
+    public void addItem() throws Exception 
+    {
+        new SectorEditor( new EditorCallback<Sector>( new Sector() ) 
         {
             @Override
             public void handle( Event t ) 

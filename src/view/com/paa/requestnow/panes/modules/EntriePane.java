@@ -35,6 +35,10 @@ public class EntriePane
     public static final int VIEW_EMPTY      = -1;
     public static final int VIEW_USERS      = 0;
     public static final int VIEW_SECTORS    = 1;
+    public static final int VIEW_CATEGORIES = 2;
+    public static final int VIEW_TYPES      = 3;
+    public static final int VIEW_FILDS      = 4;
+    public static final int VIEW_ROUTE      = 5;
     
     private int index = VIEW_EMPTY;
     
@@ -49,15 +53,12 @@ public class EntriePane
     {
         this.index = index;
 
-        if( ApplicationUtilities.getInstance().getActiveUser().getRole() == User.ROLE_OPERATOR 
-                && index == VIEW_USERS )
-        {
-            Prompts.info( "Acesso Negado", "Você não tem permissão de acesso" );
-            return;
-        }
-            
-        backLabel.setText( index == VIEW_USERS      ? "Cadastro de Usuários" :
-                           index == VIEW_SECTORS    ? "Cadastro de Setores"  : "" );
+        backLabel.setText( index == VIEW_USERS      ? "Cadastro de Usuários"   :
+                           index == VIEW_SECTORS    ? "Cadastro de Setores"    : 
+                           index == VIEW_CATEGORIES ? "Cadastro de Categorias" :
+                           index == VIEW_TYPES      ? "Cadastro de Tipos"      :
+                           index == VIEW_FILDS      ? "Cadastro de Campos"     :
+                           index == VIEW_ROUTE      ? "Cadastro de Rotas"      : ""  );
            
         
         getChildren().clear();

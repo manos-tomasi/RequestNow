@@ -84,6 +84,8 @@ public abstract class AbstractEditor<T>
         setHeaderText( "Editor de Items" );
         setResizable( false );
         
+        getDialogPane().setPrefSize( 800, 550 );
+        
         getDialogPane().getButtonTypes().addAll( btCancel, btSave );
         
         widthProperty().addListener( new ChangeListener<Number>() 

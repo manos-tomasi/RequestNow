@@ -43,6 +43,25 @@ public class EntrieCenterPane <T extends Core>
             {
                 controller = sectorController;
             }
+            break;
+            
+            case VIEW_FILDS:
+            {
+                controller =  fieldController;
+            }
+            break;
+            
+            case VIEW_TYPES:
+            {
+                controller =  typeController;
+            }
+            break;
+            
+            case VIEW_CATEGORIES:
+            {
+                controller =  categoryController;
+            }
+            break;
         }
     }
     
@@ -226,6 +245,9 @@ public class EntrieCenterPane <T extends Core>
     
     private UserController   userController       = new UserController();
     private SectorController sectorController     = new SectorController();
+    private CategoryController categoryController = new CategoryController();
+    private TypeController typeController         = new TypeController();
+    private FieldController fieldController        = new FieldController();
     
     private EntrieController controller = userController;
 }

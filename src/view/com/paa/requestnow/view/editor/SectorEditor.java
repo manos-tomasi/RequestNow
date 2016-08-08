@@ -35,12 +35,12 @@ public class SectorEditor
     {
         if( stateField.getSelectedIndex() == -1 )
         {
-            erros.add("Situação é requirida");
+            erros.add("Situação é requerida");
         }
         
-        if( !nameField.isValid() )
+        if( ! nameField.isValid() )
         {
-            erros.add("Nome é requirido");
+            erros.add("Nome é requerido");
         }
     }
 

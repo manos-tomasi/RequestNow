@@ -16,17 +16,17 @@ public class SectorTable
         extends 
             DefaultTable<Sector>
 {
-    private Image activeUserImage = new Image( ResourceLocator.getInstance().getImageResource( "finish.png" ) ); 
-    private Image deleteUserImage = new Image( ResourceLocator.getInstance().getImageResource( "delete.png" ) );
+    private Image activeImage = new Image( ResourceLocator.getInstance().getImageResource( "finish.png" ) ); 
+    private Image deleteImage = new Image( ResourceLocator.getInstance().getImageResource( "delete.png" ) );
     
     public SectorTable() 
     {
-        setColumns( new ItemColumn("Situação", "state" , 100.0, new ColumnCallback<Sector, Integer>() {
+        setColumns( new ItemColumn( "#", "state", new ColumnCallback<Sector, Integer>() {
             
             @Override
             public void renderer(Integer value, Labeled cell) 
             {
-                ImageView iv = new ImageView( (value == Sector.STATE_ACTIVE)? activeUserImage : deleteUserImage );
+                ImageView iv = new ImageView( (value == Sector.STATE_ACTIVE)? activeImage : deleteImage );
 
                 iv.setFitHeight( 20 );
                 iv.setFitWidth( 20 );

@@ -32,7 +32,7 @@ public class MaskTextField
         maxField( type == MASK_CPF   ? 14 :
                   type == MASK_PHONE ? 14 :
                   type == MASK_RG    ? 10 :
-                  type == MASK_CNPJ  ? 18 : 200 );
+                  type == MASK_CNPJ  ? 18 : 255 );
         
         lengthProperty().addListener( new ChangeListener<Number>() 
         {
