@@ -28,6 +28,7 @@ public class Schema
             public String PASSWORD;
             public String LOGIN;
             public String ROLE;
+            public String SECTOR;
             
             public Columns( String alias ) 
             {
@@ -43,6 +44,7 @@ public class Schema
                 PASSWORD     = alias + "password";
                 LOGIN        = alias + "login";
                 ROLE         = alias + "role";
+                SECTOR       = alias + "ref_sector";
             }
             
             @Override
@@ -59,7 +61,8 @@ public class Schema
                        STATE        + ", " +
                        PASSWORD     + ", " +
                        LOGIN        + ", " +
-                       ROLE;
+                       ROLE         + ", " +
+                       SECTOR;
             }
         }
         
@@ -391,7 +394,7 @@ public class Schema
                 ID       = alias + "id";
                 TYPE     = alias + "ref_type";
                 USER     = alias + "ref_user";
-                START    = alias + "d_start";
+                START    = alias + "dt_start";
                 END      = alias + "dt_end";
                 STATE    = alias + "state";
             }
