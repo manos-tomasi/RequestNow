@@ -2,8 +2,6 @@ package com.paa.requestnow.view.editor;
 
 import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.data.Field;
-import com.paa.requestnow.panes.InfoPane;
-import com.paa.requestnow.view.selectors.CategorySelector;
 import com.paa.requestnow.view.selectors.HandlerSelector;
 import com.paa.requestnow.view.selectors.StateSelector;
 import com.paa.requestnow.view.selectors.TypeSelector;
@@ -12,8 +10,6 @@ import com.paa.requestnow.view.util.EditorCallback;
 import com.paa.requestnow.view.util.LabelField;
 import com.paa.requestnow.view.util.MaskTextField;
 import java.util.List;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
 import javafx.scene.layout.GridPane;
 
 /**
@@ -119,8 +115,6 @@ public class FieldEditor
         getDialogPane().setContent( gridPane );
     
     }
-    
-    private TabPane tabPane              = new TabPane();
     
     private GridPane gridPane            = new GridPane();
     private LabelField lbLabel           = new LabelField( "Label", true );

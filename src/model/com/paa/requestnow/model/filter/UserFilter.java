@@ -19,6 +19,7 @@ public class UserFilter
     public static final int GENDER     = 6;
     public static final int BIRTH_DATE = 7;
     public static final int STATE      = 8;
+    public static final int SECTOR     = 9;
 
     @Override
     public List<FilterItem> getComponents() 
@@ -31,6 +32,7 @@ public class UserFilter
                               new FilterItem( RG,         "RG",                "com.paa.requestnow.view.util.MaskTextField" ),
                               new FilterItem( GENDER,     "Sexo",              "com.paa.requestnow.view.selectors.GenderSelector" ),
                               new FilterItem( BIRTH_DATE, "Ano de Nascimento", "com.paa.requestnow.view.util.DateBetweenField" ),
-                              new FilterItem( STATE,      "Situação",          "com.paa.requestnow.view.selectors.StateSelector" ) );
+                              new FilterItem( STATE,      "Situação",          "com.paa.requestnow.view.selectors.StateSelector" ),
+                              new FilterItem( SECTOR,     "Setor",             "com.paa.requestnow.view.selectors.SectorSelector" ) );
     }
 }

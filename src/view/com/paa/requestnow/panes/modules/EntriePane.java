@@ -2,10 +2,8 @@ package com.paa.requestnow.panes.modules;
 
 import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.ResourceLocator;
-import com.paa.requestnow.model.data.User;
 import com.paa.requestnow.panes.entries.EntrieCenterPane;
 import com.paa.requestnow.view.util.ActionButton;
-import com.paa.requestnow.view.util.Prompts;
 import com.sun.javafx.tk.Toolkit;
 import java.util.Collections;
 import java.util.List;
@@ -58,7 +56,7 @@ public class EntriePane
                            index == VIEW_CATEGORIES ? "Cadastro de Categorias" :
                            index == VIEW_TYPES      ? "Cadastro de Tipos"      :
                            index == VIEW_FILDS      ? "Cadastro de Campos"     :
-                           index == VIEW_ROUTE      ? "Cadastro de Rotas"      : ""  );
+                           index == VIEW_ROUTE      ? "Cadastro de Tipos de Rotas" : ""  );
            
         
         getChildren().clear();

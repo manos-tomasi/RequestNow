@@ -1,6 +1,7 @@
 package com.paa.requestnow.view.tables;
 
 import com.paa.requestnow.model.ResourceLocator;
+import com.paa.requestnow.model.data.Sector;
 import com.paa.requestnow.model.data.User;
 import com.paa.requestnow.view.tables.DefaultTable.ItemColumn;
 import com.paa.requestnow.view.tables.DefaultTable.ItemColumn.ColumnCallback;
@@ -41,6 +42,17 @@ public class UserTable
             public void renderer( String value, Labeled cell) 
             {
                 cell.setText( value.replaceFirst( "([0-9]{2})([0-9]{4})([0-9]{4,5})$", "($1)$2-$3" ) );
+            }
+        } ),
+        
+        new ItemColumn( "Setor", "sector", new ColumnCallback<User, Integer>() 
+        {
+            @Override
+            public void renderer( Integer value, Labeled cell) throws Exception
+            {
+                Sector sector = com.paa.requestnow.model.ModuleContext.getInstance().getSectorManager().get( value );
+                
+                cell.setText( sector != null ? sector.getName() : "Não Definido" );
             }
         } ),
         

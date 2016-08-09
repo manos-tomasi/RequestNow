@@ -2,6 +2,7 @@ package com.paa.requestnow.model.db.transactions;
 
 import com.paa.requestnow.model.filter.DefaultFilter;
 import com.paa.requestnow.model.data.Option;
+import com.paa.requestnow.model.data.Sector;
 import com.paa.requestnow.model.data.User;
 import com.paa.requestnow.model.filter.UserFilter;
 import com.paa.requestnow.model.db.Database;
@@ -18,6 +19,7 @@ public class UserManagerTransactions
         extends 
             ManagerTransaction<User>
 {
+    @Override
     public void add( Database db, User user ) throws Exception
     {
         if( user == null )
@@ -62,6 +64,7 @@ public class UserManagerTransactions
         db.executeCommand( sql );
     }
     
+    @Override
     public void delete( Database db, User user ) throws Exception
     {
         if( user == null )
@@ -79,6 +82,7 @@ public class UserManagerTransactions
         db.executeCommand( sql );
     }
     
+    @Override
     public void update( Database db, User user ) throws Exception
     {
         if( user == null )
@@ -106,6 +110,7 @@ public class UserManagerTransactions
         db.executeCommand( sql );
     }
     
+    @Override
     public User get( Database db, int userId ) throws Exception
     {
         Users U = Users.table;
@@ -117,6 +122,12 @@ public class UserManagerTransactions
                      U.columns.STATE + " = " + User.STATE_ACTIVE;
         
         return db.fetchOne( sql , U.fetcher );
+    }
+    
+    @Override
+    public List<User> get( Database db ) throws Exception
+    {
+        return get( db, false );
     }
     
     public List<User> get( Database db, boolean showInactives ) throws Exception
@@ -135,6 +146,7 @@ public class UserManagerTransactions
         return db.fetchAll( sql , U.fetcher );
     }
     
+    @Override
     public List<User> get( Database db, DefaultFilter filter ) throws Exception
     {
         Users U = Users.table;
@@ -229,6 +241,15 @@ public class UserManagerTransactions
                         }
                     }
                     break;
+                    
+                    case UserFilter.SECTOR:
+                    {
+                        if( values.get( i ) instanceof Sector )
+                        {
+                            condition += U.columns.SECTOR + " = " + ( (Sector) values.get( i ) ).getId();
+                        }
+                    }
+                    break;
                 }
                 
                 condition += i == values.size() - 1 ? " ) " : " or ";
@@ -257,6 +278,26 @@ public class UserManagerTransactions
         
         return db.fetchOne( sql, U.fetcher );
     }
+    
+    
+    public List<User> getUsersBySector( Database db, Sector sector ) throws Exception
+    {
+        if ( sector == null )
+        {
+            throw new IllegalArgumentException( "Sector cannot be null" );
+        }
+        
+        Users U = Users.table;
+        
+        String sql = U.select  + 
+                     " where " +
+                     U.columns.SECTOR   + " = " + sector.getId() +
+                     " and "   +
+                     U.columns.STATE    + " = " + User.STATE_ACTIVE;
+        
+        return db.fetchAll( sql, U.fetcher );
+    }
+    
     
     public User getUserByName( Database db, String name ) throws Exception
     {
@@ -323,11 +364,4 @@ public class UserManagerTransactions
         
         return db.queryInteger( sql ) == 0;
     }
-
-    @Override
-    public List get(Database db) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-
 }

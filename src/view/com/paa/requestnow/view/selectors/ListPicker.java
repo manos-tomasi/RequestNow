@@ -77,6 +77,16 @@ public class ListPicker<T>
     private void resize()
     {
         textField.setPrefWidth( getWidth() - searchButton.getWidth() );
+        
+        Platform.runLater( new Runnable() 
+        {
+            @Override
+            public void run() 
+            {
+                getDialogPane().requestLayout();
+                list.requestLayout();
+            }
+        } );
     }
     
     private boolean validate()
@@ -114,6 +124,7 @@ public class ListPicker<T>
         searchButton.setStyle( "-fx-background-color: transparent" );
         
         list.setPrefSize( 600, 400 );
+        vBox.setPrefHeight( 600 );
         
         getDialogPane().getButtonTypes().addAll( btCancel, btSave );
         getDialogPane().setContent( vBox );

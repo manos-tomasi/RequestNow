@@ -10,6 +10,28 @@ public class UserCache
 {
     private static HashMap< Integer, User> users = new HashMap();
     
+    public static String getUserName( int id )
+    {
+        String name = "Não Definido";
+        
+        try
+        {
+            User user = getUser( id );
+            
+            if ( user != null )
+                name = user.getName();
+        }
+        
+        catch ( Exception e )
+        {
+            ApplicationUtilities.logException( e );
+        }
+        
+        return name;
+    }
+    
+    
+    
     public static User getUser( int id )
     {
         User user = users.get( id );

@@ -29,6 +29,7 @@ public class UserFetcher
         user.setPassword( resultSet.getString( i++ ) );
         user.setLogin( resultSet.getString( i++ ) );
         user.setRole( resultSet.getInt( i++ ) );
+        user.setSector( resultSet.getInt( i++ ) );
         
         return  user;
     }

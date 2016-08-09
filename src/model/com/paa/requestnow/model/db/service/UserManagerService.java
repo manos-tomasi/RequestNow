@@ -1,5 +1,6 @@
 package com.paa.requestnow.model.db.service;
 
+import com.paa.requestnow.model.data.Sector;
 import com.paa.requestnow.model.data.User;
 import com.paa.requestnow.model.db.Database;
 import com.paa.requestnow.model.db.transactions.UserManagerTransactions;
@@ -32,6 +33,21 @@ public class UserManagerService
         try
         {
             return transactions.getUserByLogin( db, login, password );
+        }
+        
+        finally
+        {
+            db.release();
+        }
+    }
+
+    public List<User> getUsersBySector( Sector sector ) throws Exception 
+    {
+        Database db = Database.getInstance();
+        
+        try
+        {
+            return transactions.getUsersBySector( db, sector );
         }
         
         finally

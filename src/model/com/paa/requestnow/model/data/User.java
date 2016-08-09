@@ -27,6 +27,7 @@ public class User
     private String phone;
     private int    gender;
     private int    role;
+    private int    sector;
     private String login;
     private String password;
 
@@ -139,6 +140,16 @@ public class User
     public void setRole( int role )
     {
         this.role = role;
+    }
+    
+    public int getSector() 
+    {
+        return sector;
+    }
+
+    public void setSector( int sector )
+    {
+        this.sector = sector;
     }
 
     @Override

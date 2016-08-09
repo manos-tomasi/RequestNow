@@ -1,10 +1,12 @@
 package com.paa.requestnow.view.editor;
 
+import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.data.Encryption;
 import com.paa.requestnow.model.data.User;
 import com.paa.requestnow.view.util.DateField;
 import com.paa.requestnow.view.util.EditorCallback;
 import com.paa.requestnow.view.selectors.RoleSelector;
+import com.paa.requestnow.view.selectors.SectorSelector;
 import com.paa.requestnow.view.selectors.StateSelector;
 import com.paa.requestnow.view.util.LabelField;
 import com.paa.requestnow.view.util.MaskTextField;
@@ -70,6 +72,9 @@ public class UserEditor
         if( roleField.getSelected() == null )
             erros.add( "Categoria" );
         
+        if( sectorField.getSelected() == null )
+            erros.add( "Sector" );
+        
         if( stateField.getSelected() == null )
             erros.add( "Situação" );
         
@@ -95,6 +100,8 @@ public class UserEditor
                           maleGenderFied.isSelected()   ? User.MALE   : - 1 );
         source.setRole( roleField.getSelectedIndex() );
         source.setState( stateField.getSelectedIndex() );
+        
+        source.setSector( sectorField.getSelected() != null ? sectorField.getSelected().getId() : 0 );
         
         if( source.getId() != 0  )
         {
@@ -123,21 +130,30 @@ public class UserEditor
     @Override
     protected void setSource( User source ) 
     {
-        nameField.setText( source.getName() );
-        cpfField.setText( source.getCpf() );
-        rgField.setText( source.getRg() );
-        passwordField.setText( source.getPassword() );
-        loginField.setText( source.getLogin() );
-        birthDateFiled.setDate( source.getBirthDate() );
-        mailField.setText( source.getMail() );
-        phoneField.setText( source.getPhone() );
-        roleField.setSelectedIndex( source.getRole() );
-        stateField.setSelectedIndex( source.getState() );
+        try
+        {
+            nameField.setText( source.getName() );
+            cpfField.setText( source.getCpf() );
+            rgField.setText( source.getRg() );
+            passwordField.setText( source.getPassword() );
+            loginField.setText( source.getLogin() );
+            birthDateFiled.setDate( source.getBirthDate() );
+            mailField.setText( source.getMail() );
+            phoneField.setText( source.getPhone() );
+            roleField.setSelectedIndex( source.getRole() );
+            stateField.setSelectedIndex( source.getState() );
+            sectorField.setSelected( com.paa.requestnow.model.ModuleContext.getInstance().getSectorManager().get( source.getState() ) );
+
+            if ( source.getGender() == User.FEMALE )
+                femaleGenderFied.setSelected( source.getGender() == User.FEMALE );
+            else
+                maleGenderFied.setSelected( source.getGender() == User.MALE );
+        }
         
-        if ( source.getGender() == User.FEMALE )
-            femaleGenderFied.setSelected( source.getGender() == User.FEMALE );
-        else
-            maleGenderFied.setSelected( source.getGender() == User.MALE );
+        catch ( Exception e )
+        {
+            ApplicationUtilities.logException( e );
+        }
     }
     
     
@@ -180,8 +196,11 @@ public class UserEditor
         gridPane.add( lbRole,           0, 5, 1, 1 );
         gridPane.add( roleField,        1, 5, 3, 1 );
         
-        gridPane.add( lbState,          0, 6, 1, 1 );
-        gridPane.add( stateField,       1, 6, 3, 1 );
+        gridPane.add( lbSector,         0, 6, 1, 1 );
+        gridPane.add( sectorField,      1, 6, 3, 1 );
+        
+        gridPane.add( lbState,          0, 7, 1, 1 );
+        gridPane.add( stateField,       1, 7, 3, 1 );
         
         getDialogPane().setContent( gridPane );
     }
@@ -219,6 +238,9 @@ public class UserEditor
     
     private LabelField lbRole            = new LabelField( "Categoria", true );
     private RoleSelector roleField       = new RoleSelector();
+    
+    private LabelField lbSector          = new LabelField( "Sector", true );
+    private SectorSelector sectorField    = new SectorSelector();
     
     private LabelField lbState           = new LabelField( "Situação", true );
     private StateSelector stateField     = new StateSelector();
