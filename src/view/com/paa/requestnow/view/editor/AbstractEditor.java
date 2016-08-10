@@ -38,7 +38,17 @@ public abstract class AbstractEditor<T>
         
         initComponents();
     }
-
+    
+    protected void hideButtons()
+    {
+        getDialogPane().getButtonTypes().clear();
+    }
+    
+    protected void showButtons()
+    {
+        getDialogPane().getButtonTypes().addAll( btCancel , btSave );
+    }
+    
     private boolean onSave()
     {
         try
@@ -86,7 +96,7 @@ public abstract class AbstractEditor<T>
         
         getDialogPane().setPrefSize( 800, 550 );
         
-        getDialogPane().getButtonTypes().addAll( btCancel, btSave );
+        showButtons();
         
         widthProperty().addListener( new ChangeListener<Number>() 
         {

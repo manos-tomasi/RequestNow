@@ -4,8 +4,6 @@ import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.panes.modules.AbstractModulesPane;
 import com.paa.requestnow.panes.modules.ReportPane;
 import com.paa.requestnow.panes.modules.EntriePane;
-import com.paa.requestnow.panes.modules.HomePane;
-import com.paa.requestnow.panes.modules.CategoryPane;
 import com.paa.requestnow.view.util.MenuItem;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -50,26 +48,25 @@ public class MenuPane
     private void initComponents()
     {
         itemReport.setDisable( ! ApplicationUtilities.getInstance().hasPermission() );
-        itemAnalisys.setDisable( ! ApplicationUtilities.getInstance().hasPermission() );
+        itemOrders.setDisable( ! ApplicationUtilities.getInstance().hasPermission() );
         
-        homePane.setMenuItem( itemHome );
         reportPane.setMenuItem( itemReport );
         entriePane.setMenuItem( itemEntries );
-        categoryPane.setMenuItem( itemCategories );
-
+        requestPane.setMenuItem( itemRequests );
+        
         setStyle( "-fx-border-color: " + ApplicationUtilities.getColor() + " -fx-border-width: 0 2 0 0; -fx-padding: 10 4 4 4" );
         setSpacing( 10 );
-        getChildren().addAll( itemHome, itemPostings, itemReport, itemAnalisys, itemEntries, itemCategories );
+        getChildren().addAll( itemRequests, itemOrders, itemReport, itemEntries );
     }
     
     private void initListeners()
     {
-        itemPostings.setOnAction( new EventHandler<ActionEvent>()
+        itemRequests.setOnAction( new EventHandler<ActionEvent>()
         {
             @Override
             public void handle( ActionEvent t ) 
             {
-//                refreshContent( postingPane );
+                refreshContent( requestPane );
             }
         });
         
@@ -91,16 +88,7 @@ public class MenuPane
             }
         });
         
-       itemHome.setOnAction( new EventHandler<ActionEvent>()
-        {
-            @Override
-            public void handle( ActionEvent t ) 
-            {
-                refreshContent( homePane );
-            }
-        });
-        
-       itemAnalisys.setOnAction( new EventHandler<ActionEvent>()
+       itemOrders.setOnAction( new EventHandler<ActionEvent>()
         {
             @Override
             public void handle( ActionEvent t ) 
@@ -109,31 +97,21 @@ public class MenuPane
             }
         });
        
-        itemCategories.setOnAction( new EventHandler<ActionEvent>()
-        {
-            @Override
-            public void handle( ActionEvent t ) 
-            {
-                refreshContent( categoryPane );
-            }
-        });
        
         refreshContent( selectedPane );
     }
     
-    private MenuItem itemHome       = new MenuItem( "Home",          "home.png" );
-    private MenuItem itemPostings   = new MenuItem( "Lançamentos",   "posting.png" );
-    private MenuItem itemReport     = new MenuItem( "Relatórios",    "report.png" );
-    private MenuItem itemAnalisys   = new MenuItem( "Análises",      "helpFin .png" );
-    private MenuItem itemEntries    = new MenuItem( "Cadastros",     "entries.png" );
-    private MenuItem itemCategories = new MenuItem( "Categorias",    "posting.png" );    
+    private MenuItem itemRequests = new MenuItem( "Requisições",   "posting.png" );
+    private MenuItem itemOrders   = new MenuItem( "Despachos",     "orders.png" );
+    private MenuItem itemReport   = new MenuItem( "Relatórios",    "report.png" );
+    private MenuItem itemEntries  = new MenuItem( "Cadastros",     "entries.png" );
     
     private EventHandler handler;
     
-    private HomePane          homePane          = new HomePane();
     private EntriePane        entriePane        = new EntriePane();
+    private RequestPane       requestPane       = new RequestPane();
     private ReportPane        reportPane        = new ReportPane();
-    private CategoryPane      categoryPane      = new CategoryPane();
+    
     
     private AbstractModulesPane selectedPane = entriePane;
 }

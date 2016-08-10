@@ -152,7 +152,24 @@ public class RequestManagerTransactions
                         }
                     }
                     break;
+                    
+                    case RequestFilter.OPENED :
+                    {
+                        if( values.get(i) instanceof Option )
+                        {
+                            if( ((Option)values.get(i)) == Option.YES )
+                            {
+                                conditions += S.columns.END + " is null ";
+                            }
+                            else
+                            {
+                                conditions += S.columns.END + " is not null ";
+                            }
+                        }
+                    }
+                    break;
                 }
+                
                 conditions += i == values.size() - 1 ? " ) " : " or ";    
             }
             

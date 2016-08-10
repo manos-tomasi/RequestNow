@@ -12,7 +12,7 @@ public class UserSelector
 {
     public UserSelector() 
     {
-        super( "Responsável do Lançamento" );
+        super( "Usuário" );
         
         try
         {

@@ -13,7 +13,7 @@ public class YesNoSelector
     {
         super( "Seletor de condição" );
         
-        setItems( new Option( 1, "Sim" ), new Option( 0, "Não" ) );
+        setItems( Option.YES, Option.NO );
     }
     
     public void setOption( boolean yes )
