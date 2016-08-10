@@ -10,12 +10,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
-import javafx.scene.control.DialogEvent;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -77,16 +75,7 @@ public class ListPicker<T>
     private void resize()
     {
         textField.setPrefWidth( getWidth() - searchButton.getWidth() );
-        
-        Platform.runLater( new Runnable() 
-        {
-            @Override
-            public void run() 
-            {
-                getDialogPane().requestLayout();
-                list.requestLayout();
-            }
-        } );
+        list.requestLayout();
     }
     
     private boolean validate()
@@ -96,24 +85,17 @@ public class ListPicker<T>
     
     public void open( String text )
     {
-        Platform.runLater( new Runnable() 
-        {
-            @Override
-            public void run() 
-            {
-                textField.requestFocus();
-                list.getSelectionModel().select( null );
-            }
-        } );
-
+        HBox hbox = new HBox( textField, searchButton );
+        VBox vBox = new VBox( hbox, list );
+        
+        getDialogPane().setContent( vBox );
+        
         setHeaderText( text );
         showAndWait();
     }
     
     private void initComponents()
     {
-        setResizable( true );
-        
         textField.setPromptText( "Digite para filtrar" );
         
         ImageView imageView = new ImageView( new Image( ResourceLocator.getInstance().getImageResource( "search.png" ) ) );
@@ -123,11 +105,10 @@ public class ListPicker<T>
         searchButton.setGraphic( imageView );
         searchButton.setStyle( "-fx-background-color: transparent" );
         
-        list.setPrefSize( 600, 400 );
-        vBox.setPrefHeight( 600 );
+        list.setMinSize( 600, 450 );
+        getDialogPane().setMinHeight( 600);
         
         getDialogPane().getButtonTypes().addAll( btCancel, btSave );
-        getDialogPane().setContent( vBox );
         
         list.setOnMouseClicked( new EventHandler<MouseEvent>() 
         {
@@ -193,7 +174,4 @@ public class ListPicker<T>
     private ListView<T> list = new ListView();
     private Button searchButton = new Button();
     private TextField textField = new TextField();
-    
-    private HBox hbox = new HBox( textField, searchButton );
-    private VBox vBox = new VBox( hbox, list );
 }
