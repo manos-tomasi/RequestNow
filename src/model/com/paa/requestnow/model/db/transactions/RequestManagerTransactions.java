@@ -6,6 +6,7 @@ import com.paa.requestnow.model.data.Type;
 import com.paa.requestnow.model.data.User;
 import com.paa.requestnow.model.db.Database;
 import com.paa.requestnow.model.db.Schema;
+import com.paa.requestnow.model.db.Schema.Requests;
 import com.paa.requestnow.model.filter.DefaultFilter;
 import com.paa.requestnow.model.filter.RequestFilter;
 import java.sql.Date;
@@ -20,18 +21,30 @@ public class RequestManagerTransactions
             ManagerTransaction<Request>
 {
     @Override
-    public void add(Database db, Request obj) throws Exception 
+    public void add(Database db, Request r) throws Exception 
     {    
-        Schema.Requests S = Schema.Requests.table;
+        if ( r == null )
+        {
+            throw new IllegalArgumentException( "Request cannot be null!" );
+        }
         
-        String sql = " insert into "           + S.name + 
-                     " values "                + "("    + 
-                     " DEFAULT"                + ", "   +
-                      obj.getType()            + ", "   +
-                      obj.getUser()            + ", "   +
-                      obj.getStart()           + ", "   +
-                      obj.getEnd()             + ", "   +
-                      obj.getState()           + ")";
+        if ( r.getId() != 0 )
+        {
+            throw new IllegalArgumentException( "Request id cannot be 0 !" );
+        }
+        
+        Requests S = Requests.table;
+        
+        r.setId( db.nextId( S.name ) );
+         
+        String sql = " insert into "         + S.name + 
+                     " values "              + "("    + 
+                      r.getId()              + ", "   +
+                      r.getType()            + ", "   +
+                      r.getUser()            + ", "   +
+                      r.getStart()           + ", "   +
+                      r.getEnd()             + ", "   +
+                      r.getState()           + ")";
         
         db.executeCommand(sql);
     }
