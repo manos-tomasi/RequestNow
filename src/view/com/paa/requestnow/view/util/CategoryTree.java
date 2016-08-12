@@ -31,7 +31,8 @@ public class CategoryTree
     
     public static class Events
     {
-        public static final EventType ON_SELECT = new EventType( "onSelectNode" );
+        public static final EventType ON_SELECT    = new EventType( "onSelectNode" );
+        public static final EventType ON_SELECT_TYPE = new EventType( "onSelectType" );
     }
     
     public CategoryTree() 
@@ -87,7 +88,7 @@ public class CategoryTree
             imageType.setCache( true );
             imageType.setCacheHint( CacheHint.SPEED );
             nodeCategory.setGraphic( imageType ); 
-
+            nodeCategory.setExpanded(true);
             loadTypes( nodeCategory, category );
 
             root.getChildren().add( nodeCategory );
@@ -108,33 +109,12 @@ public class CategoryTree
               imageCategory.setFitWidth( 20 );
               imageCategory.setCache( true );
               imageCategory.setCacheHint( CacheHint.SPEED );
-              nodeType.setGraphic( imageCategory ); 
-
-              loadFields( nodeType, type );
-
+              nodeType.setGraphic( imageCategory );
+              
               item.getChildren().add( nodeType );
         }
     }
     
-    private void loadFields( TreeItem item, Type type ) throws Exception
-    {
-        List<Field> fields = com.paa.requestnow.model.ModuleContext.getInstance().getFieldManager().getFieldsType( type.getId() );
-                  
-        for( Field field : fields )
-        {
-              TreeItem nodeField = new TreeItem( field );
-
-              ImageView imageField = new ImageView();
-              imageField.setImage( ICON_ROOT );
-              imageField.setFitHeight( 20 );
-              imageField.setFitWidth( 20 );
-              imageField.setCache( true );
-              imageField.setCacheHint( CacheHint.SPEED );
-              nodeField.setGraphic( imageField ); 
-
-              item.getChildren().add( nodeField );
-        }
-    }
 
     public Category getSelectedCategory()
     {
@@ -224,7 +204,7 @@ public class CategoryTree
         setCacheShape( true );
         setShowRoot( true );
         setCursor( Cursor.HAND );
-
+        setWidth(300);
         getStylesheets().add( "config/tree.css" );
         setStyle( "-fx-background-color: transparent;" );
         
@@ -233,7 +213,15 @@ public class CategoryTree
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) 
             {
-                CategoryTree.this.fireEvent( new Event( Events.ON_SELECT ) );
+
+                if( getSelectedType() != null )
+                {
+                    CategoryTree.this.fireEvent( new Event( Events.ON_SELECT_TYPE ) );
+                }
+                else
+                {
+                    CategoryTree.this.fireEvent( new Event( Events.ON_SELECT ) );
+                }
             }
       } );
     }

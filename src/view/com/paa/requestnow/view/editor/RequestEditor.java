@@ -1,16 +1,24 @@
 package com.paa.requestnow.view.editor;
 
+import com.paa.requestnow.control.RequestController;
 import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.data.Field;
 import com.paa.requestnow.model.data.Request;
 import com.paa.requestnow.model.data.Type;
-import com.paa.requestnow.view.selectors.TypeSelector;
+import com.paa.requestnow.view.util.CategoryTree;
 import com.paa.requestnow.view.util.EditorCallback;
 import com.paa.requestnow.view.util.LabelField;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.geometry.HPos;
 import javafx.scene.Node;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 
 /**
@@ -19,85 +27,62 @@ import javafx.scene.layout.GridPane;
  */
 public class RequestEditor 
         extends 
-            AbstractEditor<Request>
+            Dialog<Request>
 {
 
+    private RequestController controller    = RequestController.getInstance();
+    private HashMap< Field, Node > elements = new HashMap();
+    
     public RequestEditor(EditorCallback<Request> callback) 
-    {
-        super(callback);
-        
+    {        
         setTitle( "Editor de Requisições" );
         
         setHeaderText( "Editor de Requisições" );
-
+        
         initComponents();
-        
-        setSource(source);
     }
     
-    @Override
-    protected void validadeInput(List<String> erros) throws Exception 
-    {
-        if( typeField.getSelectedIndex() < 0 )
-        {
-            erros.add( "Tipo de requisição é obrigatória" );
-        }
+    public void open()
+    {        
+        show();
     }
-
-    @Override
-    protected void obtainInput() 
+    
+    private void renderer()
     {
-        source.setType( typeField.getSelectedIndex() );
+        grid.getChildren().clear();
+        grid.requestLayout();
         
-        for( Node node : gridPane.getChildren() )
+        int row = 0;
+        for ( Map.Entry<Field, Node> entry : elements.entrySet()) 
         {
+            Field field   = entry.getKey();
+            Node  element = entry.getValue();
             
-        }
-    }
-
-    @Override
-    protected void resize() 
-    {
-        gridPane.resize( getWidth() , getHeight() );
-        getDialogPane().requestLayout();
-    }
-
-    @Override
-    protected void setSource(Request source) 
-    {
-        try 
-        {
-            typeField.setSelected( com.paa.requestnow.model.ModuleContext.getInstance().getTypeManager().get( source.getType() ) );
-        }
-        catch ( Exception e ) 
-        {
-            ApplicationUtilities.logException(e);
+            grid.add( new LabelField( field.getLabel(), field.isRequired() ), 0, row, 1, 1 );
+            grid.add( element                                               , 1, row, 3, 1 );
+            
+            row++;
         }
     }
     
-    private void generateForm( Type type )
+    private void loadFields( Type t )
     {
         try
         {
-            hideButtons();
-        
-            gridPane.getChildren().clear();
-        
-            List<Field> fields = com.paa.requestnow.model.ModuleContext.getInstance().getFieldManager().getFieldsType( type.getId() );
+            List<Field> fields = controller.getFields( t.getId() );
             
-            for (int i = 0; i < fields.size(); i++) 
+            elements.clear();
+            
+            for( Field field : fields )
             {
-                Field field = fields.get(i);
+                Node node = (Node)Class.forName(field.getHandler()).newInstance();
                 
-                Node component = (Node)Class.forName(field.getHandler()).newInstance();
-                
-                component.setId( String.valueOf( field.getId() ) );
-                
-                gridPane.add( new LabelField( field.getLabel() , field.isRequired() ) , 0 , 1 ,1 , i + 1 );   
-                gridPane.add( component  , 1 , 1 ,3 , i + 1 );   
+                elements.put( field, node );
             }
+            
+            renderer();
         }
-        catch ( Exception e )
+        catch( Exception e )
         {
             ApplicationUtilities.logException( e );
         }
@@ -105,31 +90,48 @@ public class RequestEditor
     
     private void initComponents()
     {
-        gridPane.setVgap( 20 );
-        gridPane.setHgap( 20 );
-        gridPane.setStyle( "-fx-padding: 30;" );
+        // Fecha janela
+        getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
+        Node closeButton = getDialogPane().lookupButton(ButtonType.CLOSE);
+        closeButton.managedProperty().bind(closeButton.visibleProperty());
+        closeButton.setVisible(false);
         
-        typeField.setWidth( 600 );
+        grid.setVgap( 20 );
+        grid.setHgap( 20 );
+        grid.setStyle( "-fx-padding: 30;" );
         
-        gridPane.add( lbType    , 0, 1, 1, 1 );
-        gridPane.add( typeField , 1, 1, 3, 1 );
+            
+        ColumnConstraints colName = new ColumnConstraints();
+        colName.setMinWidth( 200);
+        colName.setHalignment( HPos.LEFT );
+     
+        ColumnConstraints colNode = new ColumnConstraints();
+        colNode.setFillWidth(true);
+        colNode.setHalignment( HPos.LEFT );
         
-    
-        getDialogPane().setContent( gridPane );
+        grid.getColumnConstraints().addAll( colName, colNode );
+
+        grid.setPrefWidth( ApplicationUtilities.getInstance().getWindow().getWidth() - 300 );
         
-        getDialogPane().setPrefWidth( 700 );
+        pane.setLeft( tree );
+        pane.setCenter( grid );
         
-        typeField.addEventHandler( TypeSelector.Events.ON_SELECT , new EventHandler<Event>() 
+        getDialogPane().setContent( pane );
+        
+        getDialogPane().setMinSize( ApplicationUtilities.getInstance().getWindow().getWidth(),
+                                    ApplicationUtilities.getInstance().getWindow().getHeight());
+        
+        tree.addEventHandler( CategoryTree.Events.ON_SELECT_TYPE , new EventHandler<Event>() 
         {
             @Override
             public void handle(Event t) 
             {
-                generateForm( typeField.getSelected() );
+                loadFields( tree.getSelectedType() );
             }
         });
     }
     
-    private GridPane gridPane            = new GridPane();
-    private LabelField lbType            = new LabelField( "Tipo de Requisição", true );
-    private TypeSelector typeField       = new TypeSelector();
+    private BorderPane   pane = new BorderPane();
+    private CategoryTree tree = new CategoryTree();
+    private GridPane     grid = new GridPane();
 }

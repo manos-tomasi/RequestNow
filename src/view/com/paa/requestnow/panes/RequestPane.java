@@ -1,11 +1,10 @@
 package com.paa.requestnow.panes;
 
+import com.paa.requestnow.control.RequestController;
 import com.paa.requestnow.model.ApplicationUtilities;
-import com.paa.requestnow.model.data.Option;
 import com.paa.requestnow.model.data.Request;
 import com.paa.requestnow.model.filter.DefaultFilter;
 import com.paa.requestnow.model.filter.RequestFilter;
-import com.paa.requestnow.panes.entries.RequestController;
 import com.paa.requestnow.panes.modules.AbstractModulesPane;
 import com.paa.requestnow.view.editor.FilterEditor;
 import com.paa.requestnow.view.editor.RequestEditor;
@@ -43,9 +42,6 @@ public class RequestPane
     {
         controller = RequestController.getInstance();
         requestFilter = new RequestFilter();
-
-        requestFilter.addCondition( RequestFilter.USER  , ApplicationUtilities.getInstance().getActiveUser() );
-        requestFilter.addCondition( RequestFilter.OPENED, Option.YES );
     }
     
     private void add()
@@ -57,7 +53,7 @@ public class RequestPane
             {
                 try 
                 {
-                    controller.addItem();   
+                    controller.save( properties, source );   
                 } 
                 catch (Exception e) 
                 {
@@ -75,7 +71,7 @@ public class RequestPane
             {
                 try 
                 {
-                    controller.deleteItem( table.getSelectedItem() );
+                    controller.cancel( table.getSelectedItem() );
                 } 
                 catch (Exception e) 
                 {

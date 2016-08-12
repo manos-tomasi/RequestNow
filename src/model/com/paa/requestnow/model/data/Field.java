@@ -11,6 +11,7 @@ public class Field
     private boolean required;
     private int type;
     private int typeRequest;
+    private int sequence;
     
     public final static int TYPE_TEXT        = 0;
     public final static int TYPE_CHOICE      = 1;
@@ -18,6 +19,7 @@ public class Field
     public final static int TYPE_DATE        = 3;
     public final static int TYPE_FILE        = 4;
     public final static int TYPE_SIMPLE_TEXT = 5;
+
     
     public final static String TYPES [] =
     {
@@ -27,6 +29,15 @@ public class Field
     public Field() 
     {
     }
+
+    public int getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(int sequence) {
+        this.sequence = sequence;
+    }
+
     
     public String getLabel()
     {

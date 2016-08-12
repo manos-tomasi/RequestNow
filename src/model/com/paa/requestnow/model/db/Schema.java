@@ -265,6 +265,7 @@ public class Schema
             public String STATE;
             public String TYPE;
             public String TYPE_REQUEST;
+            public String SEQUENCE;
             
             public Columns( String alias )
             {
@@ -274,17 +275,19 @@ public class Schema
                 STATE        = alias + "state";
                 TYPE         = alias + "type";
                 TYPE_REQUEST = alias + "ref_type";
+                SEQUENCE     = alias + "sequence";
             }
 
             @Override
             public String toString() 
             {
-                return ID       + ", " +
-                       LABEL    + ", " +
-                       REQUIRED + ", " +
-                       STATE    + ", " +
-                       TYPE     + ", " +
-                       TYPE_REQUEST;
+                return ID           + ", " +
+                       LABEL        + ", " +
+                       REQUIRED     + ", " +
+                       STATE        + ", " +
+                       TYPE         + ", " +
+                       TYPE_REQUEST + ", " +
+                       SEQUENCE;
             }
         }
 

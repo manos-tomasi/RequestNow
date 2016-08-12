@@ -19,7 +19,8 @@ CREATE TABLE fields (
   type INT NULL,
   required INT NOT NULL,
   state INT NOT NULL,
-  ref_type INT NOT NULL REFERENCES types (id));
+  ref_type INT NOT NULL REFERENCES types (id),
+  sequence int default 0);
 
 
 CREATE TABLE sectors (

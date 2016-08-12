@@ -26,6 +26,7 @@ public class FieldFetcher
         field.setState( resultSet.getInt(++i) );
         field.setType( resultSet.getInt(++i) );
         field.setTypeRequest( resultSet.getInt(++i) );
+        field.setSequence(resultSet.getInt(++i) );
         
         return field;
         

@@ -29,7 +29,8 @@ public class FieldManagerTransactions
                       obj.getType()            + ", "   +
                       db.flag(obj.isRequired())+ ", "   +
                       obj.getState()           + ", "   +
-                      obj.getTypeRequest()     + ")";
+                      obj.getTypeRequest()     + ", "   +
+                      obj.getSequence()        + ")";
         
         db.executeCommand(sql);
     }
@@ -49,6 +50,7 @@ public class FieldManagerTransactions
                         S.columns.STATE        + " = " + obj.getState()              + ", " + 
                         S.columns.REQUIRED     + " = " + db.flag( obj.isRequired() ) + ", " + 
                         S.columns.TYPE_REQUEST + " = " + obj.getTypeRequest()        + ", " +
+                        S.columns.SEQUENCE     + " = " + obj.getSequence()           + ", " +
                         S.columns.TYPE         + " = " + obj.getType()               + 
                      " where " + 
                         S.columns.ID           + " = " + obj.getId();
@@ -74,7 +76,8 @@ public class FieldManagerTransactions
                      " where " + 
                      S.columns.TYPE_REQUEST + " = " + id +
                      " and " +
-                     S.columns.STATE        + " = " +  Field.STATE_ACTIVE;
+                     S.columns.STATE        + " = " +  Field.STATE_ACTIVE +
+                     "order by sequence ";
         
         return  db.fetchAll( sql , S.fetcher );
     }
