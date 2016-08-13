@@ -43,7 +43,12 @@ public class ModuleContext
     {
         return FieldManagerService.getInstance();
     }
-    
+
+    public ValueRequestManagerService getValueRequestManager()
+    {
+        return ValueRequestManagerService.getInstance();
+    }    
+
     public TypeManagerService getTypeManager()
     {
         return TypeManagerService.getInstance();

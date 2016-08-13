@@ -36,7 +36,7 @@ public class FileSelector
     public void setWidth( double width )
     {
         super.setWidth( width );
-        textField.setPrefWidth( width - Toolkit.getToolkit().getFontLoader().computeStringWidth( label.getText(), label.getFont() ) - 80 );
+        textField.setPrefWidth( width - 80 );
     }
     
   
@@ -83,9 +83,8 @@ public class FileSelector
         textField.setPromptText( "selecione um item" );
         textField.setEditable( false );
         
-        label.setStyle( "-fx-padding: 0 0 10 0" );
         
-        getChildren().addAll( label, textField, choiceButton, clearButton );
+        getChildren().addAll( textField, choiceButton, clearButton );
         
         clearButton.setOnAction( new EventHandler<ActionEvent>() 
         {
@@ -107,7 +106,6 @@ public class FileSelector
     }
     
     private TextField textField = new TextField();
-    private Label label         = new Label( "Anexo: " );
     private Button choiceButton = new Button();
     private Button clearButton  = new Button();
 }

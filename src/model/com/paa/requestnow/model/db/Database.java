@@ -257,6 +257,18 @@ public class Database
         return value ? Core.FLAG_TRUE : Core.FLAG_FALSE;
     }
     
+    public String foreingKey( int id )
+    {
+        String value = String.valueOf( id );
+        
+        if( id <= 0 )
+        {
+            value = "null";
+        }
+        
+        return value;
+    }
+    
     public int nextId( String table ) throws Exception
     {
         String sql = " select nextval ( " + quote( table + "_id_seq" ) + " )";

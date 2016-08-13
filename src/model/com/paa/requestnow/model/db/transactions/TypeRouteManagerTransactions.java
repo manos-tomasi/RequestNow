@@ -24,15 +24,15 @@ public class TypeRouteManagerTransactions
     {    
         Schema.TypesRoutes S = Schema.TypesRoutes.table;
         
-        String sql = " insert into "            + S.name + 
-                     " values "                 + "("    + 
-                     " DEFAULT"                 + ", "   +
-                      db.quote(obj.getSector()) + ", "   +
-                      db.quote(obj.getType())   + ", "   +
-                      db.quote(obj.getUser())   + ", "   +
-                      obj.getSequence()         + ", "   +
-                      obj.getState()            + ", "   +
-                      obj.getDays()             + ")";
+        String sql = " insert into "                   + S.name + 
+                     " values "                        + "("    + 
+                     " DEFAULT"                        + ", "   +
+                      db.foreingKey( obj.getSector() ) + ", "   +
+                      db.foreingKey( obj.getType() )   + ", "   +
+                      db.foreingKey( obj.getUser() )   + ", "   +
+                      obj.getSequence()                + ", "   +
+                      obj.getState()                   + ", "   +
+                      obj.getDays()                    + ")";
         
         db.executeCommand(sql);
     }
@@ -48,12 +48,12 @@ public class TypeRouteManagerTransactions
         Schema.TypesRoutes S = Schema.TypesRoutes.table;
         
         String sql = " update " + S.name       + " set " +
-                        S.columns.DAYS         + " = " + obj.getDays()     + ", " +
-                        S.columns.SECTOR       + " = " + obj.getSector()   + ", " +
-                        S.columns.SEQUENCE     + " = " + obj.getSequence() + ", " +
-                        S.columns.TYPE         + " = " + obj.getType()     + ", " +
-                        S.columns.STATE        + " = " + obj.getState()    + ", " +
-                        S.columns.USER         + " = " + obj.getUser()     + ", " +
+                        S.columns.DAYS         + " = " + obj.getDays()                    + ", " +
+                        S.columns.SECTOR       + " = " + db.foreingKey( obj.getSector() ) + ", " +
+                        S.columns.SEQUENCE     + " = " + obj.getSequence()                + ", " +
+                        S.columns.TYPE         + " = " + obj.getType()                    + ", " +
+                        S.columns.STATE        + " = " + obj.getState()                   + ", " +
+                        S.columns.USER         + " = " + db.foreingKey( obj.getUser() )   + ", " +
                      " where " + 
                         S.columns.ID           + " = " + obj.getId();
         

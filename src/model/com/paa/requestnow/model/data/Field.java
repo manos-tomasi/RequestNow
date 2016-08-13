@@ -90,7 +90,7 @@ public class Field
                 return "com.paa.requestnow.view.util.NumberTextField";
             
             case Field.TYPE_TEXT:
-                return "javafx.scene.web.HTMLEditor";
+                return "com.paa.requestnow.view.util.HtmlEditorField";
             
             case Field.TYPE_FILE:
                 return "com.paa.requestnow.view.selectors.FileSelector";
