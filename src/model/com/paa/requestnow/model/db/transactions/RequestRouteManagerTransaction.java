@@ -3,11 +3,11 @@ package com.paa.requestnow.model.db.transactions;
 import com.paa.requestnow.model.data.Option;
 import com.paa.requestnow.model.data.Request;
 import com.paa.requestnow.model.data.RequestRoute;
+import com.paa.requestnow.model.data.Sector;
 import com.paa.requestnow.model.data.User;
 import com.paa.requestnow.model.db.Database;
 import com.paa.requestnow.model.db.Schema;
 import com.paa.requestnow.model.filter.DefaultFilter;
-import com.paa.requestnow.model.filter.RequestFilter;
 import com.paa.requestnow.model.filter.RequestRouteFilter;
 import java.sql.Date;
 import java.util.List;
@@ -34,7 +34,8 @@ public class RequestRouteManagerTransaction
                       obj.getOut()             + ", "   +
                       obj.getState()           + ", "   +
                       obj.getUser()            + ", "   +
-                      obj.getInfo()            + ")";
+                      obj.getInfo()            + ", "   +
+                      obj.getSector()          + ")";
         
         db.executeCommand(sql);
     }
@@ -50,13 +51,14 @@ public class RequestRouteManagerTransaction
         Schema.RequestsRoutes S = Schema.RequestsRoutes.table;
         
         String sql = " update " + S.name       + " set " +
-                        S.columns.USER         + " = " + obj.getUser()      + ", " +
-                        S.columns.INFO         + " = " + obj.getInfo()      + ", " +
-                        S.columns.OUT          + " = " + obj.getOut()       + ", " +
-                        S.columns.STATE        + " = " + obj.getState()     + ", " +
-                        S.columns.TYPE_ROUTE   + " = " + obj.getTypeRoute() + ", " +
-                        S.columns.REQUEST      + " = " + obj.getRequest()   + ", " +
-                        S.columns.IN           + " = " + obj.getIn()        + 
+                        S.columns.USER         + " = " + db.foreingKey( obj.getUser() )   + ", " +
+                        S.columns.SECTOR       + " = " + db.foreingKey( obj.getSector() ) + ", " +
+                        S.columns.INFO         + " = " + obj.getInfo()                    + ", " +
+                        S.columns.OUT          + " = " + obj.getOut()                     + ", " +
+                        S.columns.STATE        + " = " + obj.getState()                   + ", " +
+                        S.columns.TYPE_ROUTE   + " = " + obj.getTypeRoute()               + ", " +
+                        S.columns.REQUEST      + " = " + obj.getRequest()                 + ", " +
+                        S.columns.IN           + " = " + obj.getIn()                      +  
                      " where " + 
                         S.columns.ID           + " = " + obj.getId();
         
@@ -119,11 +121,20 @@ public class RequestRouteManagerTransaction
                     }
                     break;
                     
-                    case RequestFilter.USER :
+                    case RequestRouteFilter.USER :
                     {
                         if( values.get(i) instanceof User )
                         {
                             conditions += S.columns.USER + " = " + ((User)values.get(i)).getId();
+                        }
+                    }
+                    break;
+                    
+                    case RequestRouteFilter.SECTOR :
+                    {
+                        if( values.get(i) instanceof Sector )
+                        {
+                            conditions += S.columns.SECTOR + " = " + ((Sector)values.get(i)).getId();
                         }
                     }
                     break;

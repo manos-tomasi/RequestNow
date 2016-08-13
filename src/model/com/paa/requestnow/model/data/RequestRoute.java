@@ -15,6 +15,17 @@ public class RequestRoute
     private Timestamp in;
     private Timestamp out;
     private int user;
+    private int sector;
+
+    public int getSector() 
+    {
+        return sector;
+    }
+
+    public void setSector(int sector) 
+    {
+        this.sector = sector;
+    }
     private String info;
 
 

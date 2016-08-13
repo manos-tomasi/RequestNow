@@ -78,7 +78,8 @@ CREATE TABLE requests_routes (
   date_out TIMESTAMP NULL,
   state INT NOT NULL,
   ref_user INT REFERENCES users (id),
-  info TEXT NULL );
+  info TEXT NULL,
+  ref_sector INT REFERENCES sectors (id) );
 
 
 CREATE TABLE fields_values (

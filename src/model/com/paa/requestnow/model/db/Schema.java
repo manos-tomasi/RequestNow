@@ -616,6 +616,7 @@ public class Schema
             public String IN;
             public String OUT;
             public String INFO;
+            public String SECTOR;
             
             public Columns( String alias )
             {
@@ -627,6 +628,7 @@ public class Schema
                 IN         = alias + "date_in";
                 OUT        = alias + "date_out";
                 INFO       = alias + "info";
+                SECTOR     = alias + "ref_sector";
                 
             }
 
