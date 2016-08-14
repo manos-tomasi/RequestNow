@@ -10,6 +10,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
+import javafx.scene.Node;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
@@ -37,16 +38,6 @@ public abstract class AbstractEditor<T>
         source = callback.source;
         
         initComponents();
-    }
-    
-    protected void hideButtons()
-    {
-        getDialogPane().getButtonTypes().clear();
-    }
-    
-    protected void showButtons()
-    {
-        getDialogPane().getButtonTypes().addAll( btCancel , btSave );
     }
     
     private boolean onSave()
@@ -94,9 +85,14 @@ public abstract class AbstractEditor<T>
         setHeaderText( "Editor de Items" );
         setResizable( false );
         
-        getDialogPane().setPrefSize( 800, 550 );
+        getDialogPane().getButtonTypes().addAll( btCancel , btSave );
         
-        showButtons();
+        getDialogPane().setPrefSize( 800, 550 );
+    
+        getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
+        Node closeButton = getDialogPane().lookupButton(ButtonType.CLOSE);
+        closeButton.managedProperty().bind(closeButton.visibleProperty());
+        closeButton.setVisible(false);
         
         widthProperty().addListener( new ChangeListener<Number>() 
         {

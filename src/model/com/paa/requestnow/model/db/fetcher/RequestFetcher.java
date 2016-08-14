@@ -21,9 +21,10 @@ public class RequestFetcher
         
         request.setId( resultSet.getInt(++i) );
         request.setType( resultSet.getInt(++i) );
-        request.setUser(resultSet.getInt(++i) );
-        request.setStart(resultSet.getTimestamp(++i) );
-        request.setEnd(resultSet.getTimestamp(++i) );
+        request.setUser( resultSet.getInt(++i) );
+        request.setStart( resultSet.getTimestamp(++i) );
+        request.setEnd( resultSet.getTimestamp(++i) );
+        request.setState( resultSet.getInt(++i) );
         
         return request;
     }

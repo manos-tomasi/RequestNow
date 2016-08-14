@@ -42,8 +42,8 @@ public class RequestManagerTransactions
                       r.getId()              + ", "   +
                       r.getType()            + ", "   +
                       r.getUser()            + ", "   +
-                      r.getStart()           + ", "   +
-                      r.getEnd()             + ", "   +
+                      db.quote(r.getStart()) + ", "   +
+                      db.quote(r.getEnd())   + ", "   +
                       r.getState()           + ")";
         
         db.executeCommand(sql);
@@ -60,11 +60,11 @@ public class RequestManagerTransactions
         Schema.Requests S = Schema.Requests.table;
         
         String sql = " update " + S.name       + " set " +
-                        S.columns.TYPE         + " = " + obj.getType() + ", " + 
-                        S.columns.START        + " = " + obj.getStart()+ ", " +
-                        S.columns.END          + " = " + obj.getEnd()  + ", " +
-                        S.columns.USER         + " = " + obj.getUser() + ", " +
-                        S.columns.STATE        + " = " + obj.getState()+ 
+                        S.columns.TYPE         + " = " + obj.getType()           + ", " + 
+                        S.columns.START        + " = " + db.quote(obj.getStart())+ ", " +
+                        S.columns.END          + " = " + db.quote(obj.getEnd() ) + ", " +
+                        S.columns.USER         + " = " + obj.getUser()           + ", " +
+                        S.columns.STATE        + " = " + obj.getState()          + 
                      " where " + 
                         S.columns.ID           + " = " + obj.getId();
         

@@ -27,7 +27,7 @@ public class ValueRequestManagerTransactions
                      " DEFAULT"               + ", "   +
                       obj.getField()          + ", "   +
                       obj.getRequest()        + ", "   +
-                      obj.getValue()          + ")";
+                      db.quote(obj.getValue())+ ")";
         
         db.executeCommand(sql);
     }

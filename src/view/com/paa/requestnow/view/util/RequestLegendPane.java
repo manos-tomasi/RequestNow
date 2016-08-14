@@ -14,10 +14,8 @@ public class RequestLegendPane
     {
         super();
         super.addItems( new LegendItem( "Aprovada"             , "finish.png" ),
-                        new LegendItem( "Reprovado"            , "finish.png" ),
-                        new LegendItem( "Atrasada"             , "finish.png" ),
-                        new LegendItem( "Aguardando aprovação" , "finish.png" ),
-                        new LegendItem( "Cancelado"            , "finish.png" ),
-                        new LegendItem( "Concluida"            , "finish.png" ));
+                        new LegendItem( "Reprovada"            , "reproved.png" ),
+                        new LegendItem( "Em Andamento"         , "play.png" ),
+                        new LegendItem( "Cancelada"            , "delete.png" ));
     }
 }

@@ -53,7 +53,7 @@ public class TypeRouteManagerTransactions
                         S.columns.SEQUENCE     + " = " + obj.getSequence()                + ", " +
                         S.columns.TYPE         + " = " + obj.getType()                    + ", " +
                         S.columns.STATE        + " = " + obj.getState()                   + ", " +
-                        S.columns.USER         + " = " + db.foreingKey( obj.getUser() )   + ", " +
+                        S.columns.USER         + " = " + db.foreingKey( obj.getUser() )   +
                      " where " + 
                         S.columns.ID           + " = " + obj.getId();
         
@@ -70,6 +70,15 @@ public class TypeRouteManagerTransactions
         return  db.fetchOne( sql , S.fetcher );
     }    
 
+    public List<TypeRoute> getByType( Database db, int typeId ) throws Exception
+    {
+        Schema.TypesRoutes S = Schema.TypesRoutes.table;
+        
+        String sql = S.select + " where " + S.columns.TYPE + " = " + typeId + " order by sequence asc";
+        
+        return  db.fetchAll(sql , S.fetcher );
+    }    
+   
     @Override
     public List get(Database db) throws Exception
     {
@@ -79,8 +88,7 @@ public class TypeRouteManagerTransactions
         
         return db.fetchAll(sql, S.fetcher );
     }
-    
-
+   
     @Override
     public List get(Database db, DefaultFilter filter) throws Exception
     {

@@ -15,19 +15,14 @@ public class RequestRoute
     private Timestamp in;
     private Timestamp out;
     private int user;
-    private int sector;
-
-    public int getSector() 
-    {
-        return sector;
-    }
-
-    public void setSector(int sector) 
-    {
-        this.sector = sector;
-    }
+    private int sequence;
     private String info;
 
+    public static final int CANCELED = 0;
+    public static final int REPROVED = 1;
+    public static final int APROVED  = 2;
+    public static final int WAINTING = 3;
+    public static final int STOPED   = 4;
 
     public RequestRoute() {}
 
@@ -36,6 +31,16 @@ public class RequestRoute
         return request;
     }
 
+    public int getSequence() 
+    {
+        return sequence;
+    }
+
+    public void setSequence(int sequence) 
+    {
+        this.sequence = sequence;
+    }
+    
     public void setRequest(int request)
     {
         this.request = request;

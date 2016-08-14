@@ -24,21 +24,22 @@ public class RequestTable
     {
         setColumns( new ItemColumn("#", "state", new ColumnCallback<Request, Integer>() 
         {
-            private final Image deleteImage = new Image( ResourceLocator.getInstance().getImageResource( "delete.png" ) );
+            private final Image reprovedImage   = new Image( ResourceLocator.getInstance().getImageResource( "reproved.png" ) );
+            private final Image aprovedImage    = new Image( ResourceLocator.getInstance().getImageResource( "finish.png" ) );
+            private final Image canceledImage   = new Image( ResourceLocator.getInstance().getImageResource( "delete.png" ) );
+            private final Image inProgressImage = new Image( ResourceLocator.getInstance().getImageResource( "paly.png"   ) );
             
             @Override
             public void renderer(Integer state, Labeled cell) throws Exception 
             {
-                ImageView image = new ImageView( state == Request.APPROVED  ? deleteImage : 
-                                                 state == Request.CANCELED  ? deleteImage :
-                                                 state == Request.COMPLETED ? deleteImage :
-                                                 state == Request.DELAYED   ? deleteImage :
-                                                 state == Request.REPROVED  ? deleteImage :
-                                                 state == Request.WAITED    ? deleteImage : null );
+                ImageView image = new ImageView( state == Request.APPROVED    ? canceledImage   :  
+                                                 state == Request.CANCELED    ? canceledImage   :
+                                                 state == Request.REPROVED    ? reprovedImage   :
+                                                 state == Request.IN_PROGRESS ? inProgressImage : null );
                 
                 image.setFitHeight( 20 );
                 image.setFitWidth( 20 );
-
+                
                 cell.setGraphic( image );
             }
         }) ,

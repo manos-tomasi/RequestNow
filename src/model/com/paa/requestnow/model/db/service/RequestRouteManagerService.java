@@ -1,7 +1,9 @@
 package com.paa.requestnow.model.db.service;
 
 import com.paa.requestnow.model.data.RequestRoute;
+import com.paa.requestnow.model.db.Database;
 import com.paa.requestnow.model.db.transactions.RequestRouteManagerTransaction;
+import java.util.List;
 
 /**
  *
@@ -26,5 +28,20 @@ public class RequestRouteManagerService
     private RequestRouteManagerService()
     {
         transactions = new RequestRouteManagerTransaction();
+    }
+    
+    public List<RequestRoute> getByRequest( int id ) throws Exception
+    {
+        Database db = Database.getInstance();
+        
+        try
+        {
+            return transactions.getByRequest( db, id );
+        }
+        
+        finally
+        {
+            db.release();
+        }
     }
 }

@@ -14,12 +14,10 @@ public class Request
     private Timestamp start;
     private Timestamp end;
 
-    public static final int APPROVED  = 0;
-    public static final int CANCELED  = 1;
-    public static final int DELAYED   = 2;
-    public static final int REPROVED  = 3;
-    public static final int WAITED    = 4;
-    public static final int COMPLETED = 5;
+    public static final int APPROVED    = 0;
+    public static final int CANCELED    = 1;
+    public static final int REPROVED    = 3;
+    public static final int IN_PROGRESS = 4;
     
     public int getType() 
     {

@@ -3,7 +3,6 @@ package com.paa.requestnow.model.db.transactions;
 import com.paa.requestnow.model.data.Option;
 import com.paa.requestnow.model.data.Request;
 import com.paa.requestnow.model.data.RequestRoute;
-import com.paa.requestnow.model.data.Sector;
 import com.paa.requestnow.model.data.User;
 import com.paa.requestnow.model.db.Database;
 import com.paa.requestnow.model.db.Schema;
@@ -25,17 +24,17 @@ public class RequestRouteManagerTransaction
     {    
         Schema.RequestsRoutes S = Schema.RequestsRoutes.table;
         
-        String sql = " insert into "           + S.name + 
-                     " values "                + "("    + 
-                     " DEFAULT"                + ", "   +
-                      obj.getRequest()         + ", "   +
-                      obj.getTypeRoute()       + ", "   +
-                      obj.getIn()              + ", "   +
-                      obj.getOut()             + ", "   +
-                      obj.getState()           + ", "   +
-                      obj.getUser()            + ", "   +
-                      obj.getInfo()            + ", "   +
-                      obj.getSector()          + ")";
+        String sql = " insert into "               + S.name + 
+                     " values "                    + "("    + 
+                     " DEFAULT"                    + ", "   +
+                      obj.getRequest()             + ", "   +
+                      obj.getTypeRoute()           + ", "   +
+                      db.quote(obj.getIn())        + ", "   +
+                      db.quote(obj.getOut())       + ", "   +
+                      obj.getState()               + ", "   +
+                      db.foreingKey(obj.getUser()) + ", "   +
+                      db.quote(obj.getInfo())      + ", "   +
+                      obj.getSequence()            + ") ";
         
         db.executeCommand(sql);
     }
@@ -52,13 +51,13 @@ public class RequestRouteManagerTransaction
         
         String sql = " update " + S.name       + " set " +
                         S.columns.USER         + " = " + db.foreingKey( obj.getUser() )   + ", " +
-                        S.columns.SECTOR       + " = " + db.foreingKey( obj.getSector() ) + ", " +
-                        S.columns.INFO         + " = " + obj.getInfo()                    + ", " +
-                        S.columns.OUT          + " = " + obj.getOut()                     + ", " +
+                        S.columns.INFO         + " = " + db.quote( obj.getInfo() )        + ", " +
+                        S.columns.OUT          + " = " + db.quote(obj.getOut())           + ", " +
                         S.columns.STATE        + " = " + obj.getState()                   + ", " +
+                        S.columns.SEQUENCE     + " = " + obj.getSequence()                + ", " +
                         S.columns.TYPE_ROUTE   + " = " + obj.getTypeRoute()               + ", " +
                         S.columns.REQUEST      + " = " + obj.getRequest()                 + ", " +
-                        S.columns.IN           + " = " + obj.getIn()                      +  
+                        S.columns.IN           + " = " + db.quote(obj.getIn())            +  
                      " where " + 
                         S.columns.ID           + " = " + obj.getId();
         
@@ -73,6 +72,15 @@ public class RequestRouteManagerTransaction
         String sql = S.select + " where " + S.columns.ID + " = " + id;
         
         return  db.fetchOne( sql , S.fetcher );
+    }
+    
+    public List<RequestRoute> getByRequest(Database db, int id) throws Exception 
+    {
+        Schema.RequestsRoutes S = Schema.RequestsRoutes.table;
+        
+        String sql = S.select + " where " + S.columns.REQUEST + " = " + id + " ORDER BY sequence ASC";
+        
+        return  db.fetchAll( sql , S.fetcher );
     }
     
     @Override
@@ -126,15 +134,6 @@ public class RequestRouteManagerTransaction
                         if( values.get(i) instanceof User )
                         {
                             conditions += S.columns.USER + " = " + ((User)values.get(i)).getId();
-                        }
-                    }
-                    break;
-                    
-                    case RequestRouteFilter.SECTOR :
-                    {
-                        if( values.get(i) instanceof Sector )
-                        {
-                            conditions += S.columns.SECTOR + " = " + ((Sector)values.get(i)).getId();
                         }
                     }
                     break;

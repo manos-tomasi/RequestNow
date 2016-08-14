@@ -16,7 +16,6 @@ public class RequestRouteFilter
     public static final int REQUEST    = 3; 
     public static final int IN         = 4; 
     public static final int OUT        = 5; 
-    public static final int SECTOR     = 6; 
     
     @Override
     public List<FilterItem> getComponents() {
@@ -24,7 +23,6 @@ public class RequestRouteFilter
                                         new FilterItem( REQUEST,   "Requisição", "com.paa.requestnow.view.selectors.RequestSelecotr" ),
                                         new FilterItem( IN,        "Entrada",    "com.paa.requestnow.view.util.DateBetweenField" ),
                                         new FilterItem( OUT,       "Saída",      "com.paa.requestnow.view.util.DateBetweenField" ),
-                                        new FilterItem( USER,      "Usuário",    "com.paa.requestnow.view.selectors.UserSelector" ),
-                                        new FilterItem( SECTOR,    "Setor",      "com.paa.requestnow.view.selectors.SectorSelector" ));
+                                        new FilterItem( USER,      "Usuário",    "com.paa.requestnow.view.selectors.UserSelector" ));
     }    
 }
