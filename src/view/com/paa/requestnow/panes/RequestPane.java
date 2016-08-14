@@ -34,6 +34,7 @@ public class RequestPane
     public RequestPane()
     {
         initComponents();
+        
         load();
     }
     
