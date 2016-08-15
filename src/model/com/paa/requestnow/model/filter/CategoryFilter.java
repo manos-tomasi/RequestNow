@@ -1,6 +1,5 @@
 package com.paa.requestnow.model.filter;
 
-import com.paa.requestnow.model.filter.DefaultFilter;
 import java.util.Arrays;
 import java.util.List;
 

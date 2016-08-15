@@ -7,6 +7,7 @@ import com.paa.requestnow.model.data.Type;
 import com.paa.requestnow.view.selectors.ItemSelector;
 import com.paa.requestnow.view.util.DateBetweenField;
 import com.paa.requestnow.view.util.DateField;
+import com.paa.requestnow.view.util.HtmlEditorField;
 import com.paa.requestnow.view.util.LabelField;
 import com.paa.requestnow.view.util.MaskTextField;
 import com.paa.requestnow.view.util.NumberTextField;
@@ -119,6 +120,11 @@ public class FieldsPane
         else if( node instanceof ItemSelector )
         {
             return ( (ItemSelector) node ).getSelected();
+        }
+        
+        else if( node instanceof HtmlEditorField )
+        {
+            return ( (HtmlEditorField) node ).getHtmlText();
         }
         
         return null;
