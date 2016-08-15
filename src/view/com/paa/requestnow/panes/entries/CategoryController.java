@@ -7,20 +7,24 @@ import com.paa.requestnow.model.filter.DefaultFilter;
 import com.paa.requestnow.view.editor.CategoryEditor;
 import com.paa.requestnow.view.editor.FilterEditor;
 import com.paa.requestnow.view.tables.CategoryTable;
-import com.paa.requestnow.view.tables.DefaultTable;
+import com.paa.requestnow.view.util.ActionButton;
+import com.paa.requestnow.view.util.ActionButton.ActionHandler;
 import com.paa.requestnow.view.util.EditorCallback;
+import com.paa.requestnow.view.util.Prompts;
+import java.util.Arrays;
+import java.util.List;
 import javafx.event.Event;
+import javafx.scene.control.Control;
 
 /**
  * @author artur
  */
 public class CategoryController
-    extends 
+    implements 
         EntrieController<Category>
 {
     private CategoryFilter filter =  new CategoryFilter();
     
-    @Override
     public void addItem() throws Exception 
     {
         new CategoryEditor( new EditorCallback<Category>( new Category() )
@@ -44,31 +48,39 @@ public class CategoryController
         } ).open();
     }
 
-    @Override
-    public void editItem( Category item ) throws Exception 
+    public void editItem() throws Exception 
     {
-        new CategoryEditor( new EditorCallback<Category>( item )
+        Category item = table.getSelectedItem();
+
+        if( item != null )
         {
-            @Override
-            public void handle( Event t ) 
+            new CategoryEditor( new EditorCallback<Category>( item )
             {
-                try
+                @Override
+                public void handle( Event t ) 
                 {
-                    com.paa.requestnow.model.ModuleContext.getInstance()
-                                                        .getCategoryManager()
-                                                        .update( source );
-                    refresh();
+                    try
+                    {
+                        com.paa.requestnow.model.ModuleContext.getInstance()
+                                                            .getCategoryManager()
+                                                            .update( source );
+                        refresh();
+                    }
+
+                    catch( Exception e )
+                    {
+                        ApplicationUtilities.logException( e );
+                    }
                 }
-                
-                catch( Exception e )
-                {
-                    ApplicationUtilities.logException( e );
-                }
-            }
-        } ).open();
+            } ).open();
+        }
+        
+        else
+        {
+            Prompts.alert( "Selecione uma categoria para editar" );
+        }
     }
 
-    @Override
     public void filterItem() throws Exception 
     {
         new FilterEditor( new EditorCallback<DefaultFilter>( filter )
@@ -83,15 +95,31 @@ public class CategoryController
         } ).open();
     }
 
-    @Override
-    public void deleteItem( Category item ) throws Exception 
+    public void deleteItem() throws Exception 
     {
-        com.paa.requestnow.model.ModuleContext.getInstance()
-                                              .getCategoryManager()
-                                              .delete( item );
+        Category item = table.getSelectedItem();
 
-        refresh();
-        
+        if( item != null && item.getState() == Category.STATE_INACTIVE )
+        {
+            Prompts.info( "Categoria já encontra-se excluido!" );
+        }
+
+        else if( item == null )
+        {
+            Prompts.alert( "Selecione uma categoria para excluir!" );
+        }
+
+        else
+        {
+            if( Prompts.confirm( "Você tem certeza que deseja excluir a categoria\n" + item ) )
+            {
+                com.paa.requestnow.model.ModuleContext.getInstance()
+                                          .getCategoryManager()
+                                          .delete( item );
+
+                refresh();
+            }
+        }
     }
 
     @Override
@@ -112,16 +140,53 @@ public class CategoryController
     }
 
     @Override
-    public String getEntrieName() 
-    {
-        return "categorias";
-    }
-
-    @Override
-    public DefaultTable<Category> getTable() 
+    public Control getComponent() 
     {
         return  table;
     }
+
+    
+    @Override
+    public List<ActionButton> getActions() 
+    {
+        return Arrays.asList( addItem, editItem, deleteItem, filterItem );
+    }
     
     private CategoryTable table = new CategoryTable();
+    
+    private ActionButton addItem = new ActionButton( "Novo", "new.png", new ActionHandler()
+    {
+        @Override
+        public void onEvent( Event t ) throws Exception 
+        {
+            addItem();
+        }
+    } );
+    
+    private ActionButton editItem = new ActionButton( "Editar", "edit.png", new ActionHandler() 
+    {
+        @Override
+        public void onEvent( Event t ) throws Exception 
+        {
+            editItem();
+        }
+    } );
+    
+    private ActionButton deleteItem = new ActionButton( "Excluir", "delete.png", new ActionHandler() 
+    {
+        @Override
+        public void onEvent( Event t ) throws Exception
+        {
+            deleteItem();
+        }
+    } );
+    
+    private ActionButton filterItem = new ActionButton( "Filtro", "search.png", new ActionHandler() 
+    {
+        @Override
+        public void onEvent( Event t ) throws Exception
+        {
+            filterItem();
+        }
+    } );
 }

@@ -181,10 +181,10 @@ public class ReportPane
         getChildren().add( view );
     }
     
-    private ActionButton backButton = new ActionButton( "Voltar", "back.png", new EventHandler() 
+    private ActionButton backButton = new ActionButton( "Voltar", "back.png", new ActionButton.ActionHandler()
     {
         @Override
-        public void handle( Event t )
+        public void onEvent( Event t )
         {
             show( VIEW_EMPTY );
         }

@@ -6,21 +6,24 @@ import com.paa.requestnow.model.filter.DefaultFilter;
 import com.paa.requestnow.model.filter.TypeRouteFilter;
 import com.paa.requestnow.view.editor.FilterEditor;
 import com.paa.requestnow.view.editor.TypeRouteEditor;
-import com.paa.requestnow.view.tables.DefaultTable;
 import com.paa.requestnow.view.tables.TypeRouteTable;
+import com.paa.requestnow.view.util.ActionButton;
 import com.paa.requestnow.view.util.EditorCallback;
+import com.paa.requestnow.view.util.Prompts;
+import java.util.Arrays;
+import java.util.List;
 import javafx.event.Event;
+import javafx.scene.control.Control;
 
 /**
  * @author artur
  */
 public class TypeRouteController 
-    extends 
+    implements 
         EntrieController<TypeRoute>
 {
     private TypeRouteFilter filter =  new TypeRouteFilter();
     
-    @Override
     public void addItem() throws Exception 
     {
         new TypeRouteEditor( new EditorCallback<TypeRoute>( new TypeRoute() )
@@ -44,31 +47,39 @@ public class TypeRouteController
         } ).open();
     }
 
-    @Override
-    public void editItem( TypeRoute item ) throws Exception 
+    public void editItem() throws Exception 
     {
-        new TypeRouteEditor( new EditorCallback<TypeRoute>( item )
+        TypeRoute item = table.getSelectedItem();
+
+        if( item != null )
         {
-            @Override
-            public void handle( Event t ) 
+            new TypeRouteEditor( new EditorCallback<TypeRoute>( item )
             {
-                try
+                @Override
+                public void handle( Event t ) 
                 {
-                    com.paa.requestnow.model.ModuleContext.getInstance()
-                                                        .getTypeRouteManager()
-                                                        .update( source );
-                    refresh();
+                    try
+                    {
+                        com.paa.requestnow.model.ModuleContext.getInstance()
+                                                            .getTypeRouteManager()
+                                                            .update( source );
+                        refresh();
+                    }
+
+                    catch( Exception e )
+                    {
+                        ApplicationUtilities.logException( e );
+                    }
                 }
-                
-                catch( Exception e )
-                {
-                    ApplicationUtilities.logException( e );
-                }
-            }
-        } ).open();
+            } ).open();
+        }
+        
+        else
+        {
+            Prompts.alert( "Selecione uma rota para editar" );
+        }
     }
 
-    @Override
     public void filterItem() throws Exception 
     {
         new FilterEditor( new EditorCallback<DefaultFilter>( filter )
@@ -83,15 +94,31 @@ public class TypeRouteController
         } ).open();
     }
 
-    @Override
-    public void deleteItem( TypeRoute item ) throws Exception 
+    public void deleteItem() throws Exception 
     {
-        com.paa.requestnow.model.ModuleContext.getInstance()
-                                              .getTypeRouteManager()
-                                              .delete( item );
+        TypeRoute item = table.getSelectedItem();
 
-        refresh();
-        
+        if( item != null && item.getState() == TypeRoute.STATE_INACTIVE )
+        {
+            Prompts.info( "Rota já encontra-se excluido!" );
+        }
+
+        else if( item == null )
+        {
+            Prompts.alert( "Selecione uma rota para excluir!" );
+        }
+
+        else
+        {
+            if( Prompts.confirm( "Você tem certeza que deseja excluir o rota\n" + item ) )
+            {
+                com.paa.requestnow.model.ModuleContext.getInstance()
+                                          .getTypeRouteManager()
+                                          .delete( item );
+
+                refresh();
+            }
+        }
     }
 
     @Override
@@ -112,16 +139,53 @@ public class TypeRouteController
     }
 
     @Override
-    public String getEntrieName() 
-    {
-        return "tipos de rotas";
-    }
-
-    @Override
-    public DefaultTable<TypeRoute> getTable() 
+    public Control getComponent() 
     {
         return  table;
     }
+
+    
+    @Override
+    public List<ActionButton> getActions() 
+    {
+        return Arrays.asList( addItem, editItem, deleteItem, filterItem );
+    }
     
     private TypeRouteTable table = new TypeRouteTable();
+    
+    private ActionButton addItem = new ActionButton( "Novo", "new.png", new ActionButton.ActionHandler()
+    {
+        @Override
+        public void onEvent( Event t ) throws Exception 
+        {
+            addItem();
+        }
+    } );
+    
+    private ActionButton editItem = new ActionButton( "Editar", "edit.png", new ActionButton.ActionHandler() 
+    {
+        @Override
+        public void onEvent( Event t ) throws Exception 
+        {
+            editItem();
+        }
+    } );
+    
+    private ActionButton deleteItem = new ActionButton( "Excluir", "delete.png", new ActionButton.ActionHandler() 
+    {
+        @Override
+        public void onEvent( Event t ) throws Exception
+        {
+            deleteItem();
+        }
+    } );
+    
+    private ActionButton filterItem = new ActionButton( "Filtro", "search.png", new ActionButton.ActionHandler() 
+    {
+        @Override
+        public void onEvent( Event t ) throws Exception
+        {
+            filterItem();
+        }
+    } );
 }

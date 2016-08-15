@@ -12,7 +12,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker.State;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -147,10 +146,10 @@ public class EntriePane
             getChildren().add( view );
     }
     
-    private ActionButton backButton = new ActionButton( "Voltar", "back.png", new EventHandler() 
+    private ActionButton backButton = new ActionButton( "Voltar", "back.png", new ActionButton.ActionHandler()
     {
         @Override
-        public void handle( Event t )
+        public void onEvent( Event t )
         {
             show( VIEW_EMPTY );
         }

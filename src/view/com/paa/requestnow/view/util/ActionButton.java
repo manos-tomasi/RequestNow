@@ -2,6 +2,9 @@ package com.paa.requestnow.view.util;
 
 import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.ResourceLocator;
+import java.util.EventListener;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
@@ -16,9 +19,30 @@ public class ActionButton
     extends 
         Button
 {
+    public static abstract class ActionHandler 
+        implements 
+            EventListener, EventHandler<ActionEvent>
+    {
+        @Override
+        public void handle( ActionEvent t ) 
+        {
+            try
+            {
+                onEvent( t );
+            }
+            
+            catch ( Exception e )
+            {
+                ApplicationUtilities.logException( e );
+            }
+        }
+        
+        public abstract void onEvent( Event t ) throws Exception;
+    }
+    
     private ActionButton(){}
     
-    public ActionButton( String name, String icon, EventHandler handler ) 
+    public ActionButton( String name, String icon, ActionHandler handler ) 
     {
         try
         {

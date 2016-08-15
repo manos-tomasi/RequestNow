@@ -152,19 +152,19 @@ public class ReportCenterPane
     
     
     
-    private ActionButton configureItem = new ActionButton( "Filtro", "search.png", new EventHandler<Event>() 
+    private ActionButton configureItem = new ActionButton( "Filtro", "search.png", new ActionButton.ActionHandler()
     {
         @Override
-        public void handle( Event t ) 
+        public void onEvent( Event t ) 
         {
             configure();
         }
     } );
     
-    private ActionButton printItem = new ActionButton( "Imprimir", "pdf.png", new EventHandler<Event>() 
+    private ActionButton printItem = new ActionButton( "Imprimir", "pdf.png", new ActionButton.ActionHandler()
     {
         @Override
-        public void handle( Event t ) 
+        public void onEvent( Event t ) 
         {
             print();
         }

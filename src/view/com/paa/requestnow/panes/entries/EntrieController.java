@@ -1,26 +1,19 @@
 package com.paa.requestnow.panes.entries;
 
 import com.paa.requestnow.model.data.Core;
-import com.paa.requestnow.view.tables.DefaultTable;
+import com.paa.requestnow.view.util.ActionButton;
+import java.util.List;
+import javafx.scene.control.Control;
 
 /**
  * @author artur
  * @param <T>
  */
-public abstract class EntrieController <T extends Core>
+public interface EntrieController <T extends Core>
 {
-    public T getSelectedItem()
-    {
-        return getTable().getSelectedItem();
-    }
+    public List<ActionButton> getActions();
     
-    public abstract void addItem() throws Exception;
-    public abstract void editItem( T item ) throws Exception;
-    public abstract void filterItem() throws Exception;
-    public abstract void deleteItem( T item ) throws Exception;
-    public abstract void refresh();
+    public void refresh();
     
-    public abstract String getEntrieName();
-
-    public abstract DefaultTable<T> getTable();
+    public Control getComponent();
 }
