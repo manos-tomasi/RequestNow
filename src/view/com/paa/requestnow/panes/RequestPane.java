@@ -36,8 +36,7 @@ public class RequestPane
         initComponents();
         
         load();
-    }
-    
+    }    
     
     private void load()
     {
@@ -55,7 +54,7 @@ public class RequestPane
                 try 
                 {
                     controller.save( properties, source );
-                    refresh();
+                    refreshContent();
                     
                     Prompts.info( "Requisição criada com sucesso!" );
                 } 
@@ -76,6 +75,7 @@ public class RequestPane
                 try 
                 {
                     controller.cancel( table.getSelectedItem() );
+                    refreshContent();
                 } 
                 catch (Exception e) 
                 {
@@ -109,6 +109,7 @@ public class RequestPane
             public void handle(Event t) 
             {
                 requestFilter = (RequestFilter) source;
+                refreshContent();
             }
         }).open();
     }
@@ -116,22 +117,6 @@ public class RequestPane
     private boolean isSelected()
     {
         return table.getSelectedItem() != null;
-    }
-    
-    public void refresh() 
-    {
-        try
-        {
-            table.setItems(com.paa.requestnow.model.ModuleContext
-                                                    .getInstance()
-                                                    .getRequestManager()
-                                                    .get( requestFilter ) );
-        }
-        
-        catch( Exception e )
-        {
-            ApplicationUtilities.logException( e );
-        }
     }
     
     @Override

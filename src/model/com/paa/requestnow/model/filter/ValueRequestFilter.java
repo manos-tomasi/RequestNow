@@ -11,8 +11,8 @@ public class ValueRequestFilter
         extends 
             DefaultFilter
 {
-    public static final int REQUEST   = 1;
-    public static final int FIELD     = 2;
+    public static final int REQUEST   = 0;
+    public static final int FIELD     = 1;
 
     @Override
     public List<FilterItem> getComponents() {

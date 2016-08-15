@@ -12,8 +12,8 @@ public class FieldFilter
             DefaultFilter
 {
     public static final int LABEL        = 0;
-    public static final int STATE        = 1;
-    public static final int REQUIRED     = 2;
+    public static final int REQUIRED     = 1;
+    public static final int STATE        = 2;
     public static final int TYPE         = 3;
     public static final int TYPE_REQUEST = 4;
     

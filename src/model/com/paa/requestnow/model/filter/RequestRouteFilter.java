@@ -11,11 +11,11 @@ public class RequestRouteFilter
         extends 
             DefaultFilter
 {
-    public static final int USER       = 0; 
-    public static final int STATE      = 1; 
-    public static final int REQUEST    = 3; 
-    public static final int IN         = 4; 
-    public static final int OUT        = 5; 
+    public static final int STATE      = 0; 
+    public static final int REQUEST    = 1; 
+    public static final int IN         = 2; 
+    public static final int OUT        = 3; 
+    public static final int USER       = 4; 
     
     @Override
     public List<FilterItem> getComponents() {

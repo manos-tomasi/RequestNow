@@ -13,8 +13,8 @@ public class TypeRouteFilter
 {
     public static final int SECTOR = 0;
     public static final int TYPE   = 1;
-    public static final int USER   = 2;
-    public static final int STATE  = 3;
+    public static final int STATE  = 2;
+    public static final int USER   = 3;
 
     @Override
     public List<FilterItem> getComponents() {
