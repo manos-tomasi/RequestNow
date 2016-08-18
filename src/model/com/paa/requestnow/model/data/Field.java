@@ -111,4 +111,27 @@ public class Field
     {
         return label;
     }
+    
+    public String toJson()
+    {
+        try
+        {
+            return "{ " +
+                   " 'id' :         '" + id                           + "'," +
+                   " 'label' :      '" + label                        + "'," +
+                   " 'required' :   '" + ( required ? "Sim" : "Não" ) + "'," +
+                   " 'type' :       '" + TYPES[ type ]                + "'," +
+                   " 'typeRequest': '" + com.paa.requestnow.model.ModuleContext.getInstance().getTypeRouteManager().get( typeRequest ) + "'," +
+                   " 'sequence' :   '" + sequence                     + "'," +
+                   " 'state' :      '" + STATES[ state ]              + "'" +
+                    "}";
+        }
+        
+        catch ( Exception e )
+        {
+            System.err.println( e );
+        }
+        
+        return null;
+    }
 }

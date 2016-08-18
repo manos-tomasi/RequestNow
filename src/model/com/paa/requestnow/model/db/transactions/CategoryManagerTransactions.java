@@ -23,9 +23,9 @@ public class CategoryManagerTransactions
         String sql = " insert into "          + S.name + 
                      " values "               + "("    + 
                      " DEFAULT"               + ", "   +
-                      db.quote(obj.getName()) + ", "   +
-                      obj.getState()          + ", "   +
-                      db.quote(obj.getInfo()) + ")";
+                      db.quote( obj.getName() ) + ", "   +
+                      obj.getState()            + ", "   +
+                      db.quote( obj.getInfo() ) + ")";
         
         db.executeCommand(sql);
     }
@@ -41,9 +41,9 @@ public class CategoryManagerTransactions
         Schema.Categories S = Schema.Categories.table;
         
         String sql = " update " + S.name       + " set " +
-                        S.columns.NAME         + " = " + db.quote( obj.getName() )      + ", " +
-                        S.columns.STATE        + " = " + obj.getState()                 + ", " +
-                        S.columns.INFO         + " = " + obj.getInfo()                  + ", " +
+                        S.columns.NAME         + " = " + db.quote( obj.getName() )  + ", " +
+                        S.columns.STATE        + " = " + obj.getState()             + ", " +
+                        S.columns.INFO         + " = " + db.quote( obj.getInfo() )  +
                      " where " + 
                         S.columns.ID           + " = " + obj.getId();
         
@@ -65,7 +65,11 @@ public class CategoryManagerTransactions
     {
         Schema.Categories S = Schema.Categories.table;
         
-        String sql = S.select + " where state = " + Category.STATE_ACTIVE;
+        String sql = S.select  + 
+                     " where " +
+                     S.columns.STATE + " = " + Category.STATE_ACTIVE +
+                     " order by " +
+                     S.columns.NAME;
         
         return db.fetchAll(sql, S.fetcher );
     }

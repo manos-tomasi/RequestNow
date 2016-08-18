@@ -14,7 +14,7 @@ import com.paa.requestnow.view.util.Prompts;
 import java.util.Arrays;
 import java.util.List;
 import javafx.event.Event;
-import javafx.scene.control.Control;
+import javafx.scene.layout.Region;
 
 /**
  * @author artur
@@ -140,7 +140,7 @@ public class UserController
     }
 
     @Override
-    public Control getComponent() 
+    public Region getComponent() 
     {
         return  table;
     }

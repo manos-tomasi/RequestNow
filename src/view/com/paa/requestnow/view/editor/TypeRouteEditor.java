@@ -57,11 +57,6 @@ public class TypeRouteEditor
             erros.add( "Tipo de Requisição é requerida" );
         }
         
-        if( sequenceField.getValue() <= 0 )
-        {
-            erros.add( "Sequência é requerido" );
-        }
-        
         if( daysField.getValue() <= 0 )
         {
             erros.add( "Dias/Prazo é requerido" );
@@ -73,7 +68,6 @@ public class TypeRouteEditor
     {
         source.setState( stateField.getSelectedIndex() );
         source.setDays( daysField.getValue() );
-        source.setSequence( sequenceField.getValue() );
         source.setUser( userField.getSelectedIndex() != -1 ? userField.getSelected().getId() : 0 );
         source.setSector( sectorField.getSelectedIndex() != -1 ? sectorField.getSelected().getId() : 0 );
         source.setType( typeField.getSelectedIndex() != -1 ? typeField.getSelected().getId() : 0 );
@@ -94,7 +88,6 @@ public class TypeRouteEditor
         {
             stateField.setSelectedIndex( source.getState() );
             daysField.increment( source.getDays() );
-            sequenceField.increment( source.getSequence() );
             
             userField.setSelected( com.paa.requestnow.model.ModuleContext
                                                             .getInstance()
@@ -131,6 +124,7 @@ public class TypeRouteEditor
                                                 .getInstance()
                                                 .getUserManager()
                                                 .getUsersBySector( sector ) );
+                userField.setSelected( null );
             }
             
             else 
@@ -187,14 +181,11 @@ public class TypeRouteEditor
         gridPane.add( lbType,           0, 2, 1, 1 );
         gridPane.add( typeField,        1, 2, 3, 1 );
     
-        gridPane.add( lbSequence,       0, 3, 1, 1 );
-        gridPane.add( sequenceField,    1, 3, 3, 1 );
-    
-        gridPane.add( lbDays,           0, 4, 1, 1 );
-        gridPane.add( daysField,        1, 4, 3, 1 );
+        gridPane.add( lbDays,           0, 3, 1, 1 );
+        gridPane.add( daysField,        1, 3, 3, 1 );
         
-        gridPane.add( lbState,          0, 5, 1, 1 );
-        gridPane.add( stateField,       1, 5, 3, 1 );
+        gridPane.add( lbState,          0, 4, 1, 1 );
+        gridPane.add( stateField,       1, 4, 3, 1 );
         
         getDialogPane().setContent( gridPane );
         
@@ -232,9 +223,7 @@ public class TypeRouteEditor
     private LabelField lbUser              = new LabelField( "Responsável" );
     private UserSelector userField         = new UserSelector();
     
-    private LabelField lbSequence          = new LabelField( "Sequência", true );
-    private Spinner<Integer> sequenceField = new Spinner( new SpinnerValueFactory.IntegerSpinnerValueFactory( 0, 99 ) );
     
     private LabelField lbDays              = new LabelField( "Dias/Prazo", true );
-    private Spinner<Integer> daysField     = new Spinner( new SpinnerValueFactory.IntegerSpinnerValueFactory( 1, 99 ) );
+    private Spinner<Integer> daysField     = new Spinner( new SpinnerValueFactory.IntegerSpinnerValueFactory( 0, 99 ) );
 }

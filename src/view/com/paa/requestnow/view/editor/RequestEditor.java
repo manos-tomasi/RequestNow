@@ -30,7 +30,7 @@ public class RequestEditor
     @Override
     protected void validadeInput(List<String> erros) throws Exception 
     {
-        erros  = fieldsPane.validateInput( erros );
+        fieldsPane.validateInput( erros );
     }
 
     @Override
@@ -71,5 +71,5 @@ public class RequestEditor
     
     private BorderPane   pane       = new BorderPane();    
     private FieldsPane   fieldsPane = new FieldsPane();
-    private CategoryTree tree       = new CategoryTree();
+    private CategoryTree tree       = new CategoryTree( CategoryTree.MODE_REQUEST );
 }

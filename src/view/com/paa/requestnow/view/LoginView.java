@@ -79,7 +79,7 @@ public class LoginView
         
         stage.setTitle( "Login" );
         stage.setScene( scene );
-        stage.getIcons().add( new Image( ResourceLocator.getInstance().getImageResource( "helpFin.png" ) ) );
+        stage.getIcons().add( new Image( ResourceLocator.getInstance().getImageResource( "request_now.png" ) ) );
         stage.show();
         
         this.stage = stage;

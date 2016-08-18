@@ -43,4 +43,24 @@ public class Category
     {
         return name;
     }
+    
+    public String toJson()
+    {
+        try
+        {
+            return "{ " +
+                   " 'id' :         '" + id              + "'," +
+                   " 'name' :       '" + name            + "'," +
+                   " 'info' :       '" + info            + "'," +
+                   " 'state' :      '" + STATES[ state ] + "' " +
+                    "}";
+        }
+        
+        catch ( Exception e )
+        {
+            System.err.println( e );
+        }
+        
+        return null;
+    }
 }

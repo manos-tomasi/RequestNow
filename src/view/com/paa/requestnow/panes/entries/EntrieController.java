@@ -3,7 +3,7 @@ package com.paa.requestnow.panes.entries;
 import com.paa.requestnow.model.data.Core;
 import com.paa.requestnow.view.util.ActionButton;
 import java.util.List;
-import javafx.scene.control.Control;
+import javafx.scene.layout.Region;
 
 /**
  * @author artur
@@ -15,5 +15,5 @@ public interface EntrieController <T extends Core>
     
     public void refresh();
     
-    public Control getComponent();
+    public Region getComponent();
 }

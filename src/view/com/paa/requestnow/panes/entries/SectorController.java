@@ -13,7 +13,7 @@ import com.paa.requestnow.view.util.Prompts;
 import java.util.Arrays;
 import java.util.List;
 import javafx.event.Event;
-import javafx.scene.control.Control;
+import javafx.scene.layout.Region;
 
 /**
  *
@@ -140,7 +140,7 @@ public class SectorController
     }
 
     @Override
-    public Control getComponent() 
+    public Region getComponent() 
     {
         return  table;
     }

@@ -77,7 +77,8 @@ public class FieldManagerTransactions
                      S.columns.TYPE_REQUEST + " = " + id +
                      " and " +
                      S.columns.STATE        + " = " +  Field.STATE_ACTIVE +
-                     "order by sequence ";
+                     "order by " +
+                     S.columns.SEQUENCE;
         
         return  db.fetchAll( sql , S.fetcher );
     }
@@ -87,7 +88,9 @@ public class FieldManagerTransactions
     {
         Schema.Fields S = Schema.Fields.table;
         
-        String sql = S.select + "where state = " + Field.STATE_ACTIVE;
+        String sql = S.select + 
+                     " where " +   
+                     S.columns.STATE + " = " + Field.STATE_ACTIVE;
         
         return db.fetchAll(sql, S.fetcher );
     }
