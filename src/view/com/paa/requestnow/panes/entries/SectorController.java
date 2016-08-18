@@ -6,26 +6,28 @@ import com.paa.requestnow.model.data.Sector;
 import com.paa.requestnow.model.filter.SectorFilter;
 import com.paa.requestnow.view.editor.FilterEditor;
 import com.paa.requestnow.view.editor.SectorEditor;
-import com.paa.requestnow.view.tables.DefaultTable;
 import com.paa.requestnow.view.tables.SectorTable;
+import com.paa.requestnow.view.util.ActionButton;
 import com.paa.requestnow.view.util.EditorCallback;
+import com.paa.requestnow.view.util.Prompts;
+import java.util.Arrays;
+import java.util.List;
 import javafx.event.Event;
+import javafx.scene.control.Control;
 
 /**
  *
  * @author lucas
  */
 public class SectorController 
-        extends 
-            EntrieController<Sector>
+    implements 
+        EntrieController<Sector>
 {
-
     private SectorFilter filter =  new SectorFilter();
     
-    @Override
     public void addItem() throws Exception 
     {
-        new SectorEditor( new EditorCallback<Sector>( new Sector() ) 
+        new SectorEditor( new EditorCallback<Sector>( new Sector() )
         {
             @Override
             public void handle( Event t ) 
@@ -35,9 +37,6 @@ public class SectorController
                     com.paa.requestnow.model.ModuleContext.getInstance()
                                                         .getSectorManager()
                                                         .add( source );
-                    
-                    table.setSelectedItem( source );
-                    
                     refresh();
                 }
                 
@@ -49,31 +48,39 @@ public class SectorController
         } ).open();
     }
 
-    @Override
-    public void editItem(Sector item) throws Exception 
+    public void editItem() throws Exception 
     {
-         new SectorEditor( new EditorCallback<Sector>( item )
+        Sector item = table.getSelectedItem();
+
+        if( item != null )
         {
-            @Override
-            public void handle( Event t )
+            new SectorEditor( new EditorCallback<Sector>( item )
             {
-                try
+                @Override
+                public void handle( Event t ) 
                 {
-                    com.paa.requestnow.model.ModuleContext.getInstance()
-                                                        .getSectorManager()
-                                                        .update( source );
-                    refresh();
+                    try
+                    {
+                        com.paa.requestnow.model.ModuleContext.getInstance()
+                                                            .getSectorManager()
+                                                            .update( source );
+                        refresh();
+                    }
+
+                    catch( Exception e )
+                    {
+                        ApplicationUtilities.logException( e );
+                    }
                 }
-                
-                catch( Exception e )
-                {
-                    ApplicationUtilities.logException( e );
-                }
-            }
-        } ).open();
+            } ).open();
+        }
+        
+        else
+        {
+            Prompts.alert( "Selecione uma setor para editar" );
+        }
     }
-    
-    @Override
+
     public void filterItem() throws Exception 
     {
         new FilterEditor( new EditorCallback<DefaultFilter>( filter )
@@ -88,14 +95,31 @@ public class SectorController
         } ).open();
     }
 
-    @Override
-    public void deleteItem(Sector item) throws Exception 
-    {   
-        com.paa.requestnow.model.ModuleContext.getInstance()
-                                              .getSectorManager()
-                                              .delete( item );
+    public void deleteItem() throws Exception 
+    {
+        Sector item = table.getSelectedItem();
 
-        refresh();
+        if( item != null && item.getState() == Sector.STATE_INACTIVE )
+        {
+            Prompts.info( "Setor já encontra-se excluido!" );
+        }
+
+        else if( item == null )
+        {
+            Prompts.alert( "Selecione uma setor para excluir!" );
+        }
+
+        else
+        {
+            if( Prompts.confirm( "Você tem certeza que deseja excluir o setor\n" + item ) )
+            {
+                com.paa.requestnow.model.ModuleContext.getInstance()
+                                          .getSectorManager()
+                                          .delete( item );
+
+                refresh();
+            }
+        }
     }
 
     @Override
@@ -116,16 +140,53 @@ public class SectorController
     }
 
     @Override
-    public String getEntrieName() 
+    public Control getComponent() 
     {
-        return "setores";
+        return  table;
     }
 
+    
     @Override
-    public DefaultTable<Sector> getTable() 
+    public List<ActionButton> getActions() 
     {
-        return table;
+        return Arrays.asList( addItem, editItem, deleteItem, filterItem );
     }
     
     private SectorTable table = new SectorTable();
+    
+    private ActionButton addItem = new ActionButton( "Novo", "new.png", new ActionButton.ActionHandler()
+    {
+        @Override
+        public void onEvent( Event t ) throws Exception 
+        {
+            addItem();
+        }
+    } );
+    
+    private ActionButton editItem = new ActionButton( "Editar", "edit.png", new ActionButton.ActionHandler() 
+    {
+        @Override
+        public void onEvent( Event t ) throws Exception 
+        {
+            editItem();
+        }
+    } );
+    
+    private ActionButton deleteItem = new ActionButton( "Excluir", "delete.png", new ActionButton.ActionHandler() 
+    {
+        @Override
+        public void onEvent( Event t ) throws Exception
+        {
+            deleteItem();
+        }
+    } );
+    
+    private ActionButton filterItem = new ActionButton( "Filtro", "search.png", new ActionButton.ActionHandler() 
+    {
+        @Override
+        public void onEvent( Event t ) throws Exception
+        {
+            filterItem();
+        }
+    } );
 }

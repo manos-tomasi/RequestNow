@@ -148,18 +148,18 @@ public class FilterEditor
     
     private ListPicker<DefaultFilter.FilterItem> filters = new ListPicker();
     
-    private ActionButton actionNew = new ActionButton( "Novo", "new.png", new EventHandler() 
+    private ActionButton actionNew = new ActionButton( "Novo", "new.png", new ActionButton.ActionHandler() 
     {
         @Override
-        public void handle(Event t) 
+        public void onEvent( Event t) 
         {
             choice();
         }
     } );
-    private ActionButton actionDelete = new ActionButton( "Excluir", "delete.png", new EventHandler() 
+    private ActionButton actionDelete = new ActionButton( "Excluir", "delete.png", new ActionButton.ActionHandler() 
     {
         @Override
-        public void handle(Event t) 
+        public void onEvent( Event t) 
         {
             delete();
         }

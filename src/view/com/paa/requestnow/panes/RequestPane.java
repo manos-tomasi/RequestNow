@@ -16,7 +16,6 @@ import com.paa.requestnow.view.util.RequestLegendPane;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 
 /**
@@ -167,37 +166,37 @@ public class RequestPane
     private RequestLegendPane legend;
     private RequestTable      table;
     
-    private ActionButton add = new ActionButton( "Novo", "new.png", new EventHandler<Event>() 
+    private ActionButton add = new ActionButton( "Novo", "new.png", new ActionButton.ActionHandler() 
     {
         @Override
-        public void handle( Event t ) 
+        public void onEvent( Event t ) 
         {
             add();
         }
     });
     
-    private ActionButton inspect = new ActionButton( "Visualisar", "details.png", new EventHandler<Event>() 
+    private ActionButton inspect = new ActionButton( "Visualisar", "details.png", new ActionButton.ActionHandler() 
     {
         @Override
-        public void handle( Event t ) 
+        public void onEvent( Event t ) 
         {
             inspect();
         }
     });
     
-    private ActionButton cancel = new ActionButton( "Cancelar", "delete.png", new EventHandler<Event>() 
+    private ActionButton cancel = new ActionButton( "Cancelar", "delete.png", new ActionButton.ActionHandler()
     {
         @Override
-        public void handle( Event t ) 
+        public void onEvent( Event t ) 
         {
             cancel();
         }
     });
     
-    private ActionButton filter = new ActionButton( "Filtro", "search.png", new EventHandler<Event>() 
+    private ActionButton filter = new ActionButton( "Filtro", "search.png",  new ActionButton.ActionHandler() 
     {
         @Override
-        public void handle( Event t ) 
+        public void onEvent( Event t ) 
         {
             filter();
         }
