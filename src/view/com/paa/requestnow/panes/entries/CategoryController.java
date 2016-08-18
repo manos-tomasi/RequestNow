@@ -166,7 +166,7 @@ public class CategoryController
         borderPane.setLeft( tree );
         borderPane.setCenter( view );
                 
-        engine.load( ResourceLocator.getInstance().getWebResource( "fields.html" ) );
+        engine.load( ResourceLocator.getInstance().getWebResource( "category.html" ) );
         engine.setJavaScriptEnabled( true );
         
         engine.getLoadWorker().stateProperty().addListener( new ChangeListener<Worker.State>() 
