@@ -121,7 +121,7 @@ public class Field
                    " 'label' :      '" + label                        + "'," +
                    " 'required' :   '" + ( required ? "Sim" : "Não" ) + "'," +
                    " 'type' :       '" + TYPES[ type ]                + "'," +
-                   " 'typeRequest': '" + com.paa.requestnow.model.ModuleContext.getInstance().getTypeRouteManager().get( typeRequest ) + "'," +
+                   " 'typeRequest': '" + com.paa.requestnow.model.ModuleContext.getInstance().getTypeManager().get( typeRequest ) + "'," +
                    " 'sequence' :   '" + sequence                     + "'," +
                    " 'state' :      '" + STATES[ state ]              + "'" +
                     "}";

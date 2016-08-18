@@ -2,6 +2,7 @@ package com.paa.requestnow.panes.entries;
 
 import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.ResourceLocator;
+import com.paa.requestnow.model.data.Category;
 import com.paa.requestnow.model.data.Field;
 import com.paa.requestnow.model.data.Type;
 import com.paa.requestnow.model.filter.FieldFilter;
@@ -221,7 +222,7 @@ public class FieldController
     }
     
     
-    private void showContent()
+    private void showField()
     {
         try
         {
@@ -229,7 +230,27 @@ public class FieldController
             
             if ( field != null )
             {
-                engine.executeScript( "setField( " + field.toJson() +" );" ) ;
+                engine.load( ResourceLocator.getInstance().getWebResource( "field.html" ) );
+             
+                engine.documentProperty().addListener( ( prop, oldDoc, newDoc ) ->  engine.executeScript( "setField( " + field.toJson() +" );" ) );
+            }
+        }
+        
+        catch ( Exception e) {/*ignore*/}
+    }
+    
+    
+    private void showCategory()
+    {
+        try
+        {
+            Category category = tree.getSelectedCategory();
+            
+            if ( category != null )
+            {
+                engine.load( ResourceLocator.getInstance().getWebResource( "category.html" ) );
+                
+                engine.documentProperty().addListener( (s) -> engine.executeScript( "setCategory( " + category.toJson() +" );" ) );
             }
         }
         
@@ -273,7 +294,7 @@ public class FieldController
         borderPane.setLeft( tree );
         borderPane.setCenter( view );
                 
-        engine.load( ResourceLocator.getInstance().getWebResource( "fields.html" ) );
+//        engine.load( ResourceLocator.getInstance().getWebResource( "field.html" ) );
         engine.setJavaScriptEnabled( true );
         
         engine.getLoadWorker().stateProperty().addListener( new ChangeListener<Worker.State>() 
@@ -291,7 +312,16 @@ public class FieldController
             @Override
             public void handle( Event t )
             {
-                showContent();
+                showField();
+            }
+        } );
+        
+        tree.addEventHandler( CategoryTree.Events.ON_SELECT_CATEGORY, new EventHandler<Event>() 
+        {
+            @Override
+            public void handle( Event t )
+            {
+                showCategory();
             }
         } );
     }

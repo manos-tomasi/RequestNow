@@ -1,9 +1,9 @@
 function setCategory( category )
 {
-    $('#categoy_id').html( category[ 'id'  ] );
-    $('#categoy_name').html( category[ 'name'  ] );
-    $('#categoy_state').html( category[ 'state' ] );
-    $('#categoy_info').html( category[ 'info'  ].toString().replace( /\"/g , "'" ) );
+    $('#category_id').html( category[ 'id'  ] );
+    $('#category_name').html( category[ 'name'  ] );
+    $('#category_state').html( category[ 'state' ] );
+    $('#category_info').html( category[ 'info'  ].toString().replace( /\"/g , "'" ) );
 }
 
 function setField( field )
