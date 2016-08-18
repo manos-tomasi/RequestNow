@@ -39,17 +39,18 @@ button:hover{
     cursor: pointer;
 }
 
-.field{
+.myfield{
     font-weight: bolder;
     color: #263238;
     padding: 5px 15px 5px 20px;
-    width: 190px;
+    margin-left: 25px;
+    width: 190px !important;
     border-radius: 10px;
     background: #90A4AE;
     font-size: 12px;
 }
-.value{
-    padding: 8px;
+.myvalue{
+    padding: 5px 15px 5px 20px;
     color: #37474F;
     font-weight: bolder;
     border-radius: 10px;
@@ -65,7 +66,7 @@ button:hover{
     font-weight: bolder;
 }
 
-.info{
+.myinfo{
     padding-left: 50px;
     font-size: 14px;
     text-align: left;
