@@ -46,7 +46,8 @@ public class UserManagerTransactions
                         U.columns.STATE        + "," +
                         U.columns.PASSWORD     + "," +
                         U.columns.ROLE         + "," +
-                        U.columns.LOGIN +
+                        U.columns.LOGIN        + "," +
+                        U.columns.SECTOR       +
                      ") values ( " +
                         db.quote( user.getName() )       + "," +
                         db.quote( user.getPhone() )      + "," +
@@ -58,7 +59,8 @@ public class UserManagerTransactions
                         user.getState()                  + "," +
                         db.quote( user.getPassword() )   + "," +
                         user.getRole()                   + "," +
-                        db.quote( user.getLogin() )      +  
+                        db.quote( user.getLogin() )      + "," +
+                        user.getSector()                 +
                      ") ";
         
         db.executeCommand( sql );
@@ -103,6 +105,7 @@ public class UserManagerTransactions
                         U.columns.STATE        + " = " + user.getState()                 + ", " +
                         U.columns.PASSWORD     + " = " + db.quote( user.getPassword() )  + ", " +
                         U.columns.ROLE         + " = " + user.getRole()                  + ", " +
+                        U.columns.SECTOR       + " = " + user.getSector()                + ", " +
                         U.columns.LOGIN        + " = " + db.quote( user.getLogin() )     +
                      " where " + 
                         U.columns.ID           + " = " + user.getId();

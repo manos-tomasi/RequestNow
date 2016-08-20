@@ -38,7 +38,7 @@ public class HomeView
         stage.setMaximized( true );
         stage.setTitle( "RequestNow Application" );
         stage.setScene( scene );
-        stage.getIcons().add( new Image( ResourceLocator.getInstance().getImageResource( "helpFin.png") ) );
+        stage.getIcons().add( new Image( ResourceLocator.getInstance().getImageResource( "request_now.png") ) );
         stage.show();
 
         ApplicationUtilities.getInstance().setRootComponent( pane );

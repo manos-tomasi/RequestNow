@@ -100,10 +100,6 @@ public class RequestController
 
             com.paa.requestnow.model.ModuleContext.getInstance().getRequestManager().update( request );
         }
-        else
-        {
-            throw new Exception( "Está requisição já está finalizada!" );
-        }
     }
     
     public List<Field> getFields( int id ) throws Exception

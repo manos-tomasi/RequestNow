@@ -69,17 +69,24 @@ public class RequestPane
     {
         if( isSelected() )
         {
-            if( Prompts.confirm( "Confirma o cancelamento da requisição" ) )
+            if( table.getSelectedItem().getState() != Request.IN_PROGRESS )
             {
-                try 
+                if( Prompts.confirm( "Confirma o cancelamento da requisição" ) )
                 {
-                    controller.cancel( table.getSelectedItem() );
-                    refreshContent();
-                } 
-                catch (Exception e) 
-                {
-                    ApplicationUtilities.logException(e);
+                    try 
+                    {
+                        controller.cancel( table.getSelectedItem() );
+                        refreshContent();
+                    } 
+                    catch (Exception e) 
+                    {
+                        ApplicationUtilities.logException(e);
+                    }
                 }
+            }
+            else
+            {
+                Prompts.alert( "Essa requisição já está finalizada!" );
             }
         }
         else

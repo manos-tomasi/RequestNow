@@ -142,7 +142,7 @@ public class UserEditor
             phoneField.setText( source.getPhone() );
             roleField.setSelectedIndex( source.getRole() );
             stateField.setSelectedIndex( source.getState() );
-            sectorField.setSelected( com.paa.requestnow.model.ModuleContext.getInstance().getSectorManager().get( source.getState() ) );
+            sectorField.setSelected( com.paa.requestnow.model.ModuleContext.getInstance().getSectorManager().get( source.getSector() ) );
 
             if ( source.getGender() == User.FEMALE )
                 femaleGenderFied.setSelected( source.getGender() == User.FEMALE );

@@ -48,15 +48,16 @@ public class MenuPane
     private void initComponents()
     {
         itemReport.setDisable( ! ApplicationUtilities.getInstance().hasPermission() );
-        itemOrders.setDisable( ! ApplicationUtilities.getInstance().hasPermission() );
+        itemRequestRoute.setDisable( ! ApplicationUtilities.getInstance().hasPermission() );
         
         reportPane.setMenuItem( itemReport );
         entriePane.setMenuItem( itemEntries );
         requestPane.setMenuItem( itemRequests );
+        requestRoutePane.setMenuItem( itemRequestRoute );
         
         setStyle( "-fx-border-color: " + ApplicationUtilities.getColor() + " -fx-border-width: 0 2 0 0; -fx-padding: 10 4 4 4" );
         setSpacing( 10 );
-        getChildren().addAll( itemRequests, itemOrders, itemReport, itemEntries );
+        getChildren().addAll( itemRequests, itemRequestRoute, itemReport, itemEntries );
     }
     
     private void initListeners()
@@ -88,12 +89,12 @@ public class MenuPane
             }
         });
         
-       itemOrders.setOnAction( new EventHandler<ActionEvent>()
+        itemRequestRoute.setOnAction( new EventHandler<ActionEvent>()
         {
             @Override
             public void handle( ActionEvent t ) 
             {
-//                refreshContent( analisysPane );
+                refreshContent( requestRoutePane );
             }
         });
        
@@ -101,15 +102,16 @@ public class MenuPane
         refreshContent( selectedPane );
     }
     
-    private MenuItem itemRequests = new MenuItem( "Requisições",   "posting.png" );
-    private MenuItem itemOrders   = new MenuItem( "Despachos",     "orders.png" );
-    private MenuItem itemReport   = new MenuItem( "Relatórios",    "report.png" );
-    private MenuItem itemEntries  = new MenuItem( "Cadastros",     "entries.png" );
+    private MenuItem itemRequests     = new MenuItem( "Requisições",   "posting.png" );
+    private MenuItem itemRequestRoute = new MenuItem( "Despachos",     "orders.png" );
+    private MenuItem itemReport       = new MenuItem( "Relatórios",    "report.png" );
+    private MenuItem itemEntries      = new MenuItem( "Cadastros",     "entries.png" );
     
     private EventHandler handler;
     
     private EntriePane        entriePane        = new EntriePane();
     private RequestPane       requestPane       = new RequestPane();
+    private RequestRoutePane  requestRoutePane  = new RequestRoutePane();
     private ReportPane        reportPane        = new ReportPane();
     
     
