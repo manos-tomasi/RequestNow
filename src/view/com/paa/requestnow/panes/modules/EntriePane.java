@@ -36,6 +36,7 @@ public class EntriePane
     public static final int VIEW_TYPES      = 3;
     public static final int VIEW_FILDS      = 4;
     public static final int VIEW_ROUTE      = 5;
+    public static final int VIEW_PERMISSION = 6;
     
     private int index = VIEW_EMPTY;
     
@@ -55,7 +56,8 @@ public class EntriePane
                            index == VIEW_CATEGORIES ? "Cadastro de Categorias" :
                            index == VIEW_TYPES      ? "Cadastro de Tipos"      :
                            index == VIEW_FILDS      ? "Cadastro de Campos"     :
-                           index == VIEW_ROUTE      ? "Cadastro de Tipos de Rotas" : ""  );
+                           index == VIEW_ROUTE      ? "Cadastro de Tipos de Rotas" :
+                           index == VIEW_PERMISSION ? "Cadastro de Permissões" : "" );
            
         
         getChildren().clear();

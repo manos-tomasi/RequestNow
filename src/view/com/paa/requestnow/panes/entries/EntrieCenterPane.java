@@ -63,6 +63,12 @@ public class EntrieCenterPane <T extends Core>
                 controller =  routeController;
             }
             break;
+            
+            case VIEW_PERMISSION:
+            {
+                controller =  permissionController;
+            }
+            break;
         }
     }
     
@@ -121,7 +127,8 @@ public class EntrieCenterPane <T extends Core>
     private CategoryController categoryController = new CategoryController();
     private TypeController typeController         = new TypeController();
     private FieldController fieldController       = new FieldController();
-    private TypeRouteController routeController   = new TypeRouteController();
+    private TypeRouteController routeController       = new TypeRouteController();
+    private PermissionController permissionController = new TypeRouteController();
     
     private EntrieController controller = userController;
 }
