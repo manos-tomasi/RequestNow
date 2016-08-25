@@ -4,6 +4,7 @@ import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.data.Role;
 import com.paa.requestnow.view.editor.RoleEditor;
 import com.paa.requestnow.view.tables.GroupList;
+import com.paa.requestnow.view.tables.PermissionList;
 import com.paa.requestnow.view.tree.RoleTree;
 import com.paa.requestnow.view.util.ActionButton;
 import com.paa.requestnow.view.util.EditorCallback;
@@ -36,9 +37,9 @@ public class PermissionController
             {
                 try
                 {
-//                    com.paa.requestnow.model.ModuleContext.getInstance()
-//                                                        .getTypeRouteManager()
-//                                                        .add( source );
+                    com.paa.requestnow.model.ModuleContext.getInstance()
+                                                        .getRoleManager()
+                                                        .add( source );
                     refresh();
                 }
                 
@@ -52,7 +53,7 @@ public class PermissionController
 
     public void editItem() throws Exception 
     {
-        Role item = null;//.getSelectedItem();
+        Role item = tree.getSelectedRole();
 
         if( item != null )
         {
@@ -63,9 +64,9 @@ public class PermissionController
                 {
                     try
                     {
-//                        com.paa.requestnow.model.ModuleContext.getInstance()
-//                                                            .getTypeRouteManager()
-//                                                            .update( source );
+                        com.paa.requestnow.model.ModuleContext.getInstance()
+                                                                .getRoleManager()
+                                                                .update( source );
                         refresh();
                     }
 
@@ -89,7 +90,7 @@ public class PermissionController
 
     public void deleteItem() throws Exception 
     {
-        Role item = null;//table.getSelectedItem();
+        Role item = tree.getSelectedRole();
 
         if( item == null )
         {
@@ -100,9 +101,9 @@ public class PermissionController
         {
             if( Prompts.confirm( "Você tem certeza que deseja excluir o grupo\n" + item ) )
             {
-//                com.paa.requestnow.model.ModuleContext.getInstance()
-//                                          .getTypeRouteManager()
-//                                          .delete( item );
+                com.paa.requestnow.model.ModuleContext.getInstance()
+                                          .getRoleManager()
+                                          .delete( item );
 
                 refresh();
             }
@@ -112,18 +113,15 @@ public class PermissionController
     @Override
     public void refresh() 
     {
-//        try
-//        {
-//            table.setItems(com.paa.requestnow.model.ModuleContext
-//                                                    .getInstance()
-//                                                    .getTypeRouteManager()
-//                                                    .get( filter ) );
-//        }
-//        
-//        catch( Exception e )
-//        {
-//            ApplicationUtilities.logException( e );
-//        }
+        try
+        {
+            tree.refreshContent();
+        }
+        
+        catch( Exception e )
+        {
+            ApplicationUtilities.logException( e );
+        }
     }
 
     @Override
@@ -136,19 +134,20 @@ public class PermissionController
     @Override
     public List<ActionButton> getActions() 
     {
-        return Arrays.asList( addItem, saveItem, deleteItem );
+        return Arrays.asList( addItem, editItem, saveItem, deleteItem );
     }
     
     private void initComponents()
     {
         pane.setLeft( tree );
-        pane.setLeft( tree );
-        pane.setLeft( tree );
+        pane.setCenter( groupList );
+        pane.setRight( permissionList );
     }
     
-    private BorderPane pane = new BorderPane();
-    private RoleTree tree = new RoleTree();
-    private GroupList groupList = new GroupList();
+    private BorderPane pane               = new BorderPane();
+    private RoleTree tree                 = new RoleTree();
+    private GroupList groupList           = new GroupList();
+    private PermissionList permissionList = new PermissionList();
     
     
     private ActionButton addItem = new ActionButton( "Novo", "new.png", new ActionButton.ActionHandler()

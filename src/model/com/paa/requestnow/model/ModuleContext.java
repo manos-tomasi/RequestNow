@@ -73,4 +73,29 @@ public class ModuleContext
     {
         return RequestRouteManagerService.getInstance();
     }
+    
+    public RoleManagerService getRoleManager()
+    {
+        return RoleManagerService.getInstance();
+    }
+    
+    public GroupManagerService getGroupManager()
+    {
+        return GroupManagerService.getInstance();
+    }
+    
+    public ActionManagerService getActionManager()
+    {
+        return ActionManagerService.getInstance();
+    }
+    
+    public ActionGroupManagerService getActionGroupManager()
+    {
+        return ActionGroupManagerService.getInstance();
+    }
+    
+    public PermissionManagerService getPermissionManager()
+    {
+        return PermissionManagerService.getInstance();
+    }
 }

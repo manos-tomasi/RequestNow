@@ -7,6 +7,7 @@ package com.paa.requestnow.model.db.transactions;
 
 import com.paa.requestnow.model.data.Group;
 import com.paa.requestnow.model.db.Database;
+import com.paa.requestnow.model.db.Schema.Groups;
 import com.paa.requestnow.model.filter.DefaultFilter;
 import java.util.List;
 
@@ -20,8 +21,18 @@ public class GroupManagerTransactions
 {
     
     @Override
-    public void add(Database db, Group obj) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void add( Database db, Group obj ) throws Exception 
+    {
+        Groups G = Groups.table;
+        
+        String sql = " insert into " + G.name + 
+                     " ( " + G.columns + " ) " + 
+                     " values ( " +
+                     " default ," + 
+                     G.columns.NAME   + " = " + db.quote( obj.getName() )  + ", " +
+                     G.columns.ORIGIN + " = " +db.quote( obj.getOrigin() ) + " ) ";
+
+        db.executeCommand( sql );
     }
 
     @Override

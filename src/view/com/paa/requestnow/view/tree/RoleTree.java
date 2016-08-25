@@ -3,6 +3,7 @@ package com.paa.requestnow.view.tree;
 import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.ResourceLocator;
 import com.paa.requestnow.model.data.Role;
+import java.util.List;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
@@ -81,29 +82,23 @@ public class RoleTree
      */
     private void loadRole( TreeItem<Object> root ) throws Exception
     {
-//        List<Category> categories = com.paa.requestnow.model.ModuleContext.getInstance().getCategoryManager().get();
-//      
-//        for( Category category : categories )
-//        {
-//            TreeItem nodeCategory = new TreeItem( category );
-//            
-//            ImageView imageType = new ImageView();
-//            imageType.setImage( ICON_ROLE );
-//            imageType.setFitHeight( 20 );
-//            imageType.setFitWidth( 20 );
-//            imageType.setCache( true );
-//            imageType.setCacheHint( CacheHint.SPEED );
-//            nodeCategory.setGraphic( imageType ); 
-//            nodeCategory.setExpanded(true);
-//            
-//            if ( mode == MODE_REQUEST || mode == MODE_FIELD  ||
-//                 mode == MODE_TYPE    || mode == MODE_ROUTE  )
-//            {
-//                loadTypes( nodeCategory, category );
-//            }
-//
-//            root.getChildren().add( nodeCategory );
-//        }
+        List<Role> categories = com.paa.requestnow.model.ModuleContext.getInstance().getRoleManager().get();
+      
+        for( Role category : categories )
+        {
+            TreeItem nodeCategory = new TreeItem( category );
+            
+            ImageView imageType = new ImageView();
+            imageType.setImage( ICON_ROLE );
+            imageType.setFitHeight( 20 );
+            imageType.setFitWidth( 20 );
+            imageType.setCache( true );
+            imageType.setCacheHint( CacheHint.SPEED );
+            nodeCategory.setGraphic( imageType ); 
+            nodeCategory.setExpanded(true);
+            
+            root.getChildren().add( nodeCategory );
+        }
     }
         
     /**
