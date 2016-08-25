@@ -1,11 +1,17 @@
 package com.paa.requestnow.panes.entries;
 
+import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.data.Role;
-import com.paa.requestnow.view.tables.TypeRouteTable;
+import com.paa.requestnow.view.editor.RoleEditor;
+import com.paa.requestnow.view.tables.GroupList;
+import com.paa.requestnow.view.tree.RoleTree;
 import com.paa.requestnow.view.util.ActionButton;
+import com.paa.requestnow.view.util.EditorCallback;
+import com.paa.requestnow.view.util.Prompts;
 import java.util.Arrays;
 import java.util.List;
 import javafx.event.Event;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
 
 /**
@@ -15,103 +21,92 @@ public class PermissionController
     implements 
         EntrieController<Role>
 {
-//    private TypeRouteFilter filter =  new TypeRouteFilter();
+
+    public PermissionController() 
+    {
+        initComponents();
+    }
     
     public void addItem() throws Exception 
     {
-//        new TypeRouteEditor( new EditorCallback<TypeRoute>( new TypeRoute() )
-//        {
-//            @Override
-//            public void handle( Event t ) 
-//            {
-//                try
-//                {
+        new RoleEditor( new EditorCallback<Role>( new Role() )
+        {
+            @Override
+            public void handle( Event t ) 
+            {
+                try
+                {
 //                    com.paa.requestnow.model.ModuleContext.getInstance()
 //                                                        .getTypeRouteManager()
 //                                                        .add( source );
-//                    refresh();
-//                }
-//                
-//                catch( Exception e )
-//                {
-//                    ApplicationUtilities.logException( e );
-//                }
-//            }
-//        } ).open();
+                    refresh();
+                }
+                
+                catch( Exception e )
+                {
+                    ApplicationUtilities.logException( e );
+                }
+            }
+        } ).open();
     }
 
     public void editItem() throws Exception 
     {
-//        TypeRoute item = table.getSelectedItem();
-//
-//        if( item != null )
-//        {
-//            new TypeRouteEditor( new EditorCallback<TypeRoute>( item )
-//            {
-//                @Override
-//                public void handle( Event t ) 
-//                {
-//                    try
-//                    {
+        Role item = null;//.getSelectedItem();
+
+        if( item != null )
+        {
+            new RoleEditor( new EditorCallback<Role>( item )
+            {
+                @Override
+                public void handle( Event t ) 
+                {
+                    try
+                    {
 //                        com.paa.requestnow.model.ModuleContext.getInstance()
 //                                                            .getTypeRouteManager()
 //                                                            .update( source );
-//                        refresh();
-//                    }
-//
-//                    catch( Exception e )
-//                    {
-//                        ApplicationUtilities.logException( e );
-//                    }
-//                }
-//            } ).open();
-//        }
-//        
-//        else
-//        {
-//            Prompts.alert( "Selecione uma rota para editar" );
-//        }
+                        refresh();
+                    }
+
+                    catch( Exception e )
+                    {
+                        ApplicationUtilities.logException( e );
+                    }
+                }
+            } ).open();
+        }
+        
+        else
+        {
+            Prompts.alert( "Selecione um Grupo para editar" );
+        }
     }
 
-    public void filterItem() throws Exception 
+    public void saveItem() throws Exception 
     {
-//        new FilterEditor( new EditorCallback<DefaultFilter>( filter )
-//        {
-//            @Override
-//            public void handle( Event t ) 
-//            {
-//                filter = (TypeRouteFilter) source;
-//                
-//                refresh();
-//            }
-//        } ).open();
     }
 
     public void deleteItem() throws Exception 
     {
-//        TypeRoute item = table.getSelectedItem();
-//
-//        if( item != null && item.getState() == TypeRoute.STATE_INACTIVE )
-//        {
-//            Prompts.info( "Rota já encontra-se excluido!" );
-//        }
-//
-//        else if( item == null )
-//        {
-//            Prompts.alert( "Selecione uma rota para excluir!" );
-//        }
-//
-//        else
-//        {
-//            if( Prompts.confirm( "Você tem certeza que deseja excluir o rota\n" + item ) )
-//            {
+        Role item = null;//table.getSelectedItem();
+
+        if( item == null )
+        {
+            Prompts.alert( "Selecione um grupo para excluir!" );
+        }
+
+        else
+        {
+            if( Prompts.confirm( "Você tem certeza que deseja excluir o grupo\n" + item ) )
+            {
 //                com.paa.requestnow.model.ModuleContext.getInstance()
 //                                          .getTypeRouteManager()
 //                                          .delete( item );
-//
-//                refresh();
-//            }
-//        }
+
+                refresh();
+            }
+        }
     }
 
     @Override
@@ -134,17 +129,27 @@ public class PermissionController
     @Override
     public Region getComponent() 
     {
-        return  table;
+        return  pane;
     }
 
     
     @Override
     public List<ActionButton> getActions() 
     {
-        return Arrays.asList( addItem, editItem, deleteItem, filterItem );
+        return Arrays.asList( addItem, saveItem, deleteItem );
     }
     
-    private TypeRouteTable table = new TypeRouteTable();
+    private void initComponents()
+    {
+        pane.setLeft( tree );
+        pane.setLeft( tree );
+        pane.setLeft( tree );
+    }
+    
+    private BorderPane pane = new BorderPane();
+    private RoleTree tree = new RoleTree();
+    private GroupList groupList = new GroupList();
+    
     
     private ActionButton addItem = new ActionButton( "Novo", "new.png", new ActionButton.ActionHandler()
     {
@@ -164,21 +169,21 @@ public class PermissionController
         }
     } );
     
+    private ActionButton saveItem = new ActionButton( "Salvar", "save.png", new ActionButton.ActionHandler() 
+    {
+        @Override
+        public void onEvent( Event t ) throws Exception 
+        {
+            saveItem();
+        }
+    } );
+    
     private ActionButton deleteItem = new ActionButton( "Excluir", "delete.png", new ActionButton.ActionHandler() 
     {
         @Override
         public void onEvent( Event t ) throws Exception
         {
             deleteItem();
-        }
-    } );
-    
-    private ActionButton filterItem = new ActionButton( "Filtro", "search.png", new ActionButton.ActionHandler() 
-    {
-        @Override
-        public void onEvent( Event t ) throws Exception
-        {
-            filterItem();
         }
     } );
 }

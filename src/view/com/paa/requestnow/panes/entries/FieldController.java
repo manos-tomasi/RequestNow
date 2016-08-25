@@ -8,7 +8,7 @@ import com.paa.requestnow.model.data.Type;
 import com.paa.requestnow.model.filter.FieldFilter;
 import com.paa.requestnow.view.editor.FieldEditor;
 import com.paa.requestnow.view.util.ActionButton;
-import com.paa.requestnow.view.util.CategoryTree;
+import com.paa.requestnow.view.tree.CategoryTree;
 import com.paa.requestnow.view.util.EditorCallback;
 import com.paa.requestnow.view.util.Prompts;
 import java.util.Arrays;

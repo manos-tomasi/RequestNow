@@ -2,8 +2,6 @@ package com.paa.requestnow.panes.entries;
 
 import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.data.Core;
-import com.paa.requestnow.model.data.User;
-import com.paa.requestnow.panes.LegendPane;
 import com.paa.requestnow.panes.modules.AbstractModulesPane;
 import java.util.List;
 import javafx.scene.control.Button;
@@ -101,26 +99,18 @@ public class EntrieCenterPane <T extends Core>
     public void resizeComponents( double height, double width )
     {
         getChildren().clear();
-        getChildren().addAll( controller.getComponent(), legendPane );
+        getChildren().addAll( controller.getComponent() );
         
-        legendPane.setPrefWidth( width );
-        legendPane.setLayoutY( height - legendPane.getHeight() );
-        
-        controller.getComponent().setPrefSize( width, height - legendPane.getHeight() );
+        controller.getComponent().setPrefSize( width, height );
         
         requestLayout();
     }
     
     private void initComponents()
     {
-        legendPane.addItems( new LegendPane.LegendItem( User.STATES[ User.STATE_ACTIVE ],   "finish.png" ),
-                             new LegendPane.LegendItem( User.STATES[ User.STATE_INACTIVE ], "delete.png" ) );
         
-        getChildren().addAll( controller.getComponent(), legendPane );
+        getChildren().addAll( controller.getComponent() );
     }
-    
-    
-    private LegendPane legendPane =  new LegendPane();
     
     private UserController   userController       = new UserController();
     private SectorController sectorController     = new SectorController();
@@ -128,7 +118,7 @@ public class EntrieCenterPane <T extends Core>
     private TypeController typeController         = new TypeController();
     private FieldController fieldController       = new FieldController();
     private TypeRouteController routeController       = new TypeRouteController();
-    private PermissionController permissionController = new TypeRouteController();
+    private PermissionController permissionController = new PermissionController();
     
     private EntrieController controller = userController;
 }

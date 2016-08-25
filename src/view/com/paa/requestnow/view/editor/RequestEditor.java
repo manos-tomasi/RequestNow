@@ -3,7 +3,7 @@ package com.paa.requestnow.view.editor;
 import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.data.Request;
 import com.paa.requestnow.view.editor.panes.FieldsPane;
-import com.paa.requestnow.view.util.CategoryTree;
+import com.paa.requestnow.view.tree.CategoryTree;
 import com.paa.requestnow.view.util.EditorCallback;
 import java.util.List;
 import javafx.event.Event;

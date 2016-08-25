@@ -6,7 +6,7 @@ import com.paa.requestnow.model.data.Category;
 import com.paa.requestnow.view.editor.CategoryEditor;
 import com.paa.requestnow.view.util.ActionButton;
 import com.paa.requestnow.view.util.ActionButton.ActionHandler;
-import com.paa.requestnow.view.util.CategoryTree;
+import com.paa.requestnow.view.tree.CategoryTree;
 import com.paa.requestnow.view.util.EditorCallback;
 import com.paa.requestnow.view.util.Prompts;
 import java.util.Arrays;

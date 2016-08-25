@@ -1,4 +1,4 @@
-package com.paa.requestnow.view.util;
+package com.paa.requestnow.view.tree;
 
 import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.ResourceLocator;
@@ -92,8 +92,8 @@ public class CategoryTree
             imageRoot.setImage( ICON_ROOT );
             imageRoot.setFitHeight( 20 );
             imageRoot.setFitWidth( 20 );
-//            imageRoot.setCache( true );
-//            imageRoot.setCacheHint( CacheHint.SPEED );
+            imageRoot.setCache( true );
+            imageRoot.setCacheHint( CacheHint.SPEED );
             rootItem.setGraphic( imageRoot ); 
             
             loadCategory( rootItem);
@@ -124,8 +124,8 @@ public class CategoryTree
             imageType.setImage( ICON_CATEGORY );
             imageType.setFitHeight( 20 );
             imageType.setFitWidth( 20 );
-//            imageType.setCache( true );
-//            imageType.setCacheHint( CacheHint.SPEED );
+            imageType.setCache( true );
+            imageType.setCacheHint( CacheHint.SPEED );
             nodeCategory.setGraphic( imageType ); 
             nodeCategory.setExpanded(true);
             
@@ -157,8 +157,8 @@ public class CategoryTree
               imageCategory.setImage( ICON_TYPE );
               imageCategory.setFitHeight( 20 );
               imageCategory.setFitWidth( 20 );
-//              imageCategory.setCache( true );
-//              imageCategory.setCacheHint( CacheHint.SPEED );
+              imageCategory.setCache( true );
+              imageCategory.setCacheHint( CacheHint.SPEED );
               nodeType.setGraphic( imageCategory );
               nodeType.setExpanded( true );
               
@@ -195,8 +195,8 @@ public class CategoryTree
               imageField.setImage( ICON_FIELDS );
               imageField.setFitHeight( 20 );
               imageField.setFitWidth( 20 );
-//              imageField.setCache( true );
-//              imageField.setCacheHint( CacheHint.SPEED );
+              imageField.setCache( true );
+              imageField.setCacheHint( CacheHint.SPEED );
               nodeField.setGraphic( imageField ); 
 
               item.getChildren().add( nodeField );
