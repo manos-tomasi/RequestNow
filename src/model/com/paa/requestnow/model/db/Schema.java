@@ -668,6 +668,258 @@ public class Schema
         }
     }
     
+    public static class Groups
+    {
+        public static Groups alias( String alias )
+        {
+            return new Groups( alias );
+        }
+        
+        public  class Columns
+        {
+            public String ID;
+            public String NAME;
+            public String ORIGIN;
+            
+            public Columns( String alias ) 
+            {
+                ID           = alias + "id";
+                NAME         = alias + "name";
+                ORIGIN       = alias + "origin";
+            }
+            
+            @Override
+            public String toString() 
+            {
+                return ID           + ", " +
+                       NAME         + ", " +
+                       ORIGIN;
+            }
+        }
+        
+        private final String TABLE_NAME =  "groups";
+
+        public String name = TABLE_NAME;
+
+        public final String select;
+        
+        public final GroupFetcher fetcher = new GroupFetcher();
+        
+        public static final Groups table = new Groups( null );
+        
+        public final Columns columns;
+
+        private Groups( String alias ) 
+        {
+            this.name = alias != null ? TABLE_NAME + " " + alias : TABLE_NAME;
+            
+            columns = new Columns( alias != null ? alias + "." : "" );
+            
+            select = "select " + columns + " from " + this.name;
+        }
+    }
+    
+    public static class Roles
+    {
+        public static Roles alias( String alias )
+        {
+            return new Roles( alias );
+        }
+        
+        public  class Columns
+        {
+            public String ID;
+            public String NAME;
+            public String STATE;
+            
+            public Columns( String alias ) 
+            {
+                ID           = alias + "id";
+                NAME         = alias + "name";
+                STATE        = alias + "state";
+            }
+            
+            @Override
+            public String toString() 
+            {
+                return ID           + ", " +
+                       NAME         + ", " +
+                       STATE;
+            }
+        }
+        
+        private final String TABLE_NAME =  "roles";
+
+        public String name = TABLE_NAME;
+
+        public final String select;
+        
+        public final RoleFetcher fetcher = new RoleFetcher();
+        
+        public static final Roles table = new Roles( null );
+        
+        public final Columns columns;
+
+        private Roles( String alias ) 
+        {
+            this.name = alias != null ? TABLE_NAME + " " + alias : TABLE_NAME;
+            
+            columns = new Columns( alias != null ? alias + "." : "" );
+            
+            select = "select " + columns + " from " + this.name;
+        }
+    }
+    
+    public static class Actions
+    {
+        public static Actions alias( String alias )
+        {
+            return new Actions( alias );
+        }
+        
+        public  class Columns
+        {
+            public String ID;
+            public String NAME;
+            
+            public Columns( String alias ) 
+            {
+                ID           = alias + "id";
+                NAME         = alias + "name";
+            }
+            
+            @Override
+            public String toString() 
+            {
+                return ID           + ", " +
+                       NAME         ;
+            }
+        }
+        
+        private final String TABLE_NAME =  "actions";
+
+        public String name = TABLE_NAME;
+
+        public final String select;
+        
+        public final ActionFetcher fetcher = new ActionFetcher();
+        
+        public static final Actions table = new Actions( null );
+        
+        public final Columns columns;
+
+        private Actions( String alias ) 
+        {
+            this.name = alias != null ? TABLE_NAME + " " + alias : TABLE_NAME;
+            
+            columns = new Columns( alias != null ? alias + "." : "" );
+            
+            select = "select " + columns + " from " + this.name;
+        }
+    }
+    
+    public static class ActionsGroups
+    {
+        public static ActionsGroups alias( String alias )
+        {
+            return new ActionsGroups( alias );
+        }
+        
+        public  class Columns
+        {
+            public String ID;
+            public String REF_ACTION;
+            public String REF_GROUP;
+            
+            public Columns( String alias ) 
+            {
+                ID           = alias + "id";
+                REF_ACTION   = alias + "ref_action";
+                REF_GROUP    = alias + "ref_group";
+            }
+            
+            @Override
+            public String toString() 
+            {
+                return ID           + ", " +
+                       REF_ACTION   + ", " +
+                       REF_GROUP    ;
+            }
+        }
+        
+        private final String TABLE_NAME =  "actions_groups";
+
+        public String name = TABLE_NAME;
+
+        public final String select;
+        
+        public final ActionGroupFetcher fetcher = new ActionGroupFetcher();
+        
+        public static final ActionsGroups table = new ActionsGroups( null );
+        
+        public final Columns columns;
+
+        private ActionsGroups( String alias ) 
+        {
+            this.name = alias != null ? TABLE_NAME + " " + alias : TABLE_NAME;
+            
+            columns = new Columns( alias != null ? alias + "." : "" );
+            
+            select = "select " + columns + " from " + this.name;
+        }
+    }
+    
+    public static class Permissions
+    {
+        public static Permissions alias( String alias )
+        {
+            return new Permissions( alias );
+        }
+        
+        public  class Columns
+        {
+            public String ID;
+            public String REF_ACTION_GROUP;
+            public String REF_ROLE;
+            
+            public Columns( String alias ) 
+            {
+                ID               = alias + "id";
+                REF_ACTION_GROUP = alias + "ref_action_group";
+                REF_ROLE         = alias + "ref_role";
+            }
+            
+            @Override
+            public String toString() 
+            {
+                return ID               + ", " +
+                       REF_ACTION_GROUP + ", " +
+                       REF_ROLE    ;
+            }
+        }
+        
+        private final String TABLE_NAME =  "permissions";
+
+        public String name = TABLE_NAME;
+
+        public final String select;
+        
+        public final PermissionFetcher fetcher = new PermissionFetcher();
+        
+        public static final Permissions table = new Permissions( null );
+        
+        public final Columns columns;
+
+        private Permissions( String alias ) 
+        {
+            this.name = alias != null ? TABLE_NAME + " " + alias : TABLE_NAME;
+            
+            columns = new Columns( alias != null ? alias + "." : "" );
+            
+            select = "select " + columns + " from " + this.name;
+        }
+    }
+    
     public static class Attachments
     {
         public static Attachments alias( String alias )
