@@ -23,7 +23,9 @@ public class RequestRoute
     public static final int APROVED  = 2;
     public static final int WAINTING = 3;
     public static final int STOPED   = 4;
-
+    
+    public static final String[] STATES = { "Cancelada", "Reprovada", "Aprovada", "Aguardando despachos", "Aguardando aprovação" };
+    
     public RequestRoute() {}
 
     public int getRequest()

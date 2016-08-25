@@ -19,8 +19,8 @@ public class RequestRouteFilter
     
     @Override
     public List<FilterItem> getComponents() {
-                return Arrays.asList(   new FilterItem( STATE,     "Situação",   "com.paa.requestnow.view.selectors.StateSelector" ),
-                                        new FilterItem( REQUEST,   "Requisição", "com.paa.requestnow.view.selectors.RequestSelecotr" ),
+                return Arrays.asList(   new FilterItem( STATE,     "Situação",   "com.paa.requestnow.view.selectors.RequestRouteStateSelector" ),
+                                        new FilterItem( REQUEST,   "Requisição", "com.paa.requestnow.view.selectors.RequestSelector" ),
                                         new FilterItem( IN,        "Entrada",    "com.paa.requestnow.view.util.DateBetweenField" ),
                                         new FilterItem( OUT,       "Saída",      "com.paa.requestnow.view.util.DateBetweenField" ),
                                         new FilterItem( USER,      "Usuário",    "com.paa.requestnow.view.selectors.UserSelector" ));

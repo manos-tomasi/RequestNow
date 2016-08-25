@@ -191,4 +191,16 @@ public class RequestManagerTransactions
         
         return db.fetchAll(sql.toString() , S.fetcher );
     }
+    
+    public Type getType( Database db, int request ) throws Exception
+    {
+        Schema.Types    T = Schema.Types.alias( "t" );
+        Schema.Requests R = Schema.Requests.alias( "r" );
+        
+        String sql = T.select     + " , " + R.name         + " WHERE " +
+                     T.columns.ID + " = " + R.columns.TYPE + " AND "   +
+                     R.columns.ID + " = " + request;
+        
+        return db.fetchOne( sql, T.fetcher );
+    }
 }

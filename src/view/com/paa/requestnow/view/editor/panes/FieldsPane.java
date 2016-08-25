@@ -12,6 +12,7 @@ import com.paa.requestnow.view.util.LabelField;
 import com.paa.requestnow.view.util.MaskTextField;
 import com.paa.requestnow.view.util.NumberTextField;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -31,8 +32,8 @@ public class FieldsPane
         extends 
             ScrollPane
 {
-    private HashMap< Field, Node > elements   = new HashMap();
-    private RequestController      controller = RequestController.getInstance();
+    private Map< Field, Node >  elements = new LinkedHashMap();
+    private RequestController controller = RequestController.getInstance();
     
     public FieldsPane() 
     {
