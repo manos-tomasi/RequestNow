@@ -1,3 +1,8 @@
+CREATE TABLE roles (
+    id SERIAL NOT NULL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    state INT NOT NULL );
+
 CREATE TABLE categories (
   id SERIAL NOT NULL PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
@@ -95,11 +100,6 @@ CREATE TABLE locks (
   ref_request_route INT NOT NULL REFERENCES requests_routes (id),
   ref_user INT NOT NULL REFERENCES users (id) );
 
-CREATE TABLE roles (
-    id SERIAL NOT NULL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    state INT NOT NULL );
-
 CREATE TABLE groups (
     id SERIAL NOT NULL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -114,12 +114,7 @@ CREATE TABLE actions_groups (
     ref_action INT NOT NULL REFERENCES actions (id),
     ref_group  INT NOT NULL REFERENCES groups  (id) );
 
-CREATE TABLE roles (
-    id SERIAL NOT NULL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL ,
-    state int not null);
-
 CREATE TABLE permissions (
     id SERIAL NOT NULL PRIMARY KEY,
-    ref_action_group INT NOT NULL REFERENCES actions_group (id),
+    ref_action_group INT NOT NULL REFERENCES actions_groups (id),
     ref_role  INT NOT NULL REFERENCES roles  (id) );
