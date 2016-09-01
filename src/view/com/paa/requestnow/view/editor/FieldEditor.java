@@ -35,11 +35,6 @@ public class FieldEditor
     @Override
     protected void validadeInput( List<String> erros ) throws Exception 
     {
-        if( stateField.getSelectedIndex() == -1 )
-        {
-            erros.add("Situação é requerida");
-        }
-        
         if( ! labelField.isValid() )
         {
             erros.add("Label é requerido");
@@ -55,7 +50,6 @@ public class FieldEditor
     protected void obtainInput() 
     {
         source.setLabel( labelField.getValue() );
-        source.setState( stateField.getSelectedIndex() );
         source.setRequired( requeriedField.isYesOption() );
         source.setType( handlerField.getSelectedIndex() != -1 ? handlerField.getSelected().getId() : -1 );
         source.setTypeRequest( typeField.getSelectedIndex() != -1 ? typeField.getSelected().getId() : 0 );
@@ -64,7 +58,7 @@ public class FieldEditor
     @Override
     protected void resize() 
     {
-        stateField.setPrefWidth( getWidth() );
+        requeriedField.setPrefWidth( getWidth() );
         getDialogPane().requestLayout();
     }
 
@@ -74,7 +68,6 @@ public class FieldEditor
         try
         {
             labelField.setText( source.getLabel() );
-            stateField.setSelectedIndex( source.getState() );
             requeriedField.setOption( source.isRequired() );
             handlerField.setSelectedIndex( source.getType() );
             typeField.setSelected( com.paa.requestnow.model.ModuleContext
@@ -109,9 +102,6 @@ public class FieldEditor
         gridPane.add( lbRequired,       0, 3, 1, 1 );
         gridPane.add( requeriedField,   1, 3, 3, 1 );
         
-        gridPane.add( lbState,          0, 4, 1, 1 );
-        gridPane.add( stateField,       1, 4, 3, 1 );
-        
         getDialogPane().setContent( gridPane );
     
     }
@@ -119,9 +109,6 @@ public class FieldEditor
     private GridPane gridPane            = new GridPane();
     private LabelField lbLabel           = new LabelField( "Label", true );
     private MaskTextField labelField     = new MaskTextField();
-    
-    private LabelField lbState           = new LabelField( "Situação", true );
-    private StateSelector stateField     = new StateSelector();
     
     private LabelField lbType            = new LabelField( "Tipo Requisição", true );
     private TypeSelector typeField       = new TypeSelector();

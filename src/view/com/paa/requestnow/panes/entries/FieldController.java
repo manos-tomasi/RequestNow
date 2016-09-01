@@ -5,7 +5,6 @@ import com.paa.requestnow.model.ResourceLocator;
 import com.paa.requestnow.model.data.Category;
 import com.paa.requestnow.model.data.Field;
 import com.paa.requestnow.model.data.Type;
-import com.paa.requestnow.model.filter.FieldFilter;
 import com.paa.requestnow.view.editor.FieldEditor;
 import com.paa.requestnow.view.util.ActionButton;
 import com.paa.requestnow.view.tree.CategoryTree;
@@ -53,12 +52,6 @@ public class FieldController
                 {
                     try
                     {
-                        //substituir por procedure()
-                        source.setSequence( com.paa.requestnow.model.ModuleContext
-                                                                        .getInstance()
-                                                                        .getFieldManager()
-                                                                        .getFieldsType( field.getTypeRequest() ).size() );
-                        
                         com.paa.requestnow.model.ModuleContext.getInstance()
                                                             .getFieldManager()
                                                             .add( source );
@@ -258,6 +251,24 @@ public class FieldController
     }
     
     
+    private void showType()
+    {
+        try
+        {
+            Type type = tree.getSelectedType();
+            
+            if ( type != null )
+            {
+                engine.load( ResourceLocator.getInstance().getWebResource( "type.html" ) );
+                
+                engine.documentProperty().addListener( (s) -> engine.executeScript( "setType( " + type.toJson() +" );" ) );
+            }
+        }
+        
+        catch ( Exception e) {/*ignore*/}
+    }
+    
+    
     @Override
     public void refresh() 
     {
@@ -294,7 +305,6 @@ public class FieldController
         borderPane.setLeft( tree );
         borderPane.setCenter( view );
                 
-//        engine.load( ResourceLocator.getInstance().getWebResource( "field.html" ) );
         engine.setJavaScriptEnabled( true );
         
         engine.getLoadWorker().stateProperty().addListener( new ChangeListener<Worker.State>() 
@@ -313,6 +323,15 @@ public class FieldController
             public void handle( Event t )
             {
                 showField();
+            }
+        } );
+        
+        tree.addEventHandler( CategoryTree.Events.ON_SELECT_TYPE, new EventHandler<Event>() 
+        {
+            @Override
+            public void handle( Event t )
+            {
+                showType();
             }
         } );
         

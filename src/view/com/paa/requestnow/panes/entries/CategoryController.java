@@ -179,7 +179,7 @@ public class CategoryController
             }
         } );
         
-        tree.addEventHandler( CategoryTree.Events.ON_SELECT_FIELD, new EventHandler<Event>() 
+        tree.addEventHandler( CategoryTree.Events.ON_SELECT_CATEGORY, new EventHandler<Event>() 
         {
             @Override
             public void handle( Event t )

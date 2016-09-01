@@ -55,4 +55,25 @@ public class Type
     {
         return name;
     }
+    
+    public String toJson()
+    {
+        try
+        {
+            return "{ " +
+                   " 'id' :         '" + id              + "'," +
+                   " 'name' :       '" + name            + "'," +
+                   " 'info' :       '" + info            + "'," +
+                   " 'category': '" + com.paa.requestnow.model.ModuleContext.getInstance().getCategoryManager().get( category )  + "'," +
+                   " 'state' :      '" + STATES[ state ] + "' " +
+                    "}";
+        }
+        
+        catch ( Exception e )
+        {
+            e.printStackTrace();
+        }
+        
+        return null;
+    }
 }
