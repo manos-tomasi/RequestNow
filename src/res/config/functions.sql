@@ -81,24 +81,27 @@ create trigger adjustSequenceFields before insert or update on fields for each r
 
 
 /*############################################################################*/
-/*                  Ajusta Sequencia ao deletar os campos                     */
+/*                  Ajusta Sequencia ao deletar os rotas                      */
 /*############################################################################*/
 
--- create or replace function adjustSequenceFields() returns trigger as 
--- $body$
--- declare
--- 	field fields%rowtype;
--- begin
---    
---     for field in select * from fields where ref_type = new.ref_type and sequence > new.sequence and state = 0 order by sequence
---     loop
---         update fields set sequence = ( field.sequence - 1 ) where field.id;
---     end loop;
---     
---     return;
--- 
--- end
--- $body$ 
--- 	language plpgsql;
--- 
--- create trigger adjustSequenceFields after delete on fields for each row execute procedure adjustSequenceFields();
+create or replace function adjustSequenceRoutes() returns trigger as 
+$body$
+declare
+	route fields%types_routes;
+begin
+   
+    if ( TG_OP = 'UPDATE' and new.state = 1 )then 
+        for route in select * from types_routes where ref_type = new.ref_type and sequence > new.sequence and state = 0 order by sequence
+        loop
+            update types_routes set sequence = ( route.sequence - 1 ) where route.id = id;
+        end loop;
+    end if;
+
+    return new;
+
+end
+$body$ 
+	language plpgsql;
+
+drop trigger adjustSequenceRoutes on types_routes;
+create trigger adjustSequenceRoutes before insert or update on types_routes for each row execute procedure adjustSequenceRoutes();
