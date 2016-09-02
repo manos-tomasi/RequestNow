@@ -245,3 +245,13 @@ end
 $body$ 
 	language plpgsql;
 
+/*############################################################################*/
+/*                  busca o typo de requisição de acordo com a requisição     */
+/*############################################################################*/
+
+create or replace function getTypeByRequest( id in integer ) returns setof types as
+          'select t.* 
+            from types t
+           inner join requests r on ( t.id = r.ref_type )
+           where r.id = $1;'
+language sql;
