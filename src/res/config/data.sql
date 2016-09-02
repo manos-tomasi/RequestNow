@@ -1,5 +1,5 @@
-INSERT INTO categories VALUES ( 1 , 'Financeiro' , 1, '' );
-INSERT INTO categories VALUES ( 2 , 'Academico'  , 1, 'asdasd' );
+INSERT INTO categories VALUES ( 1 , 'Financeiro' , 0, '' );
+INSERT INTO categories VALUES ( 2 , 'Academico'  , 0, 'asdasd' );
 
 SELECT pg_catalog.setval('categories_id_seq', 2, true);
 
@@ -12,11 +12,11 @@ SELECT pg_catalog.setval('types_id_seq', 3, true);
 INSERT INTO fields VALUES (1, 'Data Solicitação', 3, 1, 0, 1, 0);
 INSERT INTO fields VALUES (2, 'Data Solicitação', 3, 1, 0, 2, 0);
 INSERT INTO fields VALUES (3, 'Data Solicitação', 3, 1, 0, 3, 0);
-INSERT INTO fields VALUES (4, 'Data Solicitação', 3, 1, 0, 1, 0);
-INSERT INTO fields VALUES (5, 'Text', 0, 1, 0, 1, 0);
-INSERT INTO fields VALUES (6, 'Teste', 0, 0, 0, 1, 0);
-INSERT INTO fields VALUES (7, 'Ttttt', 4, 0, 0, 1, 0);
-INSERT INTO fields VALUES (8, 'aaaa', 5, 0, 0, 1, 0);
+INSERT INTO fields VALUES (4, 'Data Solicitação', 3, 1, 0, 1, 1);
+INSERT INTO fields VALUES (5, 'Text', 0, 1, 0, 1, 1);
+INSERT INTO fields VALUES (6, 'Teste', 0, 0, 0, 1, 2);
+INSERT INTO fields VALUES (7, 'Ttttt', 4, 0, 0, 1, 3);
+INSERT INTO fields VALUES (8, 'aaaa', 5, 0, 0, 1,4);
 
 SELECT pg_catalog.setval('fields_id_seq', 8, true);
 SELECT pg_catalog.setval('fields_values_id_seq', 1, false);
