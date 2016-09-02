@@ -29,30 +29,50 @@ public class GroupManagerTransactions
                      " ( " + G.columns + " ) " + 
                      " values ( " +
                      " default ," + 
-                     G.columns.NAME   + " = " + db.quote( obj.getName() )  + ", " +
-                     G.columns.ORIGIN + " = " +db.quote( obj.getOrigin() ) + " ) ";
+                     G.columns.NAME   + " = " + db.quote( obj.getName() )   + ", " +
+                     G.columns.ORIGIN + " = " + db.quote( obj.getOrigin() ) + " ) ";
 
         db.executeCommand( sql );
     }
 
     @Override
-    public void update(Database db, Group obj) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void update(Database db, Group obj) throws Exception 
+    {
+        Groups G = Groups.table;
+        
+        String sql = " update "       + G.name + " set " +
+                     G.columns.NAME   + " = "  + db.quote( obj.getName() )  + ", " +
+                     G.columns.ORIGIN + " = "  +db.quote( obj.getOrigin() ) + " where " +
+                     G.columns.ID     + " = " + obj.getId();
+
+        db.executeCommand( sql );
     }
 
     @Override
-    public Group get(Database db, int id) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Group get(Database db, int id) throws Exception 
+    {
+        Groups G = Groups.table;
+        
+        String sql = " select " + G.columns    + " from " + G.name 
+                   + " where "  + G.columns.ID + " = "    + id;
+
+        return db.fetchOne(sql, G.fetcher);
     }
 
     @Override
-    public List get(Database db) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List get(Database db, DefaultFilter filter) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    public List get(Database db) throws Exception 
+    {
     
+        Groups G = Groups.table;
+        
+        String sql = " select " + G.columns + " from " + G.name;
+
+        return db.fetchAll(sql, G.fetcher);
+    }
+
+    @Override
+    public List get(Database db, DefaultFilter filter) throws Exception 
+    {
+        throw new InternalError("Method not implemented!");
+    }   
 }
