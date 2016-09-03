@@ -51,7 +51,7 @@ public class UserReport
                             user.getCpf().replaceAll( "([0-9]{3})([0-9]{3})([0-9]{3})([0-9]{2})$", "$1.$2.$3-$4" ),
                             user.getRg(),
                             User.GENDER[ user.getGender() ],
-                            User.ROLE[ user.getRole() ] );
+                            user.getRole() );
         }
 
         document.add( table );

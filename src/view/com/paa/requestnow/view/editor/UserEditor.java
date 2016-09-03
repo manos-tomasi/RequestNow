@@ -70,7 +70,7 @@ public class UserEditor
             erros.add( "Sexo" );
         
         if( roleField.getSelected() == null )
-            erros.add( "Categoria" );
+            erros.add( "Função" );
         
         if( sectorField.getSelected() == null )
             erros.add( "Sector" );
@@ -236,7 +236,7 @@ public class UserEditor
     private LabelField lbPassword        = new LabelField( "Senha",true );
     private PasswordField passwordField  = new PasswordField();
     
-    private LabelField lbRole            = new LabelField( "Categoria", true );
+    private LabelField lbRole            = new LabelField( "Função", true );
     private RoleSelector roleField       = new RoleSelector();
     
     private LabelField lbSector          = new LabelField( "Sector", true );

@@ -75,7 +75,7 @@ public class UserTable
                 cell.setText( User.GENDER[ value ] );
             }
         } ),
-        new ItemColumn( "Categoria", "role",new ColumnCallback<User, Integer>()  
+        new ItemColumn( "Função", "role",new ColumnCallback<User, Integer>()  
         {
             @Override
             public void renderer(Integer value, Labeled cell) 
