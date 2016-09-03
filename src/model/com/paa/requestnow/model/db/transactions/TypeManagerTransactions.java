@@ -5,6 +5,8 @@ import com.paa.requestnow.model.data.Option;
 import com.paa.requestnow.model.data.Type;
 import com.paa.requestnow.model.db.Database;
 import com.paa.requestnow.model.db.Schema;
+import com.paa.requestnow.model.db.Schema.Fields;
+import com.paa.requestnow.model.db.Schema.TypesRoutes;
 import com.paa.requestnow.model.filter.DefaultFilter;
 import com.paa.requestnow.model.filter.TypeFilter;
 import java.util.List;
@@ -44,9 +46,9 @@ public class TypeManagerTransactions
         Schema.Types S = Schema.Types.table;
         
         String sql = " update " + S.name       + " set " +
-                        S.columns.NAME         + " = " + db.quote( obj.getName() )      + ", " +
-                        S.columns.STATE        + " = " + obj.getState()                 + ", " +
-                        S.columns.INFO         + " = " + obj.getInfo()                  + ", " +
+                        S.columns.NAME         + " = " + db.quote( obj.getName() )  + ", " +
+                        S.columns.STATE        + " = " + obj.getState()             + ", " +
+                        S.columns.INFO         + " = " + db.quote( obj.getInfo() )  + "" +
                      " where " + 
                         S.columns.ID           + " = " + obj.getId();
         
@@ -79,11 +81,11 @@ public class TypeManagerTransactions
     @Override
     public List get(Database db) throws Exception
     {
-        Schema.Types S = Schema.Types.table;
+        Schema.Types T = Schema.Types.table;
         
-        String sql = S.select + " where state = " +  Type.STATE_ACTIVE;
+        String sql = T.select + " where " + T.columns.STATE + " = " +  Type.STATE_ACTIVE;
         
-        return db.fetchAll(sql, S.fetcher );
+        return db.fetchAll(sql, T.fetcher );
     }
     
     @Override
@@ -136,4 +138,46 @@ public class TypeManagerTransactions
         
         return db.fetchAll(sql.toString() , S.fetcher );
     }   
+    
+    public String getJson( Database db, Type type ) throws Exception
+    {
+        if ( type == null )
+        {
+            throw new IllegalArgumentException( "Type cannot be null!" );
+        }
+         
+        return db.queryString( "select getJson( " + type.getId() + ", 'type' )" );
+    }
+    
+    public boolean hasDependences( Database db, Type type ) throws Exception
+    {
+        if ( type == null )
+        {
+            throw new IllegalArgumentException( "Type cannot be null!" );
+        }
+        
+        Fields      F = Fields.table;
+        TypesRoutes R = TypesRoutes.table;
+
+        String sql;
+        boolean hasDependence;
+        
+        sql = "select count(*) from " + F.name + 
+                     " where " +
+                     F.columns.STATE    + " = " + Type.STATE_ACTIVE +
+                     " and " +
+                     F.columns.TYPE_REQUEST + " = " + type.getId();
+        
+        hasDependence = db.queryInteger( sql ) > 0;
+        
+        sql = "select count(*) from " + R.name + 
+                     " where " +
+                     R.columns.STATE + " = " + Type.STATE_ACTIVE +
+                     " and " +
+                     R.columns.TYPE  + " = " + type.getId();
+        
+        hasDependence |= db.queryInteger( sql ) > 0;
+        
+        return hasDependence;
+    }
 }

@@ -2,8 +2,8 @@ function setCategory( category )
 {
     $('#category_id').html( category[ 'id'  ] );
     $('#category_name').html( category[ 'name'  ] );
-    $('#category_state').html( category[ 'state' ] );
-    $('#category_info').html( category[ 'info'  ].toString().replace( /\"/g , "'" ) );
+    $('#category_types').html( composeList( category[ 'types' ] ) );
+    $('#category_info').html( composeInfo( category[ 'info'  ] ) );
 }
 
 function setField( field )
@@ -19,9 +19,26 @@ function setField( field )
 
 function setType( type )
 {
-    $('#type_id').html( type[ 'id'  ] );
-    $('#type_name').html( type[ 'name'  ] );
-    $('#type_state').html( type[ 'state' ] );
-    $('#type_category').html( type[ 'category' ] );
-    $('#type_info').html( type[ 'info'  ].toString().replace( /\"/g , "'" ) );
+    if ( type )
+    {
+        $('#type_id').html( type[ 'id'  ] );
+        $('#type_name').html( type[ 'name'  ] );
+        $('#type_category').html( type[ 'category' ] );
+        $('#type_field').html( composeList( type[ 'fields' ] ) );
+        $('#type_route').html( composeList( type[ 'routes' ] ) );
+        $('#type_info').html( composeInfo( type[ 'info'  ] ) );
+    }
+}
+
+function composeList( list )
+{
+    if ( list ) return list.toString()
+                            .replace( /{|}/g, "" )
+                            .replace( /,/g, "<br>" )
+                            .replace( /\"/g , "" );
+}
+
+function composeInfo( info )
+{
+    if( info ) return info.toString().replace( /\"/g , "'" );
 }

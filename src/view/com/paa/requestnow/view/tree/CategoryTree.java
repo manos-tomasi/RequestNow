@@ -75,7 +75,11 @@ public class CategoryTree
      */
     public void refreshContent()
     {
+        Object node = getSelectedNode();
+        
         loadData();
+        
+        setSelectedNode( node );
     }
     
     /**
@@ -315,9 +319,9 @@ public class CategoryTree
 
     public void setSelectedNode( Object o )
     {
-        if ( o != null )
+        if ( o instanceof TreeItem )
         {
-           getSelectionModel().select( new TreeItem(o) );
+           getSelectionModel().select( (TreeItem) o ); 
         }
     }
     
@@ -327,15 +331,20 @@ public class CategoryTree
      */
     public Object getSelectedNode()
     {
+        return getSelectionModel().getSelectedItem();
+    }
+    
+    public Object getSelectedObject()
+    {
         TreeItem item = getSelectionModel().getSelectedItem();
-        
+            
         if( item != null )
         {
             if( item.getValue() instanceof Type )
             {
                 return (Type) item.getValue();
             }
-            
+    
             if( item.getValue() instanceof Category )
             {
                 return (Category) item.getValue();
@@ -345,7 +354,7 @@ public class CategoryTree
             {
                 return (TypeRoute) item.getValue();
             }
-            
+    
             if( item.getValue() instanceof Field )
             {
                 return (Field) item.getValue();

@@ -6,6 +6,7 @@ import com.paa.requestnow.model.filter.CategoryFilter;
 import com.paa.requestnow.model.filter.DefaultFilter;
 import com.paa.requestnow.model.db.Database;
 import com.paa.requestnow.model.db.Schema;
+import com.paa.requestnow.model.db.Schema.Types;
 import java.util.List;
 
 /**
@@ -115,5 +116,33 @@ public class CategoryManagerTransactions
         });
         
         return db.fetchAll(sql.toString() , S.fetcher );
-    }    
+    } 
+    
+    public String getJson( Database db, Category category ) throws Exception
+    {
+        if ( category == null )
+        {
+            throw new IllegalArgumentException( "Category cannot be null!" );
+        }
+         
+        return db.queryString( "select getJson( " + category.getId() + ", 'category' )" );
+    }
+    
+    public boolean hasDependences( Database db, Category category ) throws Exception
+    {
+        if ( category == null )
+        {
+            throw new IllegalArgumentException( "Category cannot be null!" );
+        }
+        
+        Types T = Types.table;
+        
+        String sql = "select count(*) from " + T.name + 
+                     " where " +
+                     T.columns.STATE    + " = " + Category.STATE_ACTIVE +
+                     " and " +
+                     T.columns.CATEGORY + " = " + category.getId();
+        
+        return db.queryInteger( sql ) > 0;
+    }
 }

@@ -1,5 +1,6 @@
 package com.paa.requestnow.panes.entries;
 
+import com.paa.requestnow.control.util.JsonUtilities;
 import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.ResourceLocator;
 import com.paa.requestnow.model.data.Category;
@@ -243,7 +244,7 @@ public class FieldController
             {
                 engine.load( ResourceLocator.getInstance().getWebResource( "category.html" ) );
                 
-                engine.documentProperty().addListener( (s) -> engine.executeScript( "setCategory( " + category.toJson() +" );" ) );
+                engine.documentProperty().addListener( (s) -> engine.executeScript( "setCategory( " + JsonUtilities.getCategory( category ) +" );" ) );
             }
         }
         
@@ -261,7 +262,7 @@ public class FieldController
             {
                 engine.load( ResourceLocator.getInstance().getWebResource( "type.html" ) );
                 
-                engine.documentProperty().addListener( (s) -> engine.executeScript( "setType( " + type.toJson() +" );" ) );
+                engine.documentProperty().addListener( (s) -> engine.executeScript( "setType( " + JsonUtilities.getType( type ) +" );" ) );
             }
         }
         
