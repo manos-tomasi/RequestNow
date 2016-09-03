@@ -36,19 +36,9 @@ public class TypeEditor
     @Override
     protected void validadeInput(List<String> erros) throws Exception 
     {
-        if( stateField.getSelectedIndex() == -1 )
-        {
-            erros.add("Situação é requerida");
-        }
-        
         if( ! nameField.isValid() )
         {
             erros.add("Nome é requerido");
-        }
-        
-        if( categoryField.getSelectedIndex() == -1 )
-        {
-            erros.add( "Categoria é requerido" );
         }
     }
 
@@ -56,15 +46,13 @@ public class TypeEditor
     protected void obtainInput() 
     {
         source.setName( nameField.getValue() );
-        source.setState( stateField.getSelectedIndex() );
-        source.setCategory( categoryField.getSelectedIndex() != -1 ? categoryField.getSelected().getId() : 0 );
         source.setInfo( infoField.getInfo() );
     }
 
     @Override
     protected void resize() 
     {
-        stateField.setPrefWidth( getWidth() );
+        nameField.setPrefWidth( getWidth() );
         getDialogPane().requestLayout();
     }
 
@@ -74,11 +62,6 @@ public class TypeEditor
         try
         {
             nameField.setText( source.getName() );
-            stateField.setSelectedIndex( source.getState() );
-            categoryField.setSelected( com.paa.requestnow.model.ModuleContext
-                                                                .getInstance()
-                                                                .getCategoryManager()
-                                                                .get( source.getCategory() ) );
             infoField.setInfo( source.getInfo() );
         }
         
@@ -97,12 +80,6 @@ public class TypeEditor
         gridPane.add( lbName,           0, 0, 1, 1 );
         gridPane.add( nameField,        1, 0, 3, 1 );
     
-        gridPane.add( lbCategory,       0, 1, 1, 1 );
-        gridPane.add( categoryField,    1, 1, 3, 1 );
-    
-        gridPane.add( lbState,          0, 2, 1, 1 );
-        gridPane.add( stateField,       1, 2, 3, 1 );
-        
         tabPane.getTabs().addAll( new Tab( "Geral", gridPane ), infoField );
         
         getDialogPane().setContent( tabPane );
@@ -114,9 +91,5 @@ public class TypeEditor
     private GridPane gridPane            = new GridPane();
     private LabelField lbName            = new LabelField( "Nome", true );
     private MaskTextField nameField      = new MaskTextField();
-    private LabelField lbState           = new LabelField( "Situação", true );
-    private StateSelector stateField     = new StateSelector();
-    private LabelField lbCategory        = new LabelField( "Categoria", true );
-    private CategorySelector categoryField = new CategorySelector();
     private InfoPane infoField           = new InfoPane();
 }

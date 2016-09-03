@@ -1,6 +1,7 @@
 package com.paa.requestnow.model.db.service;
 
 import com.paa.requestnow.model.data.Category;
+import com.paa.requestnow.model.db.Database;
 import com.paa.requestnow.model.db.transactions.CategoryManagerTransactions;
 
 /**
@@ -11,7 +12,7 @@ public class CategoryManagerService
         extends 
             Manager<Category, CategoryManagerTransactions >
 {
-        private static CategoryManagerService service;
+    private static CategoryManagerService service;
    
     public static CategoryManagerService getInstance()
     {
@@ -26,5 +27,34 @@ public class CategoryManagerService
     private CategoryManagerService()
     {
         transactions = new CategoryManagerTransactions();
+    }
+    
+    
+    public String getJson( Category category ) throws Exception
+    {
+        Database db = Database.getInstance();
+        
+        try
+        {
+            return transactions.getJson( db, category );
+        }
+        finally
+        {
+            db.release();
+        }
+    }
+    
+    public boolean hasDependences( Category category ) throws Exception
+    {
+        Database db = Database.getInstance();
+        
+        try
+        {
+            return transactions.hasDependences( db, category );
+        }
+        finally
+        {
+            db.release();
+        }
     }
 }

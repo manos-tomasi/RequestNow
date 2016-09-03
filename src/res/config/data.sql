@@ -78,15 +78,15 @@ INSERT INTO actions VALUES ( 6 , 'CANCELAR'  );
 INSERT INTO actions VALUES ( 7 , 'IMPRIMIR'  );
 
 
-INSERT INTO groups VALUES ( 1, 'Usuários'         , 'com.paa.requestnow.panes.entries.UserController'       ); 
-INSERT INTO groups VALUES ( 2, 'Categorias'       , 'com.paa.requestnow.panes.entries.CategoryController'   ); 
-INSERT INTO groups VALUES ( 3, 'Campos'           , 'com.paa.requestnow.panes.entries.FieldController'      ); 
-INSERT INTO groups VALUES ( 4, 'Permissão'        , 'com.paa.requestnow.panes.entries.PermissionController' ); 
-INSERT INTO groups VALUES ( 5, 'Setor'            , 'com.paa.requestnow.panes.entries.SectorController'     ); 
-INSERT INTO groups VALUES ( 6, 'Tipos Requisição' , 'com.paa.requestnow.panes.entries.TypeController'       ); 
-INSERT INTO groups VALUES ( 7, 'Rotas'            , 'com.paa.requestnow.panes.entries.TypeRouteController'  ); 
-INSERT INTO groups VALUES ( 8, 'Despachos'        , 'com.paa.requestnow.panes.RequestController'            ); 
-INSERT INTO groups VALUES ( 9, 'Requisições'      , 'com.paa.requestnow.panes.RequestRouteController'       ); 
+INSERT INTO groups VALUES ( 1, 'Usuários'         , 'com.paa.requestnow.control.UserController'       ); 
+INSERT INTO groups VALUES ( 2, 'Categorias'       , 'com.paa.requestnow.control.CategoryController'   ); 
+INSERT INTO groups VALUES ( 3, 'Campos'           , 'com.paa.requestnow.control.FieldController'      ); 
+INSERT INTO groups VALUES ( 4, 'Permissão'        , 'com.paa.requestnow.control.PermissionController' ); 
+INSERT INTO groups VALUES ( 5, 'Setor'            , 'com.paa.requestnow.control.SectorController'     ); 
+INSERT INTO groups VALUES ( 6, 'Tipos Requisição' , 'com.paa.requestnow.control.TypeController'       ); 
+INSERT INTO groups VALUES ( 7, 'Rotas'            , 'com.paa.requestnow.control.TypeRouteController'  ); 
+INSERT INTO groups VALUES ( 8, 'Despachos'        , 'com.paa.requestnow.control.RequestController'            ); 
+INSERT INTO groups VALUES ( 9, 'Requisições'      , 'com.paa.requestnow.control.RequestRouteController'       ); 
 
 INSERT INTO actions_groups VALUES ( 1,  1 , 9 );
 INSERT INTO actions_groups VALUES ( 2,  3 , 9 );

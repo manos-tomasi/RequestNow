@@ -1,5 +1,6 @@
 package com.paa.requestnow.panes.entries;
 
+import com.paa.requestnow.control.util.JsonUtilities;
 import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.ResourceLocator;
 import com.paa.requestnow.model.data.Category;
@@ -29,9 +30,19 @@ public class CategoryController
     implements 
         EntrieController<Category>
 {
+    com.paa.requestnow.control.CategoryController controller = com.paa.requestnow.control.CategoryController.getInstance();
+    
     public CategoryController() 
     {
         initComponents();
+        composePermission();
+    }
+    
+    private void composePermission()
+    {
+        addItem.setDisable( ! controller.canAdd() );
+        editItem.setDisable( ! controller.canEdit() );
+        deleteItem.setDisable( ! controller.canDelete() );
     }
     
     public void addItem() throws Exception 
@@ -61,7 +72,9 @@ public class CategoryController
     {
         Category item = tree.getSelectedCategory();
 
-        if( item != null )
+        String error = controller.canEdit( item );
+
+        if( error == null )
         {
             new CategoryEditor( new EditorCallback<Category>( item )
             {
@@ -86,25 +99,17 @@ public class CategoryController
         
         else
         {
-            Prompts.alert( "Selecione uma categoria para editar" );
+            Prompts.alert( error );
         }
     }
 
     public void deleteItem() throws Exception 
     {
         Category item = tree.getSelectedCategory();
+        
+        String  error = controller.canDelete( item );
 
-        if( item != null && item.getState() == Category.STATE_INACTIVE )
-        {
-            Prompts.info( "Categoria já encontra-se excluido!" );
-        }
-
-        else if( item == null )
-        {
-            Prompts.alert( "Selecione uma categoria para excluir!" );
-        }
-
-        else
+        if ( error == null )
         {
             if( Prompts.confirm( "Você tem certeza que deseja excluir a categoria\n" + item ) )
             {
@@ -114,6 +119,11 @@ public class CategoryController
 
                 refresh();
             }
+        }
+        
+        else
+        {
+            Prompts.alert( error );
         }
     }
     
@@ -126,19 +136,24 @@ public class CategoryController
             
             if ( category != null )
             {
-                engine.executeScript( "setCategory( " + category.toJson() +" );" ) ;
+                engine.executeScript( "setCategory( " + JsonUtilities.getCategory( category )+" );" ) ;
             }
         }
         
         catch ( Exception e) {/*ignore*/}
     }
 
+    
     @Override
     public void refresh() 
     {
         try
         {
+            Object node = tree.getSelectedNode();
+            
             tree.refreshContent();
+            
+            tree.setSelectedNode( node );
         }
         
         catch( Exception e )
@@ -187,6 +202,7 @@ public class CategoryController
                 showContent();
             }
         } );
+        
     }
     
     private BorderPane borderPane = new BorderPane();

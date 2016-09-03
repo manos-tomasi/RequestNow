@@ -6,15 +6,15 @@
 
 
 /*############################################################################*/
-/*                 VIEWS                                                      */
+/*                 VIEWS ROTAS                                                */
 /*############################################################################*/
 
 CREATE OR REPLACE VIEW view_routes AS
 SELECT tr.id AS id,
        tr.days AS days,
        tr.sequence AS sequence,
-       u.name AS user,
-       s.name AS sector,
+       coalesce( u.name, 'n\d' ) AS user,
+       coalesce( s.name, 'n\d' ) AS sector,
        t.name AS type
 FROM types_routes tr
 LEFT JOIN users u ON (tr.ref_user = u.id)
@@ -22,15 +22,38 @@ LEFT JOIN sectors s ON (tr.ref_sector = s.id)
 INNER JOIN types t ON (tr.ref_type = t.id)
 WHERE tr.state = 0;
 
+/*############################################################################*/
+/*                 VIEWS CATEGORY                                              */
+/*############################################################################*/
+
+CREATE OR REPLACE VIEW view_categories AS
+SELECT c.id AS id,
+       c.name AS name,
+       c.info AS info,
+       ARRAY( SELECT t.name FROM types t WHERE t.ref_category = c.id and t.state = 0 ) AS types
+FROM 
+    categories c
+where 
+    c.state = 0;
+
+/*############################################################################*/
+/*                 VIEWS TYPES                                                */
+/*############################################################################*/
 
 CREATE OR REPLACE VIEW view_types AS
 SELECT t.id AS id,
        t.name AS name,
-       c.name AS category
+       c.name AS category,
+       t.info AS info,
+       ARRAY( SELECT f.label FROM fields f WHERE f.ref_type = t.id and f.state = 0 ) AS fields,
+       ARRAY( SELECT coalesce( u.name, 'n\d' ) || ' - ' || coalesce( s.name, 'n\d' ) FROM types_routes r, users u, sectors s WHERE r.ref_type = t.id and r.ref_sector = s.id and r.ref_user = u.id order by r.sequence ) AS routes
 FROM types t
 INNER JOIN categories c ON (t.ref_category = c.id)
 WHERE t.state = 0;
 
+/*############################################################################*/
+/*                 VIEWS FIELDS                                               */
+/*############################################################################*/
 
 CREATE OR REPLACE VIEW view_fields AS
 SELECT f.id AS id,
@@ -192,19 +215,35 @@ begin
                             'sector:'''   || r.sector   || ''','  || 
                             'sequence:''' || r.sequence || ''','  || 
                             'type:'''     || r.type     || ''','  || 
-                            'days:'''     || r.days     || '''"'  || 
-                       '}' 
+                            'days:'''     || r.days     || ''''  || 
+                        '}' 
                from 
                    view_routes r
                where 
                    r.id = $1  );
+
+    elseif ( $2 = 'category' ) then
+    
+        return ( select '{' ||
+                            'id:'''       || c.id          || ''',' || 
+                            'name:'''     || c.name        || ''',' || 
+                            'info:'''     || c.info        || ''',' ||
+                            'types:'''    || c.types::text || ''''  ||
+                       '}' 
+               from 
+                   view_categories c
+               where 
+                   c.id = $1  );
     
     elseif ( $2 = 'type' ) then
         
         return ( select '{'  ||
-                             'id:'''       || t.id       || ''','  || 
-                             'name:'''     || t.name     || ''','  || 
-                             'category:''' || t.category || ''''   || 
+                             'id:'''       || t.id           || ''',' || 
+                             'name:'''     || t.name         || ''',' || 
+                             'info:'''     || t.info         || ''',' || 
+                             'category:''' || t.category     || ''',' || 
+                             'routes:'''   || t.routes::text || ''',' ||
+                             'fields:'''   || t.fields::text || ''''  ||
                         '}'
                 from 
                     view_types t
@@ -219,7 +258,7 @@ begin
                              'type_request:''' || f.type_request || ''',' || 
                              'sequence:'''     || f.sequence     || ''',' || 
                              'type:'''         || f.type         || ''',' || 
-                             'required:'''     || f.required     || '''"' || 
+                             'required:'''     || f.required     || ''''  || 
                         '}' 
                 from 
                     view_fields f
@@ -233,13 +272,15 @@ begin
                                 'type:'''   || r.type   || ''',' || 
                                 'user:'''   || r.user   || ''',' || 
                                 'dt_end:''' || r.dt_end || ''',' || 
-                                'state:'''  || r.state  || '''"' || 
-                            '}' 
+                                'state:'''  || r.state  || ''''  || 
+                            '}'
                     from 
                         view_requests r
                     where 
                         r.id = $1  );
     end if; 
+
+    return null;
 
 end
 $body$ 

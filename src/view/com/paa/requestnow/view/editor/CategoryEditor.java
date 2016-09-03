@@ -34,11 +34,6 @@ public class CategoryEditor
     @Override
     protected void validadeInput(List<String> erros) throws Exception 
     {
-        if( stateField.getSelectedIndex() == -1 )
-        {
-            erros.add("Situação é requerida");
-        }
-        
         if( ! nameField.isValid() )
         {
             erros.add("Nome é requerido");
@@ -49,14 +44,13 @@ public class CategoryEditor
     protected void obtainInput() 
     {
         source.setName( nameField.getValue() );
-        source.setState( stateField.getSelectedIndex() );
         source.setInfo( infoField.getInfo() );
     }
 
     @Override
     protected void resize() 
     {
-        stateField.setPrefWidth( getWidth() );
+        nameField.setPrefWidth( getWidth() );
         getDialogPane().requestLayout();
     }
 
@@ -64,7 +58,6 @@ public class CategoryEditor
     protected void setSource( Category source ) 
     {
        nameField.setText( source.getName() );
-       stateField.setSelectedIndex( source.getState() );
        infoField.setInfo( source.getInfo() );
     }
     
@@ -77,9 +70,6 @@ public class CategoryEditor
         gridPane.add( lbName,           0, 0, 1, 1 );
         gridPane.add( nameField,        1, 0, 3, 1 );
     
-        gridPane.add( lbState,          0, 1, 1, 1 );
-        gridPane.add( stateField,       1, 1, 3, 1 );
-        
         tabPane.getTabs().addAll( new Tab( "Geral", gridPane ), infoField );
         
         getDialogPane().setContent( tabPane );
@@ -91,7 +81,5 @@ public class CategoryEditor
     private GridPane gridPane            = new GridPane();
     private LabelField lbName            = new LabelField( "Nome", true );
     private MaskTextField nameField      = new MaskTextField();
-    private LabelField lbState           = new LabelField( "Situação", true );
-    private StateSelector stateField     = new StateSelector();
     private InfoPane infoField           = new InfoPane();
 }

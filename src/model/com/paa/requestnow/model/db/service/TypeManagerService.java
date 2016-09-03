@@ -44,4 +44,32 @@ public class TypeManagerService
             db.release();
         }
     }
+     
+    public String getJson( Type type ) throws Exception
+    {
+        Database db = Database.getInstance();
+        
+        try
+        {
+            return transactions.getJson( db, type );
+        }
+        finally
+        {
+            db.release();
+        }
+    }
+    
+    public boolean hasDependences( Type type ) throws Exception
+    {
+        Database db = Database.getInstance();
+        
+        try
+        {
+            return transactions.hasDependences( db, type );
+        }
+        finally
+        {
+            db.release();
+        }
+    }
 }

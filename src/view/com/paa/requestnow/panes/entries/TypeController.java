@@ -1,5 +1,6 @@
 package com.paa.requestnow.panes.entries;
 
+import com.paa.requestnow.control.util.JsonUtilities;
 import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.ResourceLocator;
 import com.paa.requestnow.model.data.Category;
@@ -29,20 +30,30 @@ public class TypeController
     implements 
         EntrieController<Type>
 {
+    com.paa.requestnow.control.TypeController controller = com.paa.requestnow.control.TypeController.getInstance();
+    
     public TypeController() 
     {
         initComponents();
+        composePermission();
     }
     
+    private void composePermission()
+    {
+        addItem.setDisable( ! controller.canAdd() );
+        editItem.setDisable( ! controller.canEdit() );
+        deleteItem.setDisable( ! controller.canDelete() );
+    }
     
     private void addItem() throws Exception 
     {
-        Category category = tree.getSelectedCategory();
+        Object item = tree.getSelectedObject();
         
-        if ( category != null )
+        String error = controller.canAdd( item );
+        
+        if ( error == null )
         {
-            Type type = new Type();
-            type.setCategory( category.getId() );
+            Type type = controller.createType( item );
             
             new TypeEditor( new EditorCallback<Type>( type )
             {
@@ -67,7 +78,7 @@ public class TypeController
         
         else
         {
-            Prompts.alert( "Selecione uma Categoria para inserir tipos!" );
+            Prompts.alert( error );
         }
     }
 
@@ -75,8 +86,10 @@ public class TypeController
     private void editItem() throws Exception 
     {
         Type item = tree.getSelectedType();
+        
+        String error = controller.canEdit( item );
 
-        if( item != null )
+        if( error == null )
         {
             new TypeEditor( new EditorCallback<Type>( item )
             {
@@ -101,7 +114,7 @@ public class TypeController
         
         else
         {
-            Prompts.alert( "Selecione uma tipo para editar" );
+            Prompts.alert( error );
         }
     }
     
@@ -111,17 +124,9 @@ public class TypeController
     {
         Type item = tree.getSelectedType();
 
-        if( item != null && item.getState() == Type.STATE_INACTIVE )
-        {
-            Prompts.info( "Tipo já encontra-se excluido!" );
-        }
-
-        else if( item == null )
-        {
-            Prompts.alert( "Selecione uma tipo para excluir!" );
-        }
-
-        else
+        String error = controller.canDelete( item );
+        
+        if ( error == null )
         {
             if( Prompts.confirm( "Você tem certeza que deseja excluir o tipo\n" + item ) )
             {
@@ -131,6 +136,11 @@ public class TypeController
 
                 refresh();
             }
+        }
+        
+        else
+        {
+            Prompts.alert( error );
         }
     }
 
@@ -144,7 +154,7 @@ public class TypeController
             {
                 engine.load( ResourceLocator.getInstance().getWebResource( "type.html" ) );
              
-                engine.documentProperty().addListener( ( prop, oldDoc, newDoc ) ->  engine.executeScript( "setType( " + type.toJson() +" );" ) );
+                engine.documentProperty().addListener( ( prop, oldDoc, newDoc ) ->  engine.executeScript( "setType( " + JsonUtilities.getType( type ) +" );" ) );
             }
         }
         
@@ -162,7 +172,7 @@ public class TypeController
             {
                 engine.load( ResourceLocator.getInstance().getWebResource( "category.html" ) );
                 
-                engine.documentProperty().addListener( (s) -> engine.executeScript( "setCategory( " + category.toJson() +" );" ) );
+                engine.documentProperty().addListener( (s) -> engine.executeScript( "setCategory( " + JsonUtilities.getCategory( category ) +" );" ) );
             }
         }
         
