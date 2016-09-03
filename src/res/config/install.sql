@@ -117,4 +117,5 @@ CREATE TABLE actions_groups (
 CREATE TABLE permissions (
     id SERIAL NOT NULL PRIMARY KEY,
     ref_action_group INT NOT NULL REFERENCES actions_groups (id),
-    ref_role  INT NOT NULL REFERENCES roles  (id) );
+    ref_role  INT NOT NULL REFERENCES roles  (id),
+    active    BOOLEAN DEFAULT 't' );

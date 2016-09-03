@@ -17,8 +17,6 @@ public class User
     public final static int ROLE_ADMIN    = 0;
     public final static int ROLE_OPERATOR = 1;
     
-    public final static String ROLE []    = { "Adminstrador", "Operador" };
-    
     private String name;
     private String cpf;
     private Date   birthDate;

@@ -55,6 +55,21 @@ public class UserManagerService
             db.release();
         }
     }
+    
+        public List<User> getUsersByRole( int role ) throws Exception 
+    {
+        Database db = Database.getInstance();
+        
+        try
+        {
+            return transactions.getUsersByRole( db, role );
+        }
+        
+        finally
+        {
+            db.release();
+        }
+    }
 
     @Override
     public List<String> isUnique( User user ) throws Exception

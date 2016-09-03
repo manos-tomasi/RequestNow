@@ -301,6 +301,24 @@ public class UserManagerTransactions
         return db.fetchAll( sql, U.fetcher );
     }
     
+
+    public List<User> getUsersByRole( Database db, int role ) throws Exception
+    {
+        if ( role == 0 )
+        {
+            throw new IllegalArgumentException( "Role cannot be null" );
+        }
+        
+        Users U = Users.table;
+        
+        String sql = U.select  + 
+                     " where " +
+                     U.columns.ROLE   + " = " + role +
+                     " and "   +
+                     U.columns.STATE    + " = " + User.STATE_ACTIVE;
+        
+        return db.fetchAll( sql, U.fetcher );
+    }
     
     public User getUserByName( Database db, String name ) throws Exception
     {

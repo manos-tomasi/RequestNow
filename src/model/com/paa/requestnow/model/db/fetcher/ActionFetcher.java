@@ -15,10 +15,12 @@ public class ActionFetcher
     @Override
     public Action fetch(ResultSet resultSet) throws Exception 
     {
+        int i = 0;
+        
         Action a = new Action();
         
-        a.setId( resultSet.getInt(1) );
-        a.setName(resultSet.getString(2) );
+        a.setId( resultSet.getInt( ++i ) );
+        a.setName(resultSet.getString( ++i ) );
         
         return a;
     }

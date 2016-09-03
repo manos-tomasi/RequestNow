@@ -1,7 +1,9 @@
 package com.paa.requestnow.model.db.service;
 
 import com.paa.requestnow.model.data.Permission;
+import com.paa.requestnow.model.db.Database;
 import com.paa.requestnow.model.db.transactions.PermissionManagerTransactions;
+import java.util.List;
 
 /**
  *
@@ -27,4 +29,34 @@ public class PermissionManagerService
     {
         transactions = new PermissionManagerTransactions();
     }    
+    
+    public List<Permission> getPermissionsRole( int role , int group ) throws Exception
+    {
+        Database db = Database.getInstance();
+        
+        try
+        {
+            return transactions.getPermissionsRole( db , role, group );
+        }
+        
+        finally
+        {
+            db.release();
+        }
+    }
+    
+    public List<Permission> getPermissionsRole( int role ) throws Exception
+    {
+        Database db = Database.getInstance();
+        
+        try
+        {
+            return transactions.getPermissionsRole( db , role );
+        }
+        
+        finally
+        {
+            db.release();
+        }
+    }
 }

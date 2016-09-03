@@ -296,3 +296,26 @@ create or replace function getTypeByRequest( id in integer ) returns setof types
            inner join requests r on ( t.id = r.ref_type )
            where r.id = $1;'
 language sql;
+
+/*############################################################################*/
+/* insere as primeiras permissoes defaluts no banco apos criar uma nova função*/
+/*############################################################################*/
+
+
+create or replace function makePermissionsDefaults() returns trigger as 
+$body$
+declare
+	sequence integer;
+begin
+
+    insert into permissions ( ref_role, ref_action_group, active  ) select new.id, a.id, 't' from actions_groups a;
+              
+    return new;
+
+end;
+$body$ 
+	language plpgsql;
+
+drop trigger if exists makePermissionsDefaults on roles;
+create trigger makePermissionsDefaults after insert on roles for each row execute procedure makePermissionsDefaults();
+

@@ -98,7 +98,7 @@ public class UserEditor
         source.setBirthDate( birthDateFiled.getDate() );
         source.setGender( femaleGenderFied.isSelected() ? User.FEMALE :
                           maleGenderFied.isSelected()   ? User.MALE   : - 1 );
-        source.setRole( roleField.getSelectedIndex() );
+        source.setRole( roleField.getSelected().getId() );
         source.setState( stateField.getSelectedIndex() );
         
         source.setSector( sectorField.getSelected() != null ? sectorField.getSelected().getId() : 0 );
@@ -140,7 +140,7 @@ public class UserEditor
             birthDateFiled.setDate( source.getBirthDate() );
             mailField.setText( source.getMail() );
             phoneField.setText( source.getPhone() );
-            roleField.setSelectedIndex( source.getRole() );
+            roleField.setSelected( com.paa.requestnow.model.ModuleContext.getInstance().getRoleManager().get(source.getRole() ));
             stateField.setSelectedIndex( source.getState() );
             sectorField.setSelected( com.paa.requestnow.model.ModuleContext.getInstance().getSectorManager().get( source.getSector() ) );
 

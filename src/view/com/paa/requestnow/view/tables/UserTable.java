@@ -1,6 +1,8 @@
 package com.paa.requestnow.view.tables;
 
+import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.ResourceLocator;
+import com.paa.requestnow.model.data.Role;
 import com.paa.requestnow.model.data.Sector;
 import com.paa.requestnow.model.data.User;
 import com.paa.requestnow.view.tables.DefaultTable.ItemColumn;
@@ -78,7 +80,15 @@ public class UserTable
             @Override
             public void renderer(Integer value, Labeled cell) 
             {
-                cell.setText( User.ROLE[ value ] );
+                try
+                {
+                    Role role = com.paa.requestnow.model.ModuleContext.getInstance().getRoleManager().get( value );
+                    cell.setText( role.getName() );
+                }
+                catch( Exception e )
+                {
+                    ApplicationUtilities.logException(e);
+                }
             }
         } ) );
     }

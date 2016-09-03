@@ -24,7 +24,7 @@ public class RoleTree
 {
     public static class Events
     {
-        public static final EventType ON_SELECT          = new EventType( "onSelectRole" );
+        public static final EventType ON_SELECT = new EventType( "onSelectRole" );
     }
     
     private Image ICON_ROOT = new Image( ResourceLocator.getInstance().getImageResource( "request_now.png" ) );
@@ -82,11 +82,11 @@ public class RoleTree
      */
     private void loadRole( TreeItem<Object> root ) throws Exception
     {
-        List<Role> categories = com.paa.requestnow.model.ModuleContext.getInstance().getRoleManager().get();
+        List<Role> roles = com.paa.requestnow.model.ModuleContext.getInstance().getRoleManager().get();
       
-        for( Role category : categories )
+        for( Role role : roles )
         {
-            TreeItem nodeCategory = new TreeItem( category );
+            TreeItem nodeRole = new TreeItem( role );
             
             ImageView imageType = new ImageView();
             imageType.setImage( ICON_ROLE );
@@ -94,10 +94,10 @@ public class RoleTree
             imageType.setFitWidth( 20 );
             imageType.setCache( true );
             imageType.setCacheHint( CacheHint.SPEED );
-            nodeCategory.setGraphic( imageType ); 
-            nodeCategory.setExpanded(true);
+            nodeRole.setGraphic( imageType ); 
+            nodeRole.setExpanded(true);
             
-            root.getChildren().add( nodeCategory );
+            root.getChildren().add( nodeRole );
         }
     }
         

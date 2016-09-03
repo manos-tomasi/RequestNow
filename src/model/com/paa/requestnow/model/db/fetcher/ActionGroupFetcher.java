@@ -15,11 +15,13 @@ public class ActionGroupFetcher
     @Override
     public ActionGroup fetch(ResultSet resultSet) throws Exception 
     {
-        ActionGroup ag =  new ActionGroup();
+        int i = 0;
+
+        ActionGroup ag =  new ActionGroup();        
         
-        ag.setId( resultSet.getInt(1) );
-        ag.setAction(resultSet.getInt(2) );
-        ag.setGroup(resultSet.getInt(3) );
+        ag.setId( resultSet.getInt( ++i ) );
+        ag.setAction(resultSet.getInt( ++i ) );
+        ag.setGroup(resultSet.getInt( ++i ) );
         
         return ag;
     }

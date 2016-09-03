@@ -15,11 +15,16 @@ public class PermissionFetcher
     @Override
     public Permission fetch(ResultSet resultSet) throws Exception 
     {
+        int i = 0;
+        
         Permission p = new Permission();
         
-        p.setId( resultSet.getInt(1) );
-        p.setActionGroup(resultSet.getInt(2) );
-        p.setRole(resultSet.getInt(3) );
+        p.setId( resultSet.getInt( ++i ) );
+        p.setActionGroup(resultSet.getInt( ++i ) );
+        p.setRole(resultSet.getInt( ++i ) );
+        p.setActive(resultSet.getBoolean( ++i ) );
+        p.setDescription(resultSet.getString( ++i ) );
+        p.setGroup(resultSet.getInt( ++i ) );
         
         return p;
     }

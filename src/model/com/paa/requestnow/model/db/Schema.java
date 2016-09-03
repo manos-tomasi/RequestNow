@@ -881,12 +881,18 @@ public class Schema
             public String ID;
             public String REF_ACTION_GROUP;
             public String REF_ROLE;
+            public String ACTIVE;
+            public String DESCRIPTION;
+            public String GROUP;
             
             public Columns( String alias ) 
             {
                 ID               = alias + "id";
                 REF_ACTION_GROUP = alias + "ref_action_group";
                 REF_ROLE         = alias + "ref_role";
+                ACTIVE           = alias + "active";
+                DESCRIPTION      = "( select a.name from actions a, actions_groups ag where a.id = ag.ref_action and ag.id = ref_action_group )";
+                GROUP            = "( select ag.ref_group from actions_groups ag where ag.id = ref_action_group )";
             }
             
             @Override
@@ -894,7 +900,10 @@ public class Schema
             {
                 return ID               + ", " +
                        REF_ACTION_GROUP + ", " +
-                       REF_ROLE    ;
+                       REF_ROLE         + ", " +
+                       ACTIVE           + ", " +
+                       DESCRIPTION      + ", " +
+                       GROUP;
             }
         }
         

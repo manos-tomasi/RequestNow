@@ -3,6 +3,8 @@ package com.paa.requestnow.view.tables;
 import com.paa.requestnow.model.data.Permission;
 import java.util.List;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.CheckBox;
@@ -32,10 +34,8 @@ public class PermissionList
         
         getSelectionModel().setSelectionMode( SelectionMode.SINGLE );
         
-        getStylesheets().add( "config/table.css" );
-        
-        
-    }    
+        getStylesheets().add( "config/table.css" );        
+    }
     
     public void setItems( List<Permission> permissions )
     {
@@ -49,18 +49,16 @@ public class PermissionList
                 getItems().clear();
 
                 setItems( atts );
-
+                
                 requestLayout();
             }
         } );
     }
     
-    
     public Permission getSelectedPermission()
     {
         return getSelectionModel().getSelectedItem();
     }
-    
     
     private class PermissionListCell extends ListCell<Permission> 
     {
@@ -71,15 +69,25 @@ public class PermissionList
 
             if ( permission != null && ! empty ) 
             {
-                CheckBox checkBox = new CheckBox( permission + "NAME");
+                CheckBox checkBox = new CheckBox( permission.getDescription() );
+                
+                checkBox.setSelected( permission.isActive() );
                 
                 setGraphic( checkBox );
+                
+                checkBox.selectedProperty().addListener( new ChangeListener<Boolean>() 
+                {
+                    @Override
+                    public void changed(ObservableValue<? extends Boolean> ov, Boolean t, Boolean t1) 
+                    {
+                        permission.setActive( t1 );
+                    }
+                });
             }
             else
             {
                 setGraphic( null );
             }
-
         }
     }    
 }

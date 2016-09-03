@@ -1,19 +1,30 @@
 package com.paa.requestnow.view.selectors;
 
-import com.paa.requestnow.model.data.Option;
-import com.paa.requestnow.model.data.User;
+import com.paa.requestnow.model.ApplicationUtilities;
+import com.paa.requestnow.model.data.Role;
 
 /**
  * @author artur
  */
 public class RoleSelector 
     extends 
-        ItemSelector<Option>
+        ItemSelector<Role>
 {
     public RoleSelector() 
     {
-        super( "Selecione uma Categoria",
-                new Option( User.ROLE_ADMIN,    User.ROLE[ User.ROLE_ADMIN ] ),
-                new Option( User.ROLE_OPERATOR, User.ROLE[ User.ROLE_OPERATOR ] ) );
+        super( "Funções" );
+        
+        try
+        {
+            setItems(com.paa.requestnow.model.ModuleContext
+                            .getInstance()
+                            .getRoleManager()
+                            .get() );
+        }
+        
+        catch( Exception e )
+        {
+            ApplicationUtilities.logException( e );
+        }
     }
 }

@@ -1,7 +1,10 @@
 package com.paa.requestnow.panes.entries;
 
 import com.paa.requestnow.model.ApplicationUtilities;
+import com.paa.requestnow.model.ModuleContext;
+import com.paa.requestnow.model.data.Permission;
 import com.paa.requestnow.model.data.Role;
+import com.paa.requestnow.model.data.User;
 import com.paa.requestnow.view.editor.RoleEditor;
 import com.paa.requestnow.view.tables.GroupList;
 import com.paa.requestnow.view.tables.PermissionList;
@@ -9,23 +12,51 @@ import com.paa.requestnow.view.tree.RoleTree;
 import com.paa.requestnow.view.util.ActionButton;
 import com.paa.requestnow.view.util.EditorCallback;
 import com.paa.requestnow.view.util.Prompts;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
 
 /**
- * @author artur
+ * @author lucas
  */
 public class PermissionController 
     implements 
         EntrieController<Role>
 {
-
     public PermissionController() 
     {
         initComponents();
+    }
+    
+    List<Permission> permissions = new ArrayList();
+    
+    public void updatePermissions() throws Exception
+    {
+        List<Permission> permissionsScreen = new ArrayList();
+        
+        if( permissions.isEmpty() )
+        {
+            if( tree.getSelectedRole() != null && groupList.getSelectedGroup() != null )
+            {
+                permissions = ModuleContext.getInstance().getPermissionManager().getPermissionsRole( tree.getSelectedRole().getId() );
+            }
+        }    
+
+        for (int i = 0; i < permissions.size(); i++) 
+        {
+            if( permissions.get(i).getGroup() == groupList.getSelectedGroup().getId() )
+            {
+                permissionsScreen.add( permissions.get(i) );
+            }  
+        }
+
+        permissionList.setItems(permissionsScreen);        
     }
     
     public void addItem() throws Exception 
@@ -86,6 +117,12 @@ public class PermissionController
 
     public void saveItem() throws Exception 
     {
+        for( Permission permission : permissions )
+        {
+            com.paa.requestnow.model.ModuleContext.getInstance().getPermissionManager().update( permission );
+        }
+        
+        Prompts.info( "Permissões salvas com sucesso!" );
     }
 
     public void deleteItem() throws Exception 
@@ -98,8 +135,11 @@ public class PermissionController
         }
 
         else
-        {
-            if( Prompts.confirm( "Você tem certeza que deseja excluir o grupo\n" + item ) )
+        {            
+            List<User> users = com.paa.requestnow.model.ModuleContext.getInstance().getUserManager().getUsersByRole( item.getId() );
+            String message = ( users.isEmpty() )? "" : "Alerta: essa função possui usuários vinculados que irão perder suas atuais permissões.\n" ;
+            message       += "Você tem certeza que deseja excluir a função:  " + item;
+            if( Prompts.confirm( message ) )
             {
                 com.paa.requestnow.model.ModuleContext.getInstance()
                                           .getRoleManager()
@@ -109,7 +149,7 @@ public class PermissionController
             }
         }
     }
-
+    
     @Override
     public void refresh() 
     {
@@ -130,7 +170,6 @@ public class PermissionController
         return  pane;
     }
 
-    
     @Override
     public List<ActionButton> getActions() 
     {
@@ -142,6 +181,39 @@ public class PermissionController
         pane.setLeft( tree );
         pane.setCenter( groupList );
         pane.setRight( permissionList );
+        
+        groupList.getSelectionModel().selectedItemProperty().addListener( new ChangeListener() 
+        {
+            @Override
+            public void changed(ObservableValue observable, Object oldValue, Object newValue)
+            {
+                try
+                {
+                    updatePermissions();
+                }
+                catch( Exception e )
+                {
+                    ApplicationUtilities.logException(e);
+                }
+            }
+        });
+        
+        tree.addEventHandler(RoleTree.Events.ON_SELECT , new EventHandler<Event>() 
+        {
+            @Override
+            public void handle(Event t) 
+            {
+                try
+                {
+                    permissions.clear();
+                    updatePermissions();
+                }
+                catch( Exception e )
+                {
+                    ApplicationUtilities.logException(e);
+                }
+            }
+        });
     }
     
     private BorderPane pane               = new BorderPane();

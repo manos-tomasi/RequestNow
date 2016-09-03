@@ -25,12 +25,8 @@ public class RoleManagerTransactions
     {
         Roles R = Roles.table;
         
-        String sql = " insert into " + R.name + 
-                     " ( " + R.columns + " ) " + 
-                     " values ( " +
-                     " default ," + 
-                     R.columns.NAME  + " = " + db.quote( obj.getName() ) + ", " +
-                     R.columns.STATE + " = " + obj.getState()            + " ) ";
+        String sql = " insert into " + R.name +  " ( " + R.columns + " ) " + 
+                     " values ( " + " default ," + db.quote( obj.getName() ) + ", " +  + obj.getState() + " ) ";
         
         db.executeCommand( sql );
     }

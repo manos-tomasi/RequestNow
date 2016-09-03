@@ -20,10 +20,13 @@ public class PermissionManagerTransactions
     {
         Schema.Permissions P = Schema.Permissions.table;
         
-        String sql = " insert into " + P.name + " ( "         + 
-                       P.columns     + " )"   + " values ( "  +
-                       obj.getActionGroup() + "," +
-                       obj.getRole() + " )";
+        String sql = " insert into " + P.name        + " ( " +
+                       P.columns.REF_ACTION_GROUP    + ",  " +
+                       P.columns.REF_ROLE            + ",  " +
+                       P.columns.ACTIVE              + " ) " + " values ( "  +
+                       obj.getActionGroup()          + ","   +
+                       obj.getRole()                 + ","   + 
+                       ( obj.isActive() ? "'t'" : "'f'" )+ ")";
         
         db.executeCommand(sql);
     }
@@ -35,7 +38,8 @@ public class PermissionManagerTransactions
         
         String sql = " update " + P.name + " set " +
                        P.columns.REF_ACTION_GROUP  + " = " + obj.getActionGroup() + "," +
-                       P.columns.REF_ROLE          + " = " + obj.getRole()        +
+                       P.columns.REF_ROLE          + " = " + obj.getRole()        + "," +
+                       P.columns.ACTIVE            + " = " + obj.isActive()       +
                      " where " + P.columns.ID      + " = " + obj.getId();
         
         db.executeCommand(sql);
@@ -46,7 +50,7 @@ public class PermissionManagerTransactions
     {
         Schema.Permissions P = Schema.Permissions.table;
         
-        String sql = " select " + P.columns + " from " + P.name + " where " + P.columns.ID + " = " + id;
+        String sql = " select " + P.columns + "," + " from " + P.name + " where " + P.columns.ID + " = " + id;
         
         return db.fetchOne(sql, P.fetcher);
     }
@@ -60,10 +64,34 @@ public class PermissionManagerTransactions
         
         return db.fetchAll(sql, P.fetcher);
     }
-
+    
     @Override
     public List get(Database db, DefaultFilter filter) throws Exception 
     {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    public List getPermissionsRole( Database db, int role, int group ) throws Exception
+    {
+        Schema.Permissions   P = Schema.Permissions.table;
+        Schema.ActionsGroups A = Schema.ActionsGroups.table;
+        
+        String sql =  P.select                   + " where " + 
+                      P.columns.REF_ROLE         + " = "     + role                + " and "       +
+                      P.columns.REF_ACTION_GROUP + " in ( "  +  " select "         + A.columns.ID  + " from " +
+                      A.name                     + " where " + A.columns.REF_GROUP + " = " + group + "  ) ";
+        
+        return db.fetchAll(sql, P.fetcher);
+    }
+    
+    public List getPermissionsRole( Database db, int role ) throws Exception
+    {
+        Schema.Permissions   P = Schema.Permissions.table;
+        Schema.ActionsGroups A = Schema.ActionsGroups.table;
+        
+        String sql =  P.select            + " where "  + 
+                      P.columns.REF_ROLE  + " = "      + role ;
+        
+        return db.fetchAll(sql, P.fetcher);
     }
 }

@@ -15,11 +15,13 @@ public class RoleFetcher
     @Override
     public Role fetch(ResultSet resultSet) throws Exception 
     {
+        int i = 0;
+ 
         Role r = new Role();
         
-        r.setId( resultSet.getInt(10) );
-        r.setName(resultSet.getString(2) );
-        r.setState(resultSet.getInt(3) );
+        r.setId( resultSet.getInt( ++i ) );
+        r.setName( resultSet.getString( ++i ) );
+        r.setState(resultSet.getInt( ++i ) );
         
         return r;
     }

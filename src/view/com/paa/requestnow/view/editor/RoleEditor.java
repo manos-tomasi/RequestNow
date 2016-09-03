@@ -21,9 +21,9 @@ public class RoleEditor
         
         initComponents();
         
-        setTitle( "Editor de Role" );
+        setTitle( "Editor de Função" );
         
-        setHeaderText( "Editor de Role" );
+        setHeaderText( "Editor de Função" );
 
         setSource(source);
     } 
