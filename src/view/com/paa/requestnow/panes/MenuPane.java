@@ -46,10 +46,7 @@ public class MenuPane
     }
     
     private void initComponents()
-    {
-        itemReport.setDisable( ! ApplicationUtilities.getInstance().hasPermission() );
-        itemRequestRoute.setDisable( ! ApplicationUtilities.getInstance().hasPermission() );
-        
+    {       
         reportPane.setMenuItem( itemReport );
         entriePane.setMenuItem( itemEntries );
         requestPane.setMenuItem( itemRequests );

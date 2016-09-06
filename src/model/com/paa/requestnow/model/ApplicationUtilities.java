@@ -92,14 +92,6 @@ public class ApplicationUtilities
         return null;
     }
     
-    public boolean hasPermission()
-    {
-        if( getActiveUser() == null )
-            return false;
-        
-        return getActiveUser().getRole() == User.ROLE_ADMIN;
-    }
-    
     public Window getWindow()
     {
         return window;

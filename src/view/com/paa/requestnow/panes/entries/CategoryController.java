@@ -72,7 +72,7 @@ public class CategoryController
     {
         Category item = tree.getSelectedCategory();
 
-        String error = controller.canEdit( item );
+        String error = controller.onEdit( item );
 
         if( error == null )
         {
@@ -107,7 +107,7 @@ public class CategoryController
     {
         Category item = tree.getSelectedCategory();
         
-        String  error = controller.canDelete( item );
+        String  error = controller.onDelete( item );
 
         if ( error == null )
         {

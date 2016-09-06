@@ -15,6 +15,7 @@ import com.paa.requestnow.view.util.Prompts;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
@@ -137,15 +138,21 @@ public class PermissionController
         else
         {            
             List<User> users = com.paa.requestnow.model.ModuleContext.getInstance().getUserManager().getUsersByRole( item.getId() );
-            String message = ( users.isEmpty() )? "" : "Alerta: essa função possui usuários vinculados que irão perder suas atuais permissões.\n" ;
-            message       += "Você tem certeza que deseja excluir a função:  " + item;
-            if( Prompts.confirm( message ) )
+            
+            if( users.isEmpty() )
             {
-                com.paa.requestnow.model.ModuleContext.getInstance()
-                                          .getRoleManager()
-                                          .delete( item );
+                if( Prompts.confirm( "Você tem certeza que deseja excluir a função:  " + item ) )
+                {
+                    com.paa.requestnow.model.ModuleContext.getInstance()
+                                              .getRoleManager()
+                                              .delete( item );
 
-                refresh();
+                    refresh();
+                }
+            }
+            else
+            {
+                Prompts.alert( "Você nã pode apagar esse grupo pois existem usuários vinculados: \n" + users.toString().replaceAll( "\\[|\\]" , "" ) );
             }
         }
     }

@@ -24,8 +24,8 @@ SELECT pg_catalog.setval('locks_id_seq', 1, false);
 
 INSERT INTO roles VALUES ( 1, 'Administrador' ,  0 );
 INSERT INTO roles VALUES ( 2, 'Financeiro'    ,  0 );
+SELECT pg_catalog.setval('roles_id_seq', 3, false);
 
-SELECT pg_catalog.setval('roles_id_seq', 2, false);
 
 INSERT INTO sectors VALUES (3, 'DIRETORES', 1);
 INSERT INTO sectors VALUES (2, 'RH', 0);
@@ -37,7 +37,7 @@ INSERT INTO users VALUES (1, 'LUCAS TOMASI', '02943508020', '1995-03-15', 1, 0, 
 INSERT INTO users VALUES (2, 'ARTUR TOMASI', '12312414211', '1995-03-15', 1, 0, '<2fcc1dd51cb7514a99f03debf513ca7af3b25669>', 'art', 'artur.tomasi@outlook.com', '5195090933', 1, '4242398503', 1);
 INSERT INTO users VALUES (3, 'ADMINISTRADOR SISTEMA', '00000000000', '1994-10-30', 1, 0, '<2fcc1dd51cb7514a99f03debf513ca7af3b25669>', 'admin', 'admin@helpfin.br', '5198434239', 1, '1232141280', 1);
 
-SELECT pg_catalog.setval('users_id_seq', 3, true);
+SELECT pg_catalog.setval('users_id_seq', 4, true);
 
 INSERT INTO types_routes VALUES (3, 1, 2, NULL, 1, 0, 1);
 INSERT INTO types_routes VALUES (4, 1, 2, 1, 2, 0, 2);

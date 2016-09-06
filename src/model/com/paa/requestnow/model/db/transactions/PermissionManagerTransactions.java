@@ -14,7 +14,6 @@ public class PermissionManagerTransactions
         extends 
             ManagerTransaction<Permission>
 {
-    
     @Override
     public void add(Database db, Permission obj) throws Exception 
     {
@@ -93,5 +92,27 @@ public class PermissionManagerTransactions
                       P.columns.REF_ROLE  + " = "      + role ;
         
         return db.fetchAll(sql, P.fetcher);
+    }
+    
+    public boolean canPermission( Database db, int role, int action, String origin ) throws Exception
+    {
+        Schema.Actions       A  = Schema.Actions.alias( "A" );
+        Schema.Groups        G  = Schema.Groups.alias( "G" );
+        Schema.ActionsGroups AG = Schema.ActionsGroups.alias( "AG" );
+        Schema.Users         U  = Schema.Users.alias( "U" );
+        Schema.Permissions   P  = Schema.Permissions.table;
+        
+        String sql = "select count(*) from " +
+                     G.name  + "," + A.name + "," + AG.name + "," + U.name + "," + P.name +
+                     " where " + 
+                     A.columns.ID       + " = " + AG.columns.REF_ACTION      + " and " +
+                     G.columns.ID       + " = " + AG.columns.REF_GROUP       + " and " +
+                     AG.columns.ID      + " = " + P.columns.REF_ACTION_GROUP + " and " +
+                     P.columns.REF_ROLE + " = " + role                       + " and " +
+                     A.columns.ID       + " = " + action                     + " and " +
+                     G.columns.ORIGIN   + " = " + db.quote( origin )         + " and " +
+                     P.columns.ACTIVE;
+        
+        return db.queryInteger(sql) > 0;
     }
 }

@@ -23,7 +23,7 @@ public class CategoryController
         return instance;
     }
     
-    public String canDelete( Category category )
+    public String onDelete( Category category )
     {
         try
         {
@@ -51,7 +51,7 @@ public class CategoryController
         return null;
     }
     
-    public String canEdit( Category category )
+    public String onEdit( Category category )
     {
         if( category == null)
         {

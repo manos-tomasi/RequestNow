@@ -59,4 +59,19 @@ public class PermissionManagerService
             db.release();
         }
     }
+    
+    public boolean canPermission( int role, int action, String origin ) throws Exception
+    {
+        Database db = Database.getInstance();
+        
+        try
+        {
+            return transactions.canPermission( db, role, action, origin );
+        }
+        
+        finally
+        {
+            db.release();
+        }
+    }
 }

@@ -49,7 +49,7 @@ public class TypeController
     {
         Object item = tree.getSelectedObject();
         
-        String error = controller.canAdd( item );
+        String error = controller.onAdd( item );
         
         if ( error == null )
         {
@@ -87,7 +87,7 @@ public class TypeController
     {
         Type item = tree.getSelectedType();
         
-        String error = controller.canEdit( item );
+        String error = controller.onEdit( item );
 
         if( error == null )
         {
@@ -124,7 +124,7 @@ public class TypeController
     {
         Type item = tree.getSelectedType();
 
-        String error = controller.canDelete( item );
+        String error = controller.onDelete( item );
         
         if ( error == null )
         {

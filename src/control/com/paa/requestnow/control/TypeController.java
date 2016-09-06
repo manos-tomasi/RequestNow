@@ -24,7 +24,7 @@ public class TypeController
         return instance;
     }
     
-    public String canDelete( Type type )
+    public String onDelete( Type type )
     {
         try
         {
@@ -52,7 +52,7 @@ public class TypeController
         return null;
     }
     
-    public String canEdit( Type category )
+    public String onEdit( Type category )
     {
         if( category == null)
         {
@@ -61,7 +61,7 @@ public class TypeController
         return null;
     }
     
-    public String canAdd( Object item )
+    public String onAdd( Object item )
     {
         if( item == null)
         {

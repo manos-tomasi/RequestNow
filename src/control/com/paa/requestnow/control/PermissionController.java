@@ -1,6 +1,7 @@
 package com.paa.requestnow.control;
 
 import com.paa.requestnow.model.ApplicationUtilities;
+import com.paa.requestnow.model.data.Action;
 import com.paa.requestnow.model.data.User;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -12,7 +13,7 @@ import java.lang.reflect.Type;
  */
 public abstract class PermissionController <T>
 {
-    private String className ;
+    private String  className ;
     private User user;
     
     public PermissionController() 
@@ -29,7 +30,7 @@ public abstract class PermissionController <T>
     {
         try
         {
-            return user.getRole() == User.ROLE_ADMIN;
+            return com.paa.requestnow.model.ModuleContext.getInstance().getPermissionManager().canPermission( user.getRole() , Action.EDIT, className );
         }
         
         catch ( Exception e )
@@ -44,7 +45,7 @@ public abstract class PermissionController <T>
     {
         try
         {
-            return user.getRole() == User.ROLE_ADMIN;
+            return com.paa.requestnow.model.ModuleContext.getInstance().getPermissionManager().canPermission( user.getRole() , Action.ADD, className );
         }
         
         catch ( Exception e )
@@ -59,7 +60,7 @@ public abstract class PermissionController <T>
     {
         try
         {
-           return user.getRole() == User.ROLE_ADMIN;
+           return com.paa.requestnow.model.ModuleContext.getInstance().getPermissionManager().canPermission( user.getRole() , Action.DELETE, className );
         }
         
         catch ( Exception e )
@@ -74,29 +75,7 @@ public abstract class PermissionController <T>
     {
         try
         {
-           return user.getRole() == User.ROLE_ADMIN;
-        }
-        
-        catch ( Exception e )
-        {
-            logException( e );
-        }
-        
-        return false;
-    }
-    
-    /**
-     * use when select node of the tree into other controller
-     * 
-     * @param className
-     * @return 
-     */
-    public boolean canView( String className )
-    {
-        try
-        {
-            //pensar se pode ou não e qual vai ser a regra
-           return user.getRole() == User.ROLE_ADMIN;
+           return com.paa.requestnow.model.ModuleContext.getInstance().getPermissionManager().canPermission( user.getRole() , Action.VIEW, className );
         }
         
         catch ( Exception e )
