@@ -1,6 +1,7 @@
 package com.paa.requestnow.control;
 
 import com.paa.requestnow.model.data.Category;
+import com.paa.requestnow.model.data.Core;
 import com.paa.requestnow.model.data.Type;
 
 /**
@@ -8,12 +9,16 @@ import com.paa.requestnow.model.data.Type;
  */
 public class TypeController
     extends 
-        PermissionController<TypeController>
+        AbstractController<TypeController, Core>
 {
     private static TypeController instance;
     
     private TypeController(){}
     
+    /**
+     * 
+     * @return 
+     */
     public static TypeController getInstance()
     {
         if( instance == null )
@@ -24,44 +29,46 @@ public class TypeController
         return instance;
     }
     
-    public String onDelete( Type type )
+    /**
+     *
+     * @param type
+     * @return
+     * @throws java.lang.Exception
+     */
+    @Override
+    public String onDelete( Core type ) throws Exception
     {
-        try
+        if( type != null && type.getState() == Type.STATE_INACTIVE )
         {
-            if( type != null && type.getState() == Type.STATE_INACTIVE )
-            {
-                return "Tipo de Requisição já encontra-se excluida!";
-            }
-
-            else if( type == null )
-            {
-                return "Selecione um tipo de requisição para excluir!";
-            }
-
-            else if ( com.paa.requestnow.model.ModuleContext.getInstance().getTypeManager().hasDependences( type ) )
-            {
-                 return "Existem campos ou rotas referênciados neste tipo!";
-            }
+            return "Tipo de Requisição já encontra-se excluida!";
         }
-        
-        catch ( Exception e )
+
+        else if( type == null )
         {
-            logException( e );
+            return "Selecione um tipo de requisição para excluir!";
+        }
+
+        else if ( com.paa.requestnow.model.ModuleContext.getInstance().getTypeManager().hasDependences( type ) )
+        {
+             return "Existem campos ou rotas referênciados neste tipo!";
         }
         
         return null;
     }
     
-    public String onEdit( Type category )
+    @Override
+    public String onEdit( Core type ) throws Exception
     {
-        if( category == null)
+        if( type == null)
         {
             return "Selecione um tipo de requisião para editar";
         }
+        
         return null;
     }
     
-    public String onAdd( Object item )
+    @Override
+    public String onAdd( Core item )throws Exception
     {
         if( item == null)
         {

@@ -1,93 +1,68 @@
 package com.paa.requestnow.control;
 
-import com.paa.requestnow.model.ApplicationUtilities;
-import com.paa.requestnow.model.data.Action;
+import com.paa.requestnow.model.data.Role;
 import com.paa.requestnow.model.data.User;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import java.util.List;
 
 /**
- *
  * @author artur
- * @param <T>
  */
-public abstract class PermissionController <T>
+public class PermissionController 
+    extends 
+        AbstractController<PermissionController, Role>
 {
-    private String  className ;
-    private User user;
+    private static PermissionController instance;
     
-    public PermissionController() 
+    private PermissionController(){}
+    
+    public static PermissionController getInstance()
     {
-        Type superClass = this.getClass().getGenericSuperclass();
-        Type type = ( ( ParameterizedType ) superClass ).getActualTypeArguments()[0];
-        
-        className = type.toString().split(" ")[1];
-        
-        user = ApplicationUtilities.getInstance().getActiveUser();
-    }
-     
-    public boolean canEdit()
-    {
-        try
+        if( instance == null )
         {
-            return com.paa.requestnow.model.ModuleContext.getInstance().getPermissionManager().canPermission( user.getRole() , Action.EDIT, className );
+            instance = new PermissionController();
         }
         
-        catch ( Exception e )
-        {
-            logException( e );
-        }
-        
-        return false;
+        return instance;
     }
     
-    public boolean canAdd()
+    @Override  
+    public String onDelete( Role role ) throws Exception
     {
-        try
+        if( role != null && role.getState() == Role.STATE_INACTIVE )
         {
-            return com.paa.requestnow.model.ModuleContext.getInstance().getPermissionManager().canPermission( user.getRole() , Action.ADD, className );
+            return "Grupo já encontra-se excluido!";
+        }
+
+        else if( role == null )
+        {
+            return "Selecione um grupo para excluir!";
         }
         
-        catch ( Exception e )
+        List<User> users = com.paa.requestnow.model.ModuleContext.getInstance().getUserManager().getUsersByRole( role.getId() );
+        
+        if ( ! users.isEmpty() )
         {
-            logException( e );
+             return "Você nã pode apagar esse grupo pois existem usuários vinculados: \n" + users.toString().replaceAll( "\\[|\\]" , "" );
         }
         
-        return false;
+        return null;
     }
     
-    public boolean canDelete()
+    @Override
+    public String onEdit( Role role )
     {
-        try
+        if( role == null)
         {
-           return com.paa.requestnow.model.ModuleContext.getInstance().getPermissionManager().canPermission( user.getRole() , Action.DELETE, className );
+            return "Selecione um Grupo para editar";
         }
         
-        catch ( Exception e )
-        {
-            logException( e );
-        }
-        
-        return false;
+        return null;
+    }
+
+    @Override
+    public String onAdd( Role item ) throws Exception 
+    {
+        return null;
     }
     
-    public boolean canView()
-    {
-        try
-        {
-           return com.paa.requestnow.model.ModuleContext.getInstance().getPermissionManager().canPermission( user.getRole() , Action.VIEW, className );
-        }
-        
-        catch ( Exception e )
-        {
-            logException( e );
-        }
-        
-        return false;
-    }
-    
-    protected void logException( Exception e )
-    {
-        ApplicationUtilities.logException( e );
-    }
 }

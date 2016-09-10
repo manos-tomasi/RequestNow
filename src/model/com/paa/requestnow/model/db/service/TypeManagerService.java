@@ -1,5 +1,6 @@
 package com.paa.requestnow.model.db.service;
 
+import com.paa.requestnow.model.data.Core;
 import com.paa.requestnow.model.data.Type;
 import com.paa.requestnow.model.db.Database;
 import com.paa.requestnow.model.db.transactions.TypeManagerTransactions;
@@ -59,7 +60,7 @@ public class TypeManagerService
         }
     }
     
-    public boolean hasDependences( Type type ) throws Exception
+    public boolean hasDependences( Core type ) throws Exception
     {
         Database db = Database.getInstance();
         

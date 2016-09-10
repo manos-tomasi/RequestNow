@@ -24,6 +24,20 @@ public class SectorController
         EntrieController<Sector>
 {
     private SectorFilter filter =  new SectorFilter();
+     
+    private com.paa.requestnow.control.SectorController controller = com.paa.requestnow.control.SectorController.getInstance();
+
+    public SectorController() 
+    {
+        composePermission();
+    }
+    
+    private void composePermission()
+    {
+        addItem.setDisable( ! controller.hasPermissionAdd() );
+        editItem.setDisable( ! controller.hasPermissionEdit() );
+        deleteItem.setDisable( ! controller.hasPermissionDelete() );
+    }
     
     public void addItem() throws Exception 
     {
@@ -52,7 +66,9 @@ public class SectorController
     {
         Sector item = table.getSelectedItem();
 
-        if( item != null )
+        String error = controller.onEdit( item );
+        
+        if( error == null )
         {
             new SectorEditor( new EditorCallback<Sector>( item )
             {
@@ -77,7 +93,7 @@ public class SectorController
         
         else
         {
-            Prompts.alert( "Selecione uma setor para editar" );
+            Prompts.alert( error );
         }
     }
 
@@ -98,18 +114,10 @@ public class SectorController
     public void deleteItem() throws Exception 
     {
         Sector item = table.getSelectedItem();
-
-        if( item != null && item.getState() == Sector.STATE_INACTIVE )
-        {
-            Prompts.info( "Setor já encontra-se excluido!" );
-        }
-
-        else if( item == null )
-        {
-            Prompts.alert( "Selecione uma setor para excluir!" );
-        }
-
-        else
+        
+        String error = controller.onDelete( item );
+        
+        if ( error == null )
         {
             if( Prompts.confirm( "Você tem certeza que deseja excluir o setor\n" + item ) )
             {
@@ -119,6 +127,11 @@ public class SectorController
 
                 refresh();
             }
+        }
+        
+        else
+        {
+            Prompts.alert( error );
         }
     }
 

@@ -1,6 +1,7 @@
 package com.paa.requestnow.model.db.service;
 
 import com.paa.requestnow.model.data.Sector;
+import com.paa.requestnow.model.db.Database;
 import com.paa.requestnow.model.db.transactions.SectorManagerTransactions;
 
 /**
@@ -26,5 +27,20 @@ public class SectorManagerService
     private SectorManagerService()
     {
         transactions = new SectorManagerTransactions();
+    }
+    
+    public boolean hasDependences( Sector sector ) throws Exception
+    {
+        Database db = Database.getInstance();
+        
+        try
+        {
+           return transactions.hasDependences( db, sector );
+        }
+        
+        finally
+        {
+            db.release();
+        }
     }
 }

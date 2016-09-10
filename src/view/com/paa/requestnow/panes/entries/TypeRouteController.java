@@ -4,6 +4,7 @@ import com.paa.requestnow.control.util.JsonUtilities;
 import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.ResourceLocator;
 import com.paa.requestnow.model.data.Category;
+import com.paa.requestnow.model.data.Core;
 import com.paa.requestnow.model.data.Type;
 import com.paa.requestnow.model.data.TypeRoute;
 import com.paa.requestnow.view.editor.TypeRouteEditor;
@@ -31,20 +32,33 @@ public class TypeRouteController
     implements 
         EntrieController<TypeRoute>
 {
+    private com.paa.requestnow.control.TypeRouteController controller = com.paa.requestnow.control.TypeRouteController.getInstance();
+    
     public TypeRouteController() 
     {
         initComponents();
+        composePermission();
+    }
+    
+    private void composePermission()
+    {
+        addItem.setDisable( ! controller.hasPermissionAdd() );
+        editItem.setDisable( ! controller.hasPermissionEdit() );
+        moveDownItem.setDisable( ! controller.hasPermissionEdit() );
+        moveUpItem.setDisable( ! controller.hasPermissionEdit() );
+        deleteItem.setDisable( ! controller.hasPermissionDelete() );
     }
     
     
     private void addItem() throws Exception 
     {
-        Type type = tree.getSelectedType();
+        Core item = tree.getSelectedCore();
         
-        if ( type != null )
+        String error = controller.onAdd( item );
+        
+        if ( error == null )
         {
-            TypeRoute route = new TypeRoute();
-            route.setType( type.getId() );
+            TypeRoute route = controller.createRoute( item );
             
             new TypeRouteEditor( new EditorCallback<TypeRoute>( route )
             {
@@ -69,7 +83,7 @@ public class TypeRouteController
         
         else
         {
-            Prompts.alert( "Selecione uma Categoria para inserir tipos!" );
+            Prompts.alert( error );
         }
     }
 
@@ -77,8 +91,10 @@ public class TypeRouteController
     private void editItem() throws Exception 
     {
         TypeRoute item = tree.getSelectedRoute();
+        
+        String error = controller.onEdit( item );
 
-        if( item != null )
+        if( error == null )
         {
             new TypeRouteEditor( new EditorCallback<TypeRoute>( item )
             {
@@ -103,27 +119,18 @@ public class TypeRouteController
         
         else
         {
-            Prompts.alert( "Selecione uma rota para editar" );
+            Prompts.alert( error );
         }
     }
-    
     
     
     private void deleteItem() throws Exception 
     {
         TypeRoute item = tree.getSelectedRoute();
 
-        if( item != null && item.getState() == TypeRoute.STATE_INACTIVE )
-        {
-            Prompts.info( "Rota já encontra-se excluido!" );
-        }
-
-        else if( item == null )
-        {
-            Prompts.alert( "Selecione uma rota para excluir!" );
-        }
-
-        else
+        String error = controller.onDelete( item );
+        
+        if ( error == null )
         {
             if( Prompts.confirm( "Você tem certeza que deseja excluir a rota\n" + item ) )
             {
@@ -132,6 +139,88 @@ public class TypeRouteController
                                           .delete( item );
 
                 refresh();
+            }
+        }
+        
+        else
+        {
+            Prompts.alert( error );
+        }
+    }
+    
+    private void moveUp() throws Exception
+    {
+        TypeRoute route = tree.getSelectedRoute();
+        
+        if ( route != null )
+        {
+            if ( route.getSequence() > 0 )
+            {
+                List<TypeRoute> routes = com.paa.requestnow.model.ModuleContext.getInstance().getTypeRouteManager().getByType( route.getType() );
+                
+                route.setSequence( route.getSequence() - 1 );
+                
+                com.paa.requestnow.model.ModuleContext.getInstance().getTypeRouteManager().update( route );
+                
+                for ( TypeRoute r : routes )
+                {
+                    if ( r.getSequence() == route.getSequence() )
+                    {
+                        r.setSequence( r.getSequence() + 1 );
+                        
+                        com.paa.requestnow.model.ModuleContext.getInstance().getTypeRouteManager().update( r );
+                        
+                        break;
+                    }
+                }
+                
+                int index = tree.getSelectionModel().getSelectedIndex();
+                
+                refresh();
+                
+                if ( index != -1 )
+                {
+                    tree.getSelectionModel().select( index - 1 );
+                }
+            }
+        }
+    }
+    
+    
+    private void moveDown() throws Exception
+    {
+        TypeRoute route = tree.getSelectedRoute();
+        
+        if ( route != null )
+        {
+            List<TypeRoute> routes = com.paa.requestnow.model.ModuleContext.getInstance().getTypeRouteManager().getByType( route.getType() );
+            
+            if ( route.getSequence() < routes.size() - 1 )
+            {
+                route.setSequence( route.getSequence() + 1 );
+                
+                com.paa.requestnow.model.ModuleContext.getInstance().getTypeRouteManager().update( route );
+                
+                for ( TypeRoute r : routes )
+                {
+                    if ( r.getSequence() == route.getSequence() )
+                    {
+                        r.setSequence( r.getSequence() - 1 );
+                        
+                        com.paa.requestnow.model.ModuleContext.getInstance().getTypeRouteManager().update( r );
+                        
+                        break;
+                    }
+                }
+                
+                int index = tree.getSelectionModel().getSelectedIndex();
+                
+                refresh();
+                
+                if ( index != -1 )
+                {
+                    tree.getSelectionModel().select( index + 1 );
+                }
             }
         }
     }
@@ -182,7 +271,7 @@ public class TypeRouteController
             {
                 engine.load( ResourceLocator.getInstance().getWebResource( "route.html" ) );
                 
-                engine.documentProperty().addListener( (s) -> engine.executeScript( "setRoute( " + route.toJson() +" );" ) );
+                engine.documentProperty().addListener( (s) -> engine.executeScript( "setRoute( " + JsonUtilities.getRoute( route ) +" );" ) );
             }
         }
         
@@ -208,7 +297,7 @@ public class TypeRouteController
     @Override
     public List<ActionButton> getActions() 
     {
-        return Arrays.asList( addItem, editItem, deleteItem );
+        return Arrays.asList( addItem, editItem, deleteItem, moveUpItem, moveDownItem );
     }
     
     
@@ -295,6 +384,24 @@ public class TypeRouteController
         public void onEvent( Event t ) throws Exception
         {
             deleteItem();
+        }
+    } );
+    
+    private ActionButton moveUpItem = new ActionButton( "Acima", "up.png", new ActionButton.ActionHandler() 
+    {
+        @Override
+        public void onEvent( Event t ) throws Exception
+        {
+            moveUp();
+        }
+    } );
+    
+    private ActionButton moveDownItem = new ActionButton( "Abaixo", "down.png", new ActionButton.ActionHandler() 
+    {
+        @Override
+        public void onEvent( Event t ) throws Exception
+        {
+            moveDown();
         }
     } );
 }

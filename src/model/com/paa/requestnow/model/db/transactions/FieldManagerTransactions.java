@@ -1,5 +1,6 @@
 package com.paa.requestnow.model.db.transactions;
 
+import com.paa.requestnow.model.data.Core;
 import com.paa.requestnow.model.filter.DefaultFilter;
 import com.paa.requestnow.model.data.Field;
 import com.paa.requestnow.model.data.Option;
@@ -154,5 +155,33 @@ public class FieldManagerTransactions
         } );
         
         return db.fetchAll( sql.toString() , S.fetcher );
-    }    
+    }  
+    
+    
+    public String getJson( Database db, Field field ) throws Exception
+    {
+        if ( field == null )
+        {
+            throw new IllegalArgumentException( "Field cannot be null!" );
+        }
+         
+        return db.queryString( "select getJson( " + field.getId() + ", 'field' )" );
+    }
+    
+    public boolean hasDependences( Database db, Core field ) throws Exception
+    {
+        if ( field == null )
+        {
+            throw new IllegalArgumentException( "Field cannot be null!" );
+        }
+        
+        Schema.ValuesRequests V = Schema.ValuesRequests.alias( "V" );
+        
+        String sql = " select count( * ) from " +
+                     V.name +
+                     " where " +
+                     V.columns.FIELD + " = " + field.getId();
+        
+        return db.queryInteger( sql ) > 0;
+    }
 }

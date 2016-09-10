@@ -21,6 +21,8 @@ public class PermissionList
     extends 
         ListView<Permission>
 {
+    private boolean permission = true;
+    
     public PermissionList() 
     {
          setCellFactory( new Callback<ListView<Permission>, ListCell<Permission>>() 
@@ -35,6 +37,12 @@ public class PermissionList
         getSelectionModel().setSelectionMode( SelectionMode.SINGLE );
         
         getStylesheets().add( "config/table.css" );        
+    }
+    
+    public void setPermission( boolean permission )
+    {
+        this.permission = permission;
+        requestLayout();
     }
     
     public void setItems( List<Permission> permissions )
@@ -72,7 +80,7 @@ public class PermissionList
                 CheckBox checkBox = new CheckBox( permission.getDescription() );
                 
                 checkBox.setSelected( permission.isActive() );
-                
+                checkBox.setDisable( ! PermissionList.this.permission );
                 setGraphic( checkBox );
                 
                 checkBox.selectedProperty().addListener( new ChangeListener<Boolean>() 

@@ -4,6 +4,7 @@ import com.paa.requestnow.control.util.JsonUtilities;
 import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.ResourceLocator;
 import com.paa.requestnow.model.data.Category;
+import com.paa.requestnow.model.data.Core;
 import com.paa.requestnow.model.data.Field;
 import com.paa.requestnow.model.data.Type;
 import com.paa.requestnow.view.editor.FieldEditor;
@@ -31,20 +32,33 @@ public class FieldController
     implements 
         EntrieController<Field>
 {
+    private com.paa.requestnow.control.FieldController controller = com.paa.requestnow.control.FieldController.getInstance();
+    
     public FieldController() 
     {
         initComponents();
+        composePermission();
+    }
+    
+    private void composePermission()
+    {
+        addItem.setDisable( ! controller.hasPermissionAdd() );
+        editItem.setDisable( ! controller.hasPermissionEdit() );
+        moveUpItem.setDisable( ! controller.hasPermissionEdit() );
+        moveDownItem.setDisable( ! controller.hasPermissionEdit() );
+        deleteItem.setDisable( ! controller.hasPermissionDelete() );
     }
     
     
     private void addItem() throws Exception 
     {
-        Type type = tree.getSelectedType();
+        Core item = tree.getSelectedCore();
         
-        if ( type != null )
+        String error = controller.onAdd( item );
+        
+        if ( error == null )
         {
-            Field field = new Field();
-            field.setTypeRequest( type.getId() );
+            Field field = controller.createField( item );
             
             new FieldEditor( new EditorCallback<Field>( field )
             {
@@ -70,7 +84,7 @@ public class FieldController
         
         else
         {
-            Prompts.alert( "Selecione um Tipo para inserir campos!" );
+            Prompts.alert( error );
         }
     }
 
@@ -79,7 +93,9 @@ public class FieldController
     {
         Field item = tree.getSelectedField();
 
-        if( item != null )
+        String error = controller.onEdit( item );
+
+        if( error == null )
         {
             new FieldEditor( new EditorCallback<Field>( item )
             {
@@ -104,27 +120,17 @@ public class FieldController
         
         else
         {
-            Prompts.alert( "Selecione uma campo para editar" );
+            Prompts.alert( error );
         }
     }
-    
-    
     
     private void deleteItem() throws Exception 
     {
         Field item = tree.getSelectedField();
 
-        if( item != null && item.getState() == Field.STATE_INACTIVE )
-        {
-            Prompts.info( "Setor já encontra-se excluido!" );
-        }
-
-        else if( item == null )
-        {
-            Prompts.alert( "Selecione uma campo para excluir!" );
-        }
-
-        else
+        String error = controller.onDelete( item );
+        
+        if ( error == null )
         {
             if( Prompts.confirm( "Você tem certeza que deseja excluir o campo\n" + item ) )
             {
@@ -134,6 +140,11 @@ public class FieldController
 
                 refresh();
             }
+        }
+        
+        else
+        {
+            Prompts.alert( error );
         }
     }
 
@@ -226,7 +237,7 @@ public class FieldController
             {
                 engine.load( ResourceLocator.getInstance().getWebResource( "field.html" ) );
              
-                engine.documentProperty().addListener( ( prop, oldDoc, newDoc ) ->  engine.executeScript( "setField( " + field.toJson() +" );" ) );
+                engine.documentProperty().addListener( ( s ) ->  engine.executeScript( "setField( " + JsonUtilities.getField( field ) +" );" ) );
             }
         }
         

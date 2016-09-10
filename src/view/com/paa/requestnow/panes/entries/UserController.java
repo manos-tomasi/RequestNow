@@ -24,6 +24,20 @@ public class UserController
         EntrieController<User>
 {
     private UserFilter filter =  new UserFilter();
+    private com.paa.requestnow.control.UserController controller = com.paa.requestnow.control.UserController.getInstance();
+
+    public UserController() 
+    {
+        composePermission();
+    }
+    
+    private void composePermission()
+    {
+        addItem.setDisable( ! controller.hasPermissionAdd() );
+        editItem.setDisable( ! controller.hasPermissionEdit() );
+        deleteItem.setDisable( ! controller.hasPermissionDelete() );
+    }
+    
     
     public void addItem() throws Exception 
     {
@@ -52,7 +66,9 @@ public class UserController
     {
         User item = table.getSelectedItem();
 
-        if( item != null )
+        String error = controller.onEdit( item );
+        
+        if( error == null )
         {
             new UserEditor(new EditorCallback<User>( item )
             {
@@ -77,7 +93,7 @@ public class UserController
         
         else
         {
-            Prompts.alert( "Selecione uma categoria para editar" );
+            Prompts.alert( error );
         }
     }
 
@@ -99,17 +115,9 @@ public class UserController
     {
         User item = table.getSelectedItem();
 
-        if( item != null && item.getState() == User.STATE_INACTIVE )
-        {
-            Prompts.info( "Usuário já encontra-se excluido!" );
-        }
-
-        else if( item == null )
-        {
-            Prompts.alert( "Selecione uma usuário para excluir!" );
-        }
-
-        else
+        String error = controller.onDelete( item );
+        
+        if ( error == null )
         {
             if( Prompts.confirm( "Você tem certeza que deseja excluir o usuário\n" + item ) )
             {
@@ -119,6 +127,11 @@ public class UserController
 
                 refresh();
             }
+        }
+        
+        else
+        {
+            Prompts.alert( error );
         }
     }
 

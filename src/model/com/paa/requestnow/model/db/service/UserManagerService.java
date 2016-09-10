@@ -86,4 +86,19 @@ public class UserManagerService
             db.release();
         }
     }
+
+    public boolean hasDependences( User user ) throws Exception
+    {
+        Database db = Database.getInstance();
+        
+        try
+        {
+           return transactions.hasDependences( db, user );
+        }
+        
+        finally
+        {
+            db.release();
+        }
+    }
 }

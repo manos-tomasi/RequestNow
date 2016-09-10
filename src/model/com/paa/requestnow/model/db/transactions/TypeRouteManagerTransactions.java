@@ -1,5 +1,6 @@
 package com.paa.requestnow.model.db.transactions;
 
+import com.paa.requestnow.model.data.Core;
 import com.paa.requestnow.model.data.Option;
 import com.paa.requestnow.model.data.Sector;
 import com.paa.requestnow.model.data.Type;
@@ -74,7 +75,13 @@ public class TypeRouteManagerTransactions
     {
         Schema.TypesRoutes S = Schema.TypesRoutes.table;
         
-        String sql = S.select + " where " + S.columns.TYPE + " = " + typeId + " order by sequence asc";
+        String sql = S.select + 
+                     " where " + 
+                    S.columns.TYPE + " = " + typeId +
+                    " and " + 
+                    S.columns.STATE + " = " + TypeRoute.STATE_ACTIVE +
+                    " order by " +
+                    S.columns.SEQUENCE + " asc";
         
         return  db.fetchAll(sql , S.fetcher );
     }    
@@ -150,5 +157,33 @@ public class TypeRouteManagerTransactions
         });
         
         return db.fetchAll(sql.toString() , S.fetcher );
+    }
+        
+    public String getJson( Database db, TypeRoute route ) throws Exception
+    {
+        if ( route == null )
+        {
+            throw new IllegalArgumentException( "TypeRoute cannot be null!" );
+        }
+         
+        return db.queryString( "select getJson( " + route.getId() + ", 'route' )" );
+    }
+    
+       
+    public boolean hasDependences( Database db, Core route ) throws Exception
+    {
+        if ( route == null )
+        {
+            throw new IllegalArgumentException( "Field cannot be null!" );
+        }
+        
+        Schema.RequestsRoutes V = Schema.RequestsRoutes.alias( "R" );
+        
+        String sql = " select count( * ) from " +
+                     V.name +
+                     " where " +
+                     V.columns.TYPE_ROUTE + " = " + route.getId();
+        
+        return db.queryInteger( sql ) > 0;
     }
 }

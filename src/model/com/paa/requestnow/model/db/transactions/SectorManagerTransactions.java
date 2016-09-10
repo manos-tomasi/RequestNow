@@ -3,9 +3,12 @@ package com.paa.requestnow.model.db.transactions;
 import com.paa.requestnow.model.data.Option;
 import com.paa.requestnow.model.filter.DefaultFilter;
 import com.paa.requestnow.model.data.Sector;
+import com.paa.requestnow.model.data.Type;
 import com.paa.requestnow.model.filter.SectorFilter;
 import com.paa.requestnow.model.db.Database;
 import com.paa.requestnow.model.db.Schema;
+import com.paa.requestnow.model.db.Schema.TypesRoutes;
+import com.paa.requestnow.model.db.Schema.Users;
 import java.util.List;
 
 /**
@@ -114,5 +117,37 @@ public class SectorManagerTransactions
                         S.columns.ID           + " = " + sector.getId();
         
         db.executeCommand( sql );
+    }
+    
+     public boolean hasDependences( Database db, Sector sector ) throws Exception
+    {
+        if ( sector == null )
+        {
+            throw new IllegalArgumentException( "Setor cannot be null!" );
+        }
+        
+        Users       U = Users.table;
+        TypesRoutes R = TypesRoutes.table;
+
+        String sql;
+        boolean hasDependence;
+        
+        sql = "select count(*) from " + U.name + 
+                     " where " +
+                     U.columns.STATE    + " = " + Sector.STATE_ACTIVE +
+                     " and " +
+                     U.columns.SECTOR + " = " + sector.getId();
+        
+        hasDependence = db.queryInteger( sql ) > 0;
+        
+        sql = "select count(*) from " + R.name + 
+                     " where " +
+                     R.columns.STATE + " = " + Type.STATE_ACTIVE +
+                     " and " +
+                     R.columns.SECTOR  + " = " + sector.getId();
+        
+        hasDependence |= db.queryInteger( sql ) > 0;
+        
+        return hasDependence;
     }
 }

@@ -71,18 +71,4 @@ public class TypeRoute
     {
         return String.valueOf( this.sequence );
     } 
-    
-    public String toJson()
-    {
-        try
-        {
-        }
-        
-        catch ( Exception e )
-        {
-            System.err.println( e );
-        }
-        
-        return null;
-    }
 }

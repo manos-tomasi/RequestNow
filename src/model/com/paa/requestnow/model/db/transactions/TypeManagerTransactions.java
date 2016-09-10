@@ -1,6 +1,7 @@
 package com.paa.requestnow.model.db.transactions;
 
 import com.paa.requestnow.model.data.Category;
+import com.paa.requestnow.model.data.Core;
 import com.paa.requestnow.model.data.Option;
 import com.paa.requestnow.model.data.Type;
 import com.paa.requestnow.model.db.Database;
@@ -149,7 +150,7 @@ public class TypeManagerTransactions
         return db.queryString( "select getJson( " + type.getId() + ", 'type' )" );
     }
     
-    public boolean hasDependences( Database db, Type type ) throws Exception
+    public boolean hasDependences( Database db, Core type ) throws Exception
     {
         if ( type == null )
         {

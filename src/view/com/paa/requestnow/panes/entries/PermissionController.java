@@ -4,7 +4,6 @@ import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.ModuleContext;
 import com.paa.requestnow.model.data.Permission;
 import com.paa.requestnow.model.data.Role;
-import com.paa.requestnow.model.data.User;
 import com.paa.requestnow.view.editor.RoleEditor;
 import com.paa.requestnow.view.tables.GroupList;
 import com.paa.requestnow.view.tables.PermissionList;
@@ -15,7 +14,6 @@ import com.paa.requestnow.view.util.Prompts;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Pattern;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
@@ -30,9 +28,21 @@ public class PermissionController
     implements 
         EntrieController<Role>
 {
+    private com.paa.requestnow.control.PermissionController controller = com.paa.requestnow.control.PermissionController.getInstance();
+    
     public PermissionController() 
     {
         initComponents();
+        composePermission();
+    }
+    
+    private void composePermission()
+    {
+        addItem.setDisable( ! controller.hasPermissionAdd() );
+        editItem.setDisable( ! controller.hasPermissionEdit() );
+        permissionList.setDisable( ! controller.hasPermissionEdit() );
+        saveItem.setDisable( ! controller.hasPermissionEdit() );
+        deleteItem.setDisable( ! controller.hasPermissionDelete() );
     }
     
     List<Permission> permissions = new ArrayList();
@@ -87,7 +97,9 @@ public class PermissionController
     {
         Role item = tree.getSelectedRole();
 
-        if( item != null )
+        String error = controller.onEdit( item );
+        
+        if( error == null )
         {
             new RoleEditor( new EditorCallback<Role>( item )
             {
@@ -112,7 +124,7 @@ public class PermissionController
         
         else
         {
-            Prompts.alert( "Selecione um Grupo para editar" );
+            Prompts.alert( error );
         }
     }
 
@@ -130,17 +142,10 @@ public class PermissionController
     {
         Role item = tree.getSelectedRole();
 
-        if( item == null )
-        {
-            Prompts.alert( "Selecione um grupo para excluir!" );
-        }
-
-        else
-        {            
-            List<User> users = com.paa.requestnow.model.ModuleContext.getInstance().getUserManager().getUsersByRole( item.getId() );
-            
-            if( users.isEmpty() )
-            {
+       String error = controller.onDelete( item );
+       
+       if ( error == null )
+       {
                 if( Prompts.confirm( "Você tem certeza que deseja excluir a função:  " + item ) )
                 {
                     com.paa.requestnow.model.ModuleContext.getInstance()
@@ -149,11 +154,11 @@ public class PermissionController
 
                     refresh();
                 }
-            }
-            else
-            {
-                Prompts.alert( "Você nã pode apagar esse grupo pois existem usuários vinculados: \n" + users.toString().replaceAll( "\\[|\\]" , "" ) );
-            }
+        }
+
+        else
+        {
+            Prompts.alert( error );
         }
     }
     

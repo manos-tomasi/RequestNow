@@ -3,6 +3,7 @@ package com.paa.requestnow.view.tree;
 import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.ResourceLocator;
 import com.paa.requestnow.model.data.Category;
+import com.paa.requestnow.model.data.Core;
 import com.paa.requestnow.model.data.Field;
 import com.paa.requestnow.model.data.Type;
 import com.paa.requestnow.model.data.TypeRoute;
@@ -334,7 +335,7 @@ public class CategoryTree
         return getSelectionModel().getSelectedItem();
     }
     
-    public Object getSelectedObject()
+    public Core getSelectedCore()
     {
         TreeItem item = getSelectionModel().getSelectedItem();
             
@@ -362,7 +363,7 @@ public class CategoryTree
            
             if( item.getValue() instanceof String )
             {
-                return (String) item.getValue();
+                return null;
             }
         }
             

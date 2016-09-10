@@ -1,5 +1,6 @@
 package com.paa.requestnow.panes.modules;
 
+import com.paa.requestnow.control.*;
 import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.ResourceLocator;
 import com.paa.requestnow.panes.entries.EntrieCenterPane;
@@ -43,8 +44,27 @@ public class EntriePane
     public EntriePane() 
     {
         initComponentes();
+        
+        composePermission();
     }
     
+    
+    private void composePermission()
+    {
+        String permissions = "{";
+        permissions+= "'route' : " + TypeRouteController.getInstance().hasPermissionView() + ",";
+        permissions+= "'user' : " + UserController.getInstance().hasPermissionView() + ",";
+        permissions+= "'type': " + TypeController.getInstance().hasPermissionView() + ",";
+        permissions+= "'category' : " + CategoryController.getInstance().hasPermissionView() + ",";
+        permissions+= "'field' : " + FieldController.getInstance().hasPermissionView() + ",";
+        permissions+= "'sector' : "  + SectorController.getInstance().hasPermissionView() + ",";
+        permissions+= "'permission' : " + PermissionController.getInstance().hasPermissionView();
+        permissions += " }";
+        
+        final String roles = permissions;
+        
+        engine.documentProperty().addListener( ( s ) ->  engine.executeScript( "definePermissions( " + roles +" );" ) );
+    }
     
     
     public void show( int index )

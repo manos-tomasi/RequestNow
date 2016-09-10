@@ -108,7 +108,6 @@ public class EntrieCenterPane <T extends Core>
     
     private void initComponents()
     {
-        
         getChildren().addAll( controller.getComponent() );
     }
     

@@ -46,6 +46,7 @@ public class RoleEditor
     @Override
     protected void resize() 
     {
+        nameField.setPrefWidth( getWidth() );
         getDialogPane().requestLayout();
     }
 

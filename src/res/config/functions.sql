@@ -13,8 +13,8 @@ CREATE OR REPLACE VIEW view_routes AS
 SELECT tr.id AS id,
        tr.days AS days,
        tr.sequence AS sequence,
-       coalesce( u.name, 'n\d' ) AS user,
-       coalesce( s.name, 'n\d' ) AS sector,
+       coalesce( u.name, 'n/d' ) AS user,
+       coalesce( s.name, 'n/d' ) AS sector,
        t.name AS type
 FROM types_routes tr
 LEFT JOIN users u ON (tr.ref_user = u.id)
@@ -46,7 +46,7 @@ SELECT t.id AS id,
        c.name AS category,
        t.info AS info,
        ARRAY( SELECT f.label FROM fields f WHERE f.ref_type = t.id and f.state = 0 ) AS fields,
-       ARRAY( SELECT coalesce( u.name, 'n\d' ) || ' - ' || coalesce( s.name, 'n\d' ) FROM types_routes r, users u, sectors s WHERE r.ref_type = t.id and r.ref_sector = s.id and r.ref_user = u.id order by r.sequence ) AS routes
+       ARRAY( SELECT coalesce( u.name, 'n/d' ) || ' - ' || coalesce( s.name, 'n/d' ) FROM types_routes r, users u, sectors s WHERE r.ref_type = t.id and r.ref_sector = s.id and r.ref_user = u.id order by r.sequence ) AS routes
 FROM types t
 INNER JOIN categories c ON (t.ref_category = c.id)
 WHERE t.state = 0;
@@ -82,8 +82,8 @@ CREATE OR REPLACE VIEW view_requests AS
 SELECT r.id AS id,
        t.name AS type,
        u.name AS user,
-       coalesce ( to_char( dt_end::date ,'DD/MM/YYYY' ), 'n\d' ) AS dt_end ,
-       coalesce ( to_char( dt_start::date, 'DD/MM/YYYY'), 'n\d' ) AS dt_start ,
+       coalesce ( to_char( dt_end::date ,'DD/MM/YYYY' ), 'n/d' ) AS dt_end ,
+       coalesce ( to_char( dt_start::date, 'DD/MM/YYYY'), 'n/d' ) AS dt_start ,
        CASE
            WHEN r.state = 1 THEN 'Aprovada'
            WHEN r.state = 2 THEN 'Cancelada'

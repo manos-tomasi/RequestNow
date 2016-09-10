@@ -1,5 +1,6 @@
 package com.paa.requestnow.model.db.service;
 
+import com.paa.requestnow.model.data.Core;
 import com.paa.requestnow.model.data.Field;
 import com.paa.requestnow.model.db.Database;
 import com.paa.requestnow.model.db.transactions.FieldManagerTransactions;
@@ -39,6 +40,34 @@ public class FieldManagerService
             return transactions.getFieldsType( db , fieldId );
         }
 
+        finally
+        {
+            db.release();
+        }
+    }
+             
+    public String getJson( Field field ) throws Exception
+    {
+        Database db = Database.getInstance();
+        
+        try
+        {
+            return transactions.getJson( db, field );
+        }
+        finally
+        {
+            db.release();
+        }
+    }
+             
+    public boolean hasDependences( Core field ) throws Exception
+    {
+        Database db = Database.getInstance();
+        
+        try
+        {
+            return transactions.hasDependences( db, field );
+        }
         finally
         {
             db.release();

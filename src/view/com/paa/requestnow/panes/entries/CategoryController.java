@@ -30,7 +30,7 @@ public class CategoryController
     implements 
         EntrieController<Category>
 {
-    com.paa.requestnow.control.CategoryController controller = com.paa.requestnow.control.CategoryController.getInstance();
+    private com.paa.requestnow.control.CategoryController controller = com.paa.requestnow.control.CategoryController.getInstance();
     
     public CategoryController() 
     {
@@ -40,9 +40,9 @@ public class CategoryController
     
     private void composePermission()
     {
-        addItem.setDisable( ! controller.canAdd() );
-        editItem.setDisable( ! controller.canEdit() );
-        deleteItem.setDisable( ! controller.canDelete() );
+        addItem.setDisable( ! controller.hasPermissionAdd() );
+        editItem.setDisable( ! controller.hasPermissionEdit() );
+        deleteItem.setDisable( ! controller.hasPermissionDelete() );
     }
     
     public void addItem() throws Exception 

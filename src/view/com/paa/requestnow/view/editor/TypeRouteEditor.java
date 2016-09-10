@@ -5,8 +5,6 @@ import com.paa.requestnow.model.data.Sector;
 import com.paa.requestnow.model.data.TypeRoute;
 import com.paa.requestnow.model.data.User;
 import com.paa.requestnow.view.selectors.SectorSelector;
-import com.paa.requestnow.view.selectors.StateSelector;
-import com.paa.requestnow.view.selectors.TypeSelector;
 import com.paa.requestnow.view.selectors.UserSelector;
 import com.paa.requestnow.view.util.EditorCallback;
 import com.paa.requestnow.view.util.LabelField;
@@ -40,21 +38,10 @@ public class TypeRouteEditor
     @Override
     protected void validadeInput( List<String> erros ) throws Exception 
     {
-        if( stateField.getSelectedIndex() == -1 )
-        {
-            erros.add( "Situação é requerida" );
-        }
-        
         if( sectorField.getSelectedIndex() == -1 && 
             userField.getSelectedIndex() == -1 )
         {
             erros.add( "Responsável ou Setor são requeridos" );
-        }
-        
-        
-        if( typeField.getSelectedIndex() == -1 )
-        {
-            erros.add( "Tipo de Requisição é requerida" );
         }
         
         if( daysField.getValue() <= 0 )
@@ -66,17 +53,15 @@ public class TypeRouteEditor
     @Override
     protected void obtainInput() 
     {
-        source.setState( stateField.getSelectedIndex() );
         source.setDays( daysField.getValue() );
         source.setUser( userField.getSelectedIndex() != -1 ? userField.getSelected().getId() : 0 );
         source.setSector( sectorField.getSelectedIndex() != -1 ? sectorField.getSelected().getId() : 0 );
-        source.setType( typeField.getSelectedIndex() != -1 ? typeField.getSelected().getId() : 0 );
     }
 
     @Override
     protected void resize() 
     {
-        stateField.setPrefWidth( getWidth() );
+        userField.setPrefWidth( getWidth() );
         getDialogPane().requestLayout();
     }
 
@@ -86,7 +71,6 @@ public class TypeRouteEditor
     {
         try
         {
-            stateField.setSelectedIndex( source.getState() );
             daysField.increment( source.getDays() );
             
             userField.setSelected( com.paa.requestnow.model.ModuleContext
@@ -98,13 +82,6 @@ public class TypeRouteEditor
                                                             .getInstance()
                                                             .getSectorManager()
                                                             .get( source.getSector() ) );
-            
-            typeField.setSelected( com.paa.requestnow.model.ModuleContext
-                                                            .getInstance()
-                                                            .getTypeManager()
-                                                            .get( source.getType()) );
-            
-            
         }
         
         catch ( Exception e )
@@ -178,14 +155,8 @@ public class TypeRouteEditor
         gridPane.add( lbUser,           0, 1, 1, 1 );
         gridPane.add( userField,        1, 1, 3, 1 );
       
-        gridPane.add( lbType,           0, 2, 1, 1 );
-        gridPane.add( typeField,        1, 2, 3, 1 );
-    
-        gridPane.add( lbDays,           0, 3, 1, 1 );
-        gridPane.add( daysField,        1, 3, 3, 1 );
-        
-        gridPane.add( lbState,          0, 4, 1, 1 );
-        gridPane.add( stateField,       1, 4, 3, 1 );
+        gridPane.add( lbDays,           0, 2, 1, 1 );
+        gridPane.add( daysField,        1, 2, 3, 1 );
         
         getDialogPane().setContent( gridPane );
         
@@ -213,12 +184,6 @@ public class TypeRouteEditor
     
     private LabelField lbSector            = new LabelField( "Setor" );
     private SectorSelector sectorField     = new SectorSelector();
-    
-    private LabelField lbState             = new LabelField( "Situação", true );
-    private StateSelector stateField       = new StateSelector();
-    
-    private LabelField lbType              = new LabelField( "Tipo Requisição", true );
-    private TypeSelector typeField         = new TypeSelector();
     
     private LabelField lbUser              = new LabelField( "Responsável" );
     private UserSelector userField         = new UserSelector();

@@ -2,7 +2,9 @@ package com.paa.requestnow.control.util;
 
 import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.data.Category;
+import com.paa.requestnow.model.data.Field;
 import com.paa.requestnow.model.data.Type;
+import com.paa.requestnow.model.data.TypeRoute;
 
 /**
  * @author artur
@@ -43,9 +45,20 @@ public class JsonUtilities
         return  null;
     }
     
-    public static String getRoute( int id )
+    public static String getRoute( TypeRoute route )
     {
-        //to do
+        try
+        {
+             return com.paa.requestnow.model.ModuleContext
+                                .getInstance()
+                                .getTypeRouteManager()
+                                .getJson( route );
+        }
+        
+        catch ( Exception e )
+        {
+            ApplicationUtilities.logException( e );
+        }
         
         return null;
     }
@@ -57,9 +70,20 @@ public class JsonUtilities
         return null;
     }
     
-    public static String getField( int id )
+    public static String getField( Field field )
     {
-        //to do
+        try
+        {
+             return com.paa.requestnow.model.ModuleContext
+                                .getInstance()
+                                .getFieldManager()
+                                .getJson( field );
+        }
+        
+        catch ( Exception e )
+        {
+            ApplicationUtilities.logException( e );
+        }
         
         return null;
     }

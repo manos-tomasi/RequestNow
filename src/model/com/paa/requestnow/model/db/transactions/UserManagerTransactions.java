@@ -7,7 +7,7 @@ import com.paa.requestnow.model.data.User;
 import com.paa.requestnow.model.filter.UserFilter;
 import com.paa.requestnow.model.db.Database;
 import com.paa.requestnow.model.db.Schema.Users.Columns;
-import com.paa.requestnow.model.db.Schema.Users;
+import com.paa.requestnow.model.db.Schema.*;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -385,4 +385,45 @@ public class UserManagerTransactions
         
         return db.queryInteger( sql ) == 0;
     }
+    
+    public boolean hasDependences( Database db, User user ) throws Exception
+    {
+        if ( user == null )
+        {
+            throw new IllegalArgumentException( "User cannot be null!" );
+        }
+        
+        String sql;
+        boolean hasDependence;
+        
+        Requests R = Requests.table;
+        
+        sql = " select count( * ) from " + 
+                     R.name + 
+                     " where " +
+                     R.columns.USER + " = " + user.getId();
+        
+        hasDependence = db.queryInteger( sql ) > 0;
+        
+        RequestsRoutes RR = RequestsRoutes.table;
+        
+        sql = " select count( * ) from " + 
+                     RR.name + 
+                     " where " +
+                     RR.columns.USER + " = " + user.getId();
+        
+        hasDependence |= db.queryInteger( sql ) > 0;
+        
+        TypesRoutes T = TypesRoutes.table;
+        
+        sql = " select count( * ) from " + 
+                     T.name + 
+                     " where " +
+                     T.columns.USER + " = " + user.getId();
+        
+        hasDependence |= db.queryInteger( sql ) > 0;
+        
+        return hasDependence;
+    }
+    
 }

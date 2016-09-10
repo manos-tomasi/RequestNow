@@ -4,6 +4,7 @@ import com.paa.requestnow.control.util.JsonUtilities;
 import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.ResourceLocator;
 import com.paa.requestnow.model.data.Category;
+import com.paa.requestnow.model.data.Core;
 import com.paa.requestnow.model.data.Type;
 import com.paa.requestnow.view.editor.TypeEditor;
 import com.paa.requestnow.view.tree.CategoryTree;
@@ -30,7 +31,7 @@ public class TypeController
     implements 
         EntrieController<Type>
 {
-    com.paa.requestnow.control.TypeController controller = com.paa.requestnow.control.TypeController.getInstance();
+    private com.paa.requestnow.control.TypeController controller = com.paa.requestnow.control.TypeController.getInstance();
     
     public TypeController() 
     {
@@ -40,14 +41,14 @@ public class TypeController
     
     private void composePermission()
     {
-        addItem.setDisable( ! controller.canAdd() );
-        editItem.setDisable( ! controller.canEdit() );
-        deleteItem.setDisable( ! controller.canDelete() );
+        addItem.setDisable( ! controller.hasPermissionAdd() );
+        editItem.setDisable( ! controller.hasPermissionEdit() );
+        deleteItem.setDisable( ! controller.hasPermissionDelete() );
     }
     
     private void addItem() throws Exception 
     {
-        Object item = tree.getSelectedObject();
+        Core item = tree.getSelectedCore();
         
         String error = controller.onAdd( item );
         
