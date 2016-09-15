@@ -1,6 +1,5 @@
 package com.paa.requestnow.model.filter;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -17,14 +16,17 @@ public class RequestFilter
     public static final int END   = 3; 
     public static final int OPENED= 4; 
     public static final int USER  = 5; 
-    
+
     @Override
-    public List<FilterItem> getComponents() {
-                return Arrays.asList(   new FilterItem( STATE,     "Situação", "com.paa.requestnow.view.selectors.RequestStateSelector" ),
-                                        new FilterItem( TYPE,      "Tipo",     "com.paa.requestnow.view.selectors.TypeSelector" ),
-                                        new FilterItem( START,     "Inicio",   "com.paa.requestnow.view.util.DateBetweenField" ),
-                                        new FilterItem( END,       "Final",    "com.paa.requestnow.view.util.DateBetweenField" ),
-                                        new FilterItem( OPENED,    "Abertas",  "com.paa.requestnow.view.selectors.YesNoSelector" ),
-                                        new FilterItem( USER,      "Usuário",  "com.paa.requestnow.view.selectors.UserSelector" ));
+    protected void createComponents( List<FilterItem> items ) 
+    {
+        items.add( new FilterItem( STATE,     "Situação", "com.paa.requestnow.view.selectors.RequestStateSelector" ) );
+        items.add( new FilterItem( TYPE,      "Tipo",     "com.paa.requestnow.view.selectors.TypeSelector" ) );
+        items.add( new FilterItem( START,     "Inicio",   "com.paa.requestnow.view.util.DateBetweenField" ) );
+        items.add( new FilterItem( END,       "Final",    "com.paa.requestnow.view.util.DateBetweenField" ) );
+        items.add( new FilterItem( OPENED,    "Abertas",  "com.paa.requestnow.view.selectors.YesNoSelector" ) );
+        items.add( new FilterItem( USER,      "Usuário",  "com.paa.requestnow.view.selectors.UserSelector" ) ) ;
     }
+    
+    
 }

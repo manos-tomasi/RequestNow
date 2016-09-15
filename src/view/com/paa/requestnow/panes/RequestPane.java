@@ -40,7 +40,15 @@ public class RequestPane
     private void load()
     {
         controller = RequestController.getInstance();
+        
         requestFilter = new RequestFilter();
+        
+        if ( true )
+        {
+            requestFilter.setBlockedFilters( RequestFilter.USER );
+            requestFilter.addCondition( RequestFilter.USER, ApplicationUtilities.getInstance().getActiveUser() );
+        }
+        
     }
     
     private void add()

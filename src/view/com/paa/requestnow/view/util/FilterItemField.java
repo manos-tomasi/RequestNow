@@ -49,6 +49,10 @@ public class FilterItemField
                 
                 if( node instanceof  Spinner )
                     ( (Spinner) node ).setEditable( true );
+                
+                node.setDisable( filterItem.isDisabled() );
+                checkBox.setDisable( filterItem.isDisabled() );
+                label.setDisable( filterItem.isDisabled() );
             }
         }
         

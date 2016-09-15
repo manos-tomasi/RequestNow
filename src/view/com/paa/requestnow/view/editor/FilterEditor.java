@@ -67,7 +67,7 @@ public class FilterEditor
     @Override
     protected void setSource( DefaultFilter source )
     {
-        filters.setItems( source.getComponents() );
+        filters.setItems( source.getAllowFilters() );
         
         source.getConditions().forEach( ( key, values ) ->
         {

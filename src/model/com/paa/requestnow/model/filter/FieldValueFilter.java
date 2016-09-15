@@ -1,6 +1,5 @@
 package com.paa.requestnow.model.filter;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -15,8 +14,9 @@ public class FieldValueFilter
     public static final int STATE = 1;
     
     @Override
-    public List<FilterItem> getComponents() {
-                return Arrays.asList(   new FilterItem( STATE,      "Situação", "com.paa.requestnow.view.selectors.StateSelector" ),
-                                        new FilterItem( FIELD,      "Campo"   , "com.paa.requestnow.view.selectors.FieldSelector" ));
-    }    
+    protected void createComponents(List<FilterItem> filters) 
+    {
+        filters.add( new FilterItem( FIELD,      "Nome",              "com.paa.requestnow.view.selectors.FieldSelector" ) );
+        filters.add( new FilterItem( STATE,      "Situação",          "com.paa.requestnow.view.selectors.StateSelector" )  );
+    }  
 }

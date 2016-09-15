@@ -1,6 +1,5 @@
 package com.paa.requestnow.model.filter;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -16,9 +15,10 @@ public class TypeFilter
     public static final int STATE      = 2;
 
     @Override
-    public List<FilterItem> getComponents() {
-                return Arrays.asList(   new FilterItem( NAME,       "Nome",              "com.paa.requestnow.view.util.MaskTextField" ),
-                                        new FilterItem( CATEGORY,   "Categoria",         "com.paa.requestnow.view.selectors.CategorySelector" ),
-                                        new FilterItem( STATE,      "Situação",          "com.paa.requestnow.view.selectors.StateSelector" ) );
+    protected void createComponents( List<FilterItem> filters )
+    {
+        filters.add( new FilterItem( NAME,       "Nome",              "com.paa.requestnow.view.util.MaskTextField" ) );
+        filters.add( new FilterItem( CATEGORY,   "Categoria",         "com.paa.requestnow.view.selectors.CategorySelector" ) );
+        filters.add( new FilterItem( STATE,      "Situação",          "com.paa.requestnow.view.selectors.StateSelector" ) );
     }
 }

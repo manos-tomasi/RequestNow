@@ -1,6 +1,5 @@
 package com.paa.requestnow.model.filter;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -18,13 +17,13 @@ public class FieldFilter
     public static final int TYPE_REQUEST = 4;
     
     @Override
-    public List<FilterItem> getComponents() 
+    protected void createComponents(List<FilterItem> filters) 
     {
-                return Arrays.asList(   new FilterItem( LABEL,        "Label",            "com.paa.requestnow.view.util.MaskTextField" ),
-                                        new FilterItem( REQUIRED,     "Requerido",        "com.paa.requestnow.view.selectors.YesNoSelector"),
-                                        new FilterItem( STATE,        "Situação",         "com.paa.requestnow.view.selectors.StateSelector" ),
-                                        new FilterItem( TYPE,         "Tipo",             "com.paa.requestnow.view.selectors.handlerSelector" ),
-                                        new FilterItem( TYPE_REQUEST, "Tipo Requisição",  "com.paa.requestnow.view.selectors.TypeSelector" ) );
-    }
+        filters.add( new FilterItem( LABEL,        "Label",            "com.paa.requestnow.view.util.MaskTextField" ) );
+        filters.add( new FilterItem( REQUIRED,     "Requerido",        "com.paa.requestnow.view.selectors.YesNoSelector")  );
+        filters.add( new FilterItem( STATE,        "Situação",         "com.paa.requestnow.view.selectors.StateSelector" ) );
+        filters.add( new FilterItem( TYPE,         "Tipo",             "com.paa.requestnow.view.selectors.handlerSelector" ) );
+        filters.add( new FilterItem( TYPE_REQUEST, "Tipo Requisição",  "com.paa.requestnow.view.selectors.TypeSelector" ) );
+    } 
     
 }

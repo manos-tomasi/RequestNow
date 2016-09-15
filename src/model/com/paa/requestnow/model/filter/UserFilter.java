@@ -1,6 +1,5 @@
 package com.paa.requestnow.model.filter;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -22,17 +21,17 @@ public class UserFilter
     public static final int SECTOR     = 9;
 
     @Override
-    public List<FilterItem> getComponents() 
+    protected void createComponents( List<FilterItem> filters )
     {
-        return Arrays.asList( new FilterItem( NAME,       "Nome",              "com.paa.requestnow.view.util.MaskTextField" ),
-                              new FilterItem( CPF,        "CPF",               "com.paa.requestnow.view.util.MaskTextField" ),
-                              new FilterItem( ROLE,       "Categoria",         "com.paa.requestnow.view.selectors.RoleSelector" ),
-                              new FilterItem( PHONE,      "Telefone",          "com.paa.requestnow.view.util.MaskTextField" ),
-                              new FilterItem( MAIL,       "Email",             "com.paa.requestnow.view.util.MaskTextField" ),
-                              new FilterItem( RG,         "RG",                "com.paa.requestnow.view.util.MaskTextField" ),
-                              new FilterItem( GENDER,     "Sexo",              "com.paa.requestnow.view.selectors.GenderSelector" ),
-                              new FilterItem( BIRTH_DATE, "Ano de Nascimento", "com.paa.requestnow.view.util.DateBetweenField" ),
-                              new FilterItem( STATE,      "Situação",          "com.paa.requestnow.view.selectors.StateSelector" ),
-                              new FilterItem( SECTOR,     "Setor",             "com.paa.requestnow.view.selectors.SectorSelector" ) );
+        filters.add( new FilterItem( NAME,       "Nome",              "com.paa.requestnow.view.util.MaskTextField" ) );
+        filters.add( new FilterItem( CPF,        "CPF",               "com.paa.requestnow.view.util.MaskTextField" ) );
+        filters.add( new FilterItem( ROLE,       "Categoria",         "com.paa.requestnow.view.selectors.RoleSelector" ) );
+        filters.add( new FilterItem( PHONE,      "Telefone",          "com.paa.requestnow.view.util.MaskTextField" ) );
+        filters.add( new FilterItem( MAIL,       "Email",             "com.paa.requestnow.view.util.MaskTextField" ) );
+        filters.add( new FilterItem( RG,         "RG",                "com.paa.requestnow.view.util.MaskTextField" ) );
+        filters.add( new FilterItem( GENDER,     "Sexo",              "com.paa.requestnow.view.selectors.GenderSelector" ) );
+        filters.add( new FilterItem( BIRTH_DATE, "Ano de Nascimento", "com.paa.requestnow.view.util.DateBetweenField" ) );
+        filters.add( new FilterItem( STATE,      "Situação",          "com.paa.requestnow.view.selectors.StateSelector" ) );
+        filters.add( new FilterItem( SECTOR,     "Setor",             "com.paa.requestnow.view.selectors.SectorSelector" ) );
     }
 }

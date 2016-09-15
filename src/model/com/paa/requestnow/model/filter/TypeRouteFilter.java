@@ -1,6 +1,5 @@
 package com.paa.requestnow.model.filter;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -17,10 +16,11 @@ public class TypeRouteFilter
     public static final int USER   = 3;
 
     @Override
-    public List<FilterItem> getComponents() {
-                return Arrays.asList(   new FilterItem( SECTOR, "Setor",   "com.paa.requestnow.view.selectors.SectorSelector" ),
-                                        new FilterItem( TYPE,   "Tipo",    "com.paa.requestnow.view.selectors.TypeSelector" ),
-                                        new FilterItem( STATE,  "Situação","com.paa.requestnow.view.selectors.StateSelector" ),
-                                        new FilterItem( USER,   "Usuário", "com.paa.requestnow.view.selectors.UserSelector" ) );
+    protected void createComponents( List<FilterItem> filters )
+    {
+        filters.add( new FilterItem( SECTOR, "Setor",   "com.paa.requestnow.view.selectors.SectorSelector" ) );
+        filters.add( new FilterItem( TYPE,   "Tipo",    "com.paa.requestnow.view.selectors.TypeSelector" ) );
+        filters.add( new FilterItem( STATE,  "Situação","com.paa.requestnow.view.selectors.StateSelector" ) );
+        filters.add( new FilterItem( USER,   "Usuário", "com.paa.requestnow.view.selectors.UserSelector" ) );
     }
 }
