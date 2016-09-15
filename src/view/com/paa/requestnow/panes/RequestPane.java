@@ -69,7 +69,7 @@ public class RequestPane
     {
         if( isSelected() )
         {
-            if( table.getSelectedItem().getState() != Request.IN_PROGRESS )
+            if( table.getSelectedItem().getState() == Request.IN_PROGRESS )
             {
                 if( Prompts.confirm( "Confirma o cancelamento da requisição" ) )
                 {
@@ -86,7 +86,7 @@ public class RequestPane
             }
             else
             {
-                Prompts.alert( "Essa requisição já está finalizada!" );
+                Prompts.alert( "Essa requisição está " + Request.STATES[ table.getSelectedItem().getState() ] + "!" );
             }
         }
         else

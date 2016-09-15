@@ -5,7 +5,6 @@ import com.paa.requestnow.model.ModuleContext;
 import com.paa.requestnow.model.data.Permission;
 import com.paa.requestnow.model.data.Role;
 import com.paa.requestnow.view.editor.RoleEditor;
-import com.paa.requestnow.view.tables.GroupList;
 import com.paa.requestnow.view.tables.PermissionList;
 import com.paa.requestnow.view.tree.RoleTree;
 import com.paa.requestnow.view.util.ActionButton;
@@ -14,8 +13,6 @@ import com.paa.requestnow.view.util.Prompts;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.layout.BorderPane;
@@ -53,15 +50,15 @@ public class PermissionController
         
         if( permissions.isEmpty() )
         {
-            if( tree.getSelectedRole() != null && groupList.getSelectedGroup() != null )
+            if( tree.getSelectedRole() != null && tree.getSelectedGroup() != null )
             {
                 permissions = ModuleContext.getInstance().getPermissionManager().getPermissionsRole( tree.getSelectedRole().getId() );
             }
-        }    
-
+        }
+        
         for (int i = 0; i < permissions.size(); i++) 
         {
-            if( permissions.get(i).getGroup() == groupList.getSelectedGroup().getId() )
+            if( permissions.get(i).getGroup() == tree.getSelectedGroup().getId() )
             {
                 permissionsScreen.add( permissions.get(i) );
             }  
@@ -191,13 +188,12 @@ public class PermissionController
     private void initComponents()
     {
         pane.setLeft( tree );
-        pane.setCenter( groupList );
-        pane.setRight( permissionList );
+        pane.setCenter( permissionList );
         
-        groupList.getSelectionModel().selectedItemProperty().addListener( new ChangeListener() 
+        tree.addEventHandler( RoleTree.Events.ON_SELECT_GROUP , new EventHandler<Event>() 
         {
             @Override
-            public void changed(ObservableValue observable, Object oldValue, Object newValue)
+            public void handle(Event t) 
             {
                 try
                 {
@@ -208,9 +204,9 @@ public class PermissionController
                     ApplicationUtilities.logException(e);
                 }
             }
-        });
+        } );
         
-        tree.addEventHandler(RoleTree.Events.ON_SELECT , new EventHandler<Event>() 
+        tree.addEventHandler(RoleTree.Events.ON_SELECT_ROLE , new EventHandler<Event>() 
         {
             @Override
             public void handle(Event t) 
@@ -220,17 +216,17 @@ public class PermissionController
                     permissions.clear();
                     updatePermissions();
                 }
+                
                 catch( Exception e )
                 {
                     ApplicationUtilities.logException(e);
                 }
             }
-        });
+        } );
     }
     
     private BorderPane pane               = new BorderPane();
     private RoleTree tree                 = new RoleTree();
-    private GroupList groupList           = new GroupList();
     private PermissionList permissionList = new PermissionList();
     
     

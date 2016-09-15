@@ -1,7 +1,7 @@
 package com.paa.requestnow.view.tree;
 
 import com.paa.requestnow.model.ApplicationUtilities;
-import com.paa.requestnow.model.ResourceLocator;
+import com.paa.requestnow.model.data.Group;
 import com.paa.requestnow.model.data.Role;
 import java.util.List;
 import javafx.beans.value.ChangeListener;
@@ -12,8 +12,6 @@ import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 /**
  * @author artur
@@ -22,15 +20,16 @@ public class RoleTree
     extends 
         TreeView<Object>
 {
+    private List<Group> groups;
+    
     public static class Events
     {
-        public static final EventType ON_SELECT = new EventType( "onSelectRole" );
+        public static final EventType ON_SELECT_GROUP = new EventType( "onSelectGroup" );
+        public static final EventType ON_SELECT_ROLE = new EventType( "onSelectRole" );
     }
     
-    private Image ICON_ROOT = new Image( ResourceLocator.getInstance().getImageResource( "request_now.png" ) );
-    private Image ICON_ROLE = new Image( ResourceLocator.getInstance().getImageResource( "role.png" ) );
-    
     /**
+     * 
      */
     public RoleTree() 
     {
@@ -55,14 +54,7 @@ public class RoleTree
         {
             TreeItem<Object> rootItem = new TreeItem( "RequestNow" );
             rootItem.setExpanded( true );
-           
-            ImageView imageRoot = new ImageView();
-            imageRoot.setImage( ICON_ROOT );
-            imageRoot.setFitHeight( 20 );
-            imageRoot.setFitWidth( 20 );
-            imageRoot.setCache( true );
-            imageRoot.setCacheHint( CacheHint.SPEED );
-            rootItem.setGraphic( imageRoot ); 
+            loadGroups();
             
             loadRole( rootItem );
 
@@ -87,20 +79,23 @@ public class RoleTree
         for( Role role : roles )
         {
             TreeItem nodeRole = new TreeItem( role );
-            
-            ImageView imageType = new ImageView();
-            imageType.setImage( ICON_ROLE );
-            imageType.setFitHeight( 20 );
-            imageType.setFitWidth( 20 );
-            imageType.setCache( true );
-            imageType.setCacheHint( CacheHint.SPEED );
-            nodeRole.setGraphic( imageType ); 
-            nodeRole.setExpanded(true);
+
+            for ( Group group : groups )
+            {
+                TreeItem nodeGroup = new TreeItem( group );
+                nodeRole.getChildren().add( nodeGroup );
+            }
             
             root.getChildren().add( nodeRole );
         }
     }
-        
+    
+    
+    private void loadGroups() throws Exception
+    {
+        groups = com.paa.requestnow.model.ModuleContext.getInstance().getGroupManager().get();
+
+    }    
     /**
      * 
      * @return 
@@ -117,9 +112,50 @@ public class RoleTree
             {
                 role = (Role) item.getValue();
             }
+            
+            else if ( item.getValue() instanceof Group )
+            {
+                TreeItem parent = item.getParent();
+                
+                if ( parent != null && ( parent.getValue() instanceof Role ) )
+                {
+                    role = (Role) parent.getValue();
+                }
+            }
         }
             
         return role;
+    }
+    
+    /**
+     * 
+     * @return 
+     */
+    public Group getSelectedGroup()
+    {
+        Group group = null;
+        
+        TreeItem item = getSelectionModel().getSelectedItem();
+        
+        if( item != null )
+        {
+            if( item.getValue() instanceof Role )
+            {
+                TreeItem parent = item.getParent();
+                
+                if ( parent != null && ( parent.getValue() instanceof Group ) )
+                {
+                    group = (Group) parent.getValue();
+                }
+            }
+            
+            else if ( item.getValue() instanceof Group )
+            {
+                group = (Group) item.getValue();
+            }
+        }
+            
+        return group;
     }
     
     public void setSelectedNode( Object o )
@@ -149,7 +185,20 @@ public class RoleTree
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) 
             {
-                RoleTree.this.fireEvent( new Event( Events.ON_SELECT ) );
+                TreeItem item = getSelectionModel().getSelectedItem();
+                
+                if ( item != null )
+                {
+                    if ( item.getValue() instanceof Group )
+                    {
+                        RoleTree.this.fireEvent( new Event( Events.ON_SELECT_GROUP ) );
+                    }
+                    
+                    else if ( item.getValue() instanceof Role )
+                    {
+                        RoleTree.this.fireEvent( new Event( Events.ON_SELECT_ROLE ) );
+                    }
+                }
             }
       } );
     }
