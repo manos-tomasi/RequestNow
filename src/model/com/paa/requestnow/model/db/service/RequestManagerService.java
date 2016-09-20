@@ -44,4 +44,34 @@ public class RequestManagerService
             db.release();
         }
     }    
+    
+    public String getJsonRequest( Request request ) throws Exception
+    {
+        Database db = Database.getInstance();
+        
+        try
+        {
+            return transactions.getJsonRequest( db, request );
+        }
+        
+        finally
+        {
+            db.release();
+        }
+    }
+    
+    public String getJsonField( Request request ) throws Exception
+    {
+        Database db = Database.getInstance();
+        
+        try
+        {
+            return transactions.getJsonField( db, request );
+        }
+        
+        finally
+        {
+            db.release();
+        }
+    }
 }

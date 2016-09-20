@@ -200,4 +200,24 @@ public class RequestManagerTransactions
         
         return db.fetchOne( sql, T.fetcher );
     }
+    
+    public String getJsonRequest( Database db, Request request ) throws Exception
+    {
+        if ( request == null )
+        {
+            throw new IllegalArgumentException( "Request cannot be null!" );
+        }
+         
+        return db.queryString( "select getJson( " + request.getId() + ", 'request' )" );
+    }
+    
+    public String getJsonField( Database db, Request request ) throws Exception
+    {
+        if ( request == null )
+        {
+            throw new IllegalArgumentException( "Request cannot be null!" );
+        }
+         
+        return db.queryString( "select getJson( " + request.getId() + ", 'requestField' )" );
+    }
 }

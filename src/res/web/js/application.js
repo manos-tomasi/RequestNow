@@ -49,6 +49,28 @@ function setRoute( route )
     }
 }
 
+function setRequest( request )
+{
+    if ( request )
+    {
+        $('#request_type').html( request[ 'type'  ] );
+        $('#request_user').html( request[ 'user'  ] );
+        $('#request_id').html( request[ 'id'  ] );
+        $('#request_dt_end').html( request[ 'dt_end'  ] );
+        $('#request_dt_start').html( request[ 'dt_start'  ] );
+        $('#request_state').html( request[ 'state'  ] );
+    }
+
+//    if ( fields )
+//    {
+//        $( '#request_field' ).html( String( fields ) );
+//    }
+//    else
+//    {
+//        $( '#request_field' ).html( "String( fields )" );
+//    }
+}
+
 function definePermissions( permissions )
 {
     if ( permissions )

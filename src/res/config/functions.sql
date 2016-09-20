@@ -95,6 +95,28 @@ INNER JOIN types t ON (t.id = r.ref_type)
 INNER JOIN users u ON (u.id = r.ref_user);
 
 
+create or replace view view_values as 
+select 
+    f.label  as field, 
+    ( 
+        case when f.type = 3 then
+            coalesce ( to_char( v.value::date ,'DD/MM/YYYY' ), 'n/d' )
+        else
+            v.value
+        end
+    ) as value, 
+    r.id     as request
+from 
+    requests r,
+    fields f, 
+    values_requests v 
+where 
+    f.ref_type = r.ref_type 
+and 
+    v.ref_field = f.id 
+and 
+    v.ref_request = r.id;
+
 /*############################################################################*/
 /*                  Define Sequencia para os campos                           */
 /*############################################################################*/
@@ -268,16 +290,28 @@ begin
     elseif ( $2 = 'request' ) then
 
             return ( select '{' ||
-                                'id:'''     || r.id     || ''',' || 
-                                'type:'''   || r.type   || ''',' || 
-                                'user:'''   || r.user   || ''',' || 
-                                'dt_end:''' || r.dt_end || ''',' || 
-                                'state:'''  || r.state  || ''''  || 
+                                'id:'''       || r.id       || ''',' || 
+                                'type:'''     || r.type     || ''',' || 
+                                'user:'''     || r.user     || ''',' || 
+                                'dt_end:'''   || r.dt_end   || ''',' || 
+                                'dt_start:''' || r.dt_start || ''',' || 
+                                'state:'''    || r.state    || ''''  || 
                             '}'
                     from 
                         view_requests r
                     where 
                         r.id = $1  );
+
+    elseif ( $2 = 'requestField' ) then
+
+            return ( array( select '{' ||
+                                'field:''' || v.field || ''',' || 
+                                'value:''' || v.value || '''' || 
+                            '}'
+                    from 
+                        view_values v
+                    where 
+                        v.request = $1  ) );
     end if; 
 
     return null;
