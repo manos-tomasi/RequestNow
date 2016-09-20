@@ -6,6 +6,8 @@ import com.paa.requestnow.model.data.Request;
 import com.paa.requestnow.model.data.RequestRoute;
 import com.paa.requestnow.model.data.TypeRoute;
 import com.paa.requestnow.model.data.ValueRequest;
+import com.paa.requestnow.view.util.FileUtilities;
+import java.io.File;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
@@ -48,7 +50,27 @@ public class RequestController
             ValueRequest valueRequest = new ValueRequest();
             valueRequest.setField( field.getId() );
             valueRequest.setRequest( request.getId() );
-            valueRequest.setValue( value.toString() );
+            
+            String v = "n/d";
+            
+            if ( value != null )
+            {
+                v = value.toString();
+            }
+            
+            if ( field.getType() == Field.TYPE_FILE )
+            {
+                File f = (File) value;
+                
+                if ( f != null )
+                {
+                    v = f.getName();
+                    
+                    FileUtilities.copyFile( f.getAbsolutePath(), v, valueRequest );
+                }
+            }
+            
+            valueRequest.setValue( v );
             
             com.paa.requestnow.model.ModuleContext.getInstance().getValueRequestManager().add( valueRequest );
         }

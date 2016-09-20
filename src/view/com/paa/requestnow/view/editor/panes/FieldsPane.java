@@ -4,6 +4,7 @@ import com.paa.requestnow.control.RequestController;
 import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.data.Field;
 import com.paa.requestnow.model.data.Type;
+import com.paa.requestnow.view.selectors.FileSelector;
 import com.paa.requestnow.view.selectors.ItemSelector;
 import com.paa.requestnow.view.util.DateBetweenField;
 import com.paa.requestnow.view.util.DateField;
@@ -126,6 +127,11 @@ public class FieldsPane
         else if( node instanceof HtmlEditorField )
         {
             return ( (HtmlEditorField) node ).getHtmlText();
+        }
+        
+        else if ( node instanceof FileSelector )
+        {
+            return ( (FileSelector) node ).getSelected();
         }
         
         return null;

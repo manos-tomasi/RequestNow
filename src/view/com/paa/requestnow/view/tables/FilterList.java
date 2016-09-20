@@ -64,7 +64,7 @@ public class FilterList
                         @Override
                         protected Void call() throws Exception 
                         {
-                            FileUtilities.open( getSelectedAttachment().getUrl() );
+//                            FileUtilities.open( getSelectedAttachment().getUrl() );
                             
                             return  null;
                         }

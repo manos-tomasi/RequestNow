@@ -2,6 +2,7 @@ package com.paa.requestnow.view.util;
 
 import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.ConfigurationManager;
+import com.paa.requestnow.model.data.ValueRequest;
 import java.awt.Desktop;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -52,19 +53,23 @@ public class FileUtilities
     }
 
     
-    public static String formatURL( String url )
+    public static String formatURL( String url, ValueRequest r )
     {
         if( url.startsWith( File.separator ) )
             url = url.replaceFirst( File.separator, "" );
         
-        return home + "attachments/" + url;
+        return home + 
+                "attachments"  + File.separator +
+                r.getRequest() + File.separator +
+                r.getField()   + File.separator +
+                url;
     }
     
     
     
-    public static File getAttachment( String url ) throws Exception
+    public static File getAttachment( String url, ValueRequest r ) throws Exception
     {
-        File file = new File( formatURL( url ) );
+        File file = new File( formatURL( url, r ) );
         
         validadeFile( file );
         
@@ -225,9 +230,9 @@ public class FileUtilities
     }
     
     
-    public static void open( String path ) throws Exception
+    public static void open( String path, ValueRequest r ) throws Exception
     {
-        open( new File( formatURL( path ) ) );
+        open( new File( formatURL( path, r ) ) );
     }
             
     
@@ -253,18 +258,16 @@ public class FileUtilities
         } ).start();
     }
 
-
-    
-    public static void deleteFile( String path ) throws Exception
+    public static void deleteFile( String path, ValueRequest r ) throws Exception
     {
-        validadeFile( new File( formatURL( path ) ) );
+        validadeFile( new File( formatURL( path, r ) ) );
         
-        Files.deleteIfExists( Paths.get( formatURL( path ) ) );
+        Files.deleteIfExists( Paths.get( formatURL( path, r ) ) );
     }
     
     
     
-    public static void copyFile( String path, String nameTarget )
+    public static void copyFile( String path, String nameTarget, ValueRequest r )
     {
         Platform.runLater( new Runnable() 
         {
@@ -273,7 +276,10 @@ public class FileUtilities
             {
                 try
                 {
-                    File file = new File(  home + "attachments/" );
+                    File file = new File(  home + 
+                                           "attachments"  + File.separator +
+                                           r.getRequest() + File.separator +
+                                           r.getField()   + File.separator );
 
                     if( ! file.exists() )
                     {
@@ -292,7 +298,7 @@ public class FileUtilities
 
                     Path source =  Paths.get( path );
 
-                    Path target =  Paths.get( formatURL( nameTarget ) );
+                    Path target =  Paths.get( formatURL( nameTarget, r ) );
 
                     Files.copy( source, target );
                 }
@@ -306,14 +312,14 @@ public class FileUtilities
     }
     
     
-    public static void download( String path, String target )
+    public static void download( String path, String target, ValueRequest r )
     {
-        download( path, target, true );
+        download( path, target, true, r );
     }
     
     
     
-    public static void download( String path, String target, boolean open )
+    public static void download( String path, String target, boolean open, ValueRequest r )
     {
         Platform.runLater( new Runnable() 
         {
@@ -322,7 +328,7 @@ public class FileUtilities
             {
                 try
                 {
-                    Path attachment =  Paths.get( formatURL( path ) );
+                    Path attachment =  Paths.get( formatURL( path, r ) );
 
                     Files.copy( attachment, Paths.get( target ), StandardCopyOption.REPLACE_EXISTING );
                     
