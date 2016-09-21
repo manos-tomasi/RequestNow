@@ -15,14 +15,15 @@ public class RequestRoute
     private Timestamp in;
     private Timestamp out;
     private int user;
+    private int sector;
     private int sequence;
     private String info;
 
-    public static final int CANCELED = 0;
-    public static final int REPROVED = 1;
-    public static final int APROVED  = 2;
-    public static final int WAINTING = 3;
-    public static final int STOPED   = 4;
+    public static final int CANCELED    = 0;
+    public static final int DISAPPROVED = 1;
+    public static final int APPROVED    = 2;
+    public static final int WAINTING    = 3;
+    public static final int STOPED      = 4;
     
     public static final String[] STATES = { "Cancelada", "Reprovada", "Aprovada", "Aguardando despachos", "Aguardando aprovação" };
     
@@ -33,6 +34,16 @@ public class RequestRoute
         return request;
     }
 
+    public int getSector() 
+    {
+        return sector;
+    }
+
+    public void setSetor(int setor) 
+    {
+        this.sector = setor;
+    }
+    
     public int getSequence() 
     {
         return sequence;

@@ -3,6 +3,7 @@ package com.paa.requestnow.view.tables;
 import com.paa.requestnow.model.ResourceLocator;
 import com.paa.requestnow.model.data.Request;
 import com.paa.requestnow.model.data.RequestRoute;
+import com.paa.requestnow.model.data.Sector;
 import com.paa.requestnow.model.data.Type;
 import com.paa.requestnow.model.data.User;
 import com.paa.requestnow.view.tables.DefaultTable.ItemColumn.ColumnCallback;
@@ -36,10 +37,10 @@ public class RequestRouteTable
             @Override
             public void renderer(Integer state, Labeled cell) throws Exception 
             {
-                ImageView image = new ImageView( state == RequestRoute.APROVED  ? aprovedImage    :  
-                                                 state == RequestRoute.CANCELED ? canceledImage   :
-                                                 state == RequestRoute.REPROVED ? reprovedImage   :
-                                                 state == RequestRoute.STOPED   ? stopedImage     :
+                ImageView image = new ImageView( state == RequestRoute.APPROVED  ? aprovedImage    :  
+                                                 state == RequestRoute.CANCELED ? canceledImage    :
+                                                 state == RequestRoute.DISAPPROVED ? reprovedImage :
+                                                 state == RequestRoute.STOPED   ? stopedImage      :
                                                  state == RequestRoute.WAINTING ? waintingImage :null );
                 
                 image.setFitHeight( 20 );
@@ -75,6 +76,22 @@ public class RequestRouteTable
                 }
             }
         }),
+        new ItemColumn( "Setor", "sector",  200.0, new ColumnCallback<Request, Integer>() 
+        {
+            @Override
+            public void renderer(Integer refSector, Labeled cell) throws Exception 
+            {
+                if( refSector != 0 )
+                {
+                    Sector sector = com.paa.requestnow.model.ModuleContext.getInstance().getSectorManager().get(refSector);
+                    cell.setText( sector.getName() );
+                }
+                else
+                {
+                    cell.setText( "N/D" );
+                }
+            }
+        }),
         new ItemColumn("Requisição", "request" , 100.0 ),
         new ItemColumn( "Data de Entrada", "in", 200.0, new ColumnCallback<Request, Timestamp>()
         {
@@ -97,6 +114,6 @@ public class RequestRouteTable
                 cell.setText(dateFormatted);
             }
         }),
-        new ItemColumn( "Sequência" , "sequence" , 50.0 ));
+        new ItemColumn( "Sequência" , "sequence" , 150.0 ));
     }
 }

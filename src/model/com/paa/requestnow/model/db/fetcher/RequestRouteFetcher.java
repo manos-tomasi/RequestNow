@@ -28,6 +28,7 @@ public class RequestRouteFetcher
         rr.setOut(resultSet.getTimestamp(++i) );
         rr.setInfo(resultSet.getString(++i) );
         rr.setSequence( resultSet.getInt(++i) );
+        rr.setSetor( resultSet.getInt(++i) );
         
         return rr;
     }

@@ -44,4 +44,37 @@ public class RequestRouteManagerService
             db.release();
         }
     }
+    
+    public boolean approve( RequestRoute dispatch ) throws Exception
+    {
+        Database db = Database.getInstance();
+        
+        try 
+        {
+            transactions.dispatch( db, dispatch );
+            return transactions.prepareNext( db, dispatch );
+        } 
+        
+        finally
+        {
+            db.release();
+        }
+    }
+    
+    public boolean disapprove( RequestRoute dispatch ) throws Exception
+    {
+        Database db = Database.getInstance();
+        
+        try 
+        {
+            transactions.dispatch( db, dispatch );
+            transactions.cancelUpcoming( db, dispatch );
+            return true;
+        } 
+        
+        finally
+        {
+            db.release();
+        }
+    }
 }

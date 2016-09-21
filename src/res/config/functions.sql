@@ -105,7 +105,9 @@ select
             v.value
         end
     ) as value, 
-    r.id     as request
+    r.id     as request,
+    f.id     as id,
+    f.type   as type    
 from 
     requests r,
     fields f, 
@@ -304,9 +306,12 @@ begin
 
     elseif ( $2 = 'requestField' ) then
 
-            return ( array( select '{' ||
-                                'field:''' || v.field || ''',' || 
-                                'value:''' || v.value || '''' || 
+            return ( array( select '{'       ||
+                                'field:'''   || v.field   || ''',' || 
+                                'value:'''   || v.value   || ''',' || 
+                                'id:'''      || v.id      || ''',' || 
+                                'request:''' || v.request || ''',' || 
+                                'type:'''    || v.type    || ''''  || 
                             '}'
                     from 
                         view_values v

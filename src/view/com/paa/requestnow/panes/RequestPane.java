@@ -33,9 +33,15 @@ public class RequestPane
     public RequestPane()
     {
         initComponents();
-        
         load();
+        composePermission();
     }    
+
+    private void composePermission()
+    {
+        add.setDisable( controller.hasPermissionAdd() );
+        cancel.setDisable( controller.hasPermissionDelete() );
+    }
     
     private void load()
     {

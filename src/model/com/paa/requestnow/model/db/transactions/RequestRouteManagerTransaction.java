@@ -3,12 +3,14 @@ package com.paa.requestnow.model.db.transactions;
 import com.paa.requestnow.model.data.Option;
 import com.paa.requestnow.model.data.Request;
 import com.paa.requestnow.model.data.RequestRoute;
+import com.paa.requestnow.model.data.Sector;
 import com.paa.requestnow.model.data.User;
 import com.paa.requestnow.model.db.Database;
 import com.paa.requestnow.model.db.Schema;
 import com.paa.requestnow.model.filter.DefaultFilter;
 import com.paa.requestnow.model.filter.RequestRouteFilter;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -34,7 +36,8 @@ public class RequestRouteManagerTransaction
                       obj.getState()               + ", "   +
                       db.foreingKey(obj.getUser()) + ", "   +
                       db.quote(obj.getInfo())      + ", "   +
-                      obj.getSequence()            + ") ";
+                      obj.getSequence()            + ", "   +
+                      db.foreingKey(obj.getSector())+ ") ";
         
         db.executeCommand(sql);
     }
@@ -52,6 +55,7 @@ public class RequestRouteManagerTransaction
         String sql = " update " + S.name       + " set " +
                         S.columns.USER         + " = " + db.foreingKey( obj.getUser() )   + ", " +
                         S.columns.INFO         + " = " + db.quote( obj.getInfo() )        + ", " +
+                        S.columns.SECTOR       + " = " + db.foreingKey( obj.getSector() )  + ", " +
                         S.columns.OUT          + " = " + db.quote(obj.getOut())           + ", " +
                         S.columns.STATE        + " = " + obj.getState()                   + ", " +
                         S.columns.SEQUENCE     + " = " + obj.getSequence()                + ", " +
@@ -138,6 +142,15 @@ public class RequestRouteManagerTransaction
                     }
                     break;
                     
+                    case RequestRouteFilter.SECTOR :
+                    {
+                        if( values.get(i) instanceof Sector )
+                        {
+                            conditions += S.columns.SECTOR + " = " + ((Sector)values.get(i)).getId();
+                        }
+                    }
+                    break;
+                    
                     case RequestRouteFilter.IN :
                     {
                         if( values.get( i ) instanceof Date[] )
@@ -167,6 +180,12 @@ public class RequestRouteManagerTransaction
                         }
                     }
                     break;
+                    
+                    case RequestRouteFilter.SEQUENCE :
+                    {
+                        conditions += S.columns.SEQUENCE + " = " + values.get( i );
+                    }
+                    break;
                 }
                 conditions += i == values.size() - 1 ? " ) " : " or ";    
             }
@@ -175,5 +194,171 @@ public class RequestRouteManagerTransaction
         });
         
         return db.fetchAll(sql.toString() , S.fetcher );
+    }
+    
+    public RequestRoute getOne(Database db, DefaultFilter filter) throws Exception 
+    {
+        Schema.RequestsRoutes S = Schema.RequestsRoutes.table;
+        
+        StringBuilder sql = new StringBuilder();
+        
+        sql.append( S.select );
+        sql.append( " where true " );
+        
+        filter.getConditions().forEach( ( key , values ) ->
+        {
+            String conditions = " and ( "; 
+            
+            for (int i = 0; i < values.size(); i++) 
+            {
+                switch( key )
+                {                    
+                    case RequestRouteFilter.STATE :
+                    {
+                        if( values.get(i) instanceof Option )
+                        {
+                            conditions += S.columns.STATE + " = " + ((Option)values.get(i)).getId();
+                        }
+                    }
+                    break;
+                    
+                    case RequestRouteFilter.REQUEST :
+                    {
+                        if( values.get(i) instanceof Request )
+                        {
+                            conditions += S.columns.REQUEST + " = " + ((Request)values.get(i)).getId();
+                        }
+                    }
+                    break;
+                    
+                    case RequestRouteFilter.USER :
+                    {
+                        if( values.get(i) instanceof User )
+                        {
+                            conditions += S.columns.USER + " = " + ((User)values.get(i)).getId();
+                        }
+                    }
+                    break;
+                    
+                    case RequestRouteFilter.SECTOR :
+                    {
+                        if( values.get(i) instanceof Sector )
+                        {
+                            conditions += S.columns.SECTOR + " = " + ((Sector)values.get(i)).getId();
+                        }
+                    }
+                    break;
+                    
+                    case RequestRouteFilter.IN :
+                    {
+                        if( values.get( i ) instanceof Date[] )
+                        {
+                            Date[] dates = (Date[]) values.get( i );
+                            
+                            conditions += S.columns.IN + 
+                                         " between " + 
+                                         db.quote( dates[0] ) +
+                                         " and " +
+                                         db.quote( dates[1] );
+                        }
+                    }
+                    break;
+                    
+                    case RequestRouteFilter.OUT :
+                    {
+                        if( values.get( i ) instanceof Date[] )
+                        {
+                            Date[] dates = (Date[]) values.get( i );
+                            
+                            conditions += S.columns.OUT + 
+                                         " between " + 
+                                         db.quote( dates[0] ) +
+                                         " and " +
+                                         db.quote( dates[1] );
+                        }
+                    }
+                    break;
+                    
+                    case RequestRouteFilter.SEQUENCE :
+                    {
+                        conditions += S.columns.SEQUENCE + " = " + values.get( i );
+                    }
+                    break;
+                }
+                conditions += i == values.size() - 1 ? " ) " : " or ";    
+            }
+            
+            sql.append(conditions);
+        });
+        
+        return db.fetchOne( sql.toString() , S.fetcher );
+    }
+    
+    /**
+     * 
+     * @param db
+     * @param dispatch
+     * @return retorna true se é o ultimo despacho
+     * @throws Exception 
+     */
+    public void dispatch( Database db, RequestRoute dispatch ) throws Exception
+    {
+        //Atualiza o despacho
+        update( db, dispatch );
+        
+        // buscar o proximo despacho
+        RequestRouteFilter filter = new RequestRouteFilter();
+        
+        filter.addCondition( RequestRouteFilter.REQUEST  , com.paa.requestnow.model.ModuleContext.getInstance().getRequestManager().get( dispatch.getRequest() ) );
+        filter.addCondition( RequestRouteFilter.SEQUENCE , dispatch.getSequence() + 1 );
+    }   
+    
+    public boolean prepareNext( Database db, RequestRoute dispatch ) throws Exception
+    {
+        // buscar o proximo despacho
+        RequestRouteFilter filter = new RequestRouteFilter();
+        
+        filter.addCondition( RequestRouteFilter.REQUEST  , com.paa.requestnow.model.ModuleContext.getInstance().getRequestManager().get( dispatch.getRequest() ) );
+        filter.addCondition( RequestRouteFilter.SEQUENCE , dispatch.getSequence() + 1 );
+        
+        RequestRoute nextDispatch = getOne( db , filter );
+        
+        if( nextDispatch != null )
+        {
+            //atualiza o despacho
+            nextDispatch.setIn( new Timestamp( System.currentTimeMillis() ) );
+            nextDispatch.setState( RequestRoute.STOPED );
+            
+            update(db, nextDispatch );
+            
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+    
+    public void cancelUpcoming( Database db, RequestRoute dispatch ) throws Exception
+    {
+        // buscar o proximos despachos
+        RequestRouteFilter filter = new RequestRouteFilter();
+        
+        filter.addCondition( RequestRouteFilter.REQUEST  , com.paa.requestnow.model.ModuleContext.getInstance().getRequestManager().get( dispatch.getRequest() ) );
+        
+        List<RequestRoute> dispatchs = get( db , filter );
+        
+        String info = "Cancelado por reprovação no despacho: " + dispatch.getSequence() + ", pelo usuário " + dispatch.getUser();
+        
+        for (RequestRoute route : dispatchs ) 
+        {
+            if( route.getSequence() > dispatch.getSequence() )
+            {
+                route.setOut( new Timestamp( System.currentTimeMillis() ) );
+                route.setInfo( info );
+                route.setState( RequestRoute.CANCELED );
+                update( db, route );
+            }
+        }
     }
 }

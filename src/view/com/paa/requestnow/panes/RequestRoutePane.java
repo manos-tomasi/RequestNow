@@ -7,10 +7,12 @@ import com.paa.requestnow.model.data.RequestRoute;
 import com.paa.requestnow.model.filter.DefaultFilter;
 import com.paa.requestnow.model.filter.RequestRouteFilter;
 import com.paa.requestnow.panes.modules.AbstractModulesPane;
+import com.paa.requestnow.view.editor.DispatchEditor;
 import com.paa.requestnow.view.editor.FilterEditor;
 import com.paa.requestnow.view.tables.RequestRouteTable;
 import com.paa.requestnow.view.util.ActionButton;
 import com.paa.requestnow.view.util.EditorCallback;
+import com.paa.requestnow.view.util.Prompts;
 import com.paa.requestnow.view.util.RequestRouteLegendPane;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +63,22 @@ public class RequestRoutePane
     
     private void onDispatch()
     {
-        
+        if( isSelected() )
+        {
+            RequestRoute route = table.getSelectedItem();
+            if( route.getState() == RequestRoute.STOPED )
+            {
+                DispatchEditor.edit( route );
+            }
+            else
+            {
+                Prompts.alert( "Essa requisição está " + RequestRoute.STATES[ table.getSelectedItem().getState() ] + "!" );
+            }
+        }
+        else
+        {
+            Prompts.alert( "Selecione a rota que deseja despachar!" );
+        }
     }
     
     private void onInspect()
@@ -108,7 +125,6 @@ public class RequestRoutePane
         legend.setLayoutY( height - legend.getHeight() );
         
         table.setPrefSize( width, height - legend.getHeight() );
-
     }
     
     private void initComponents()

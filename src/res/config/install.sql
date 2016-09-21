@@ -84,7 +84,8 @@ CREATE TABLE requests_routes (
   state INT NOT NULL,
   ref_user INT REFERENCES users (id),
   info TEXT NULL,
-  sequence  INT );
+  sequence  INT,
+  ref_sector INT REFERENCES sectors (id));
 
 
 CREATE TABLE fields_values (

@@ -18,6 +18,8 @@ import java.util.Properties;
  * @author lucas
  */
 public class RequestController 
+        extends 
+            AbstractController<RequestController, Request>
 {
     
     private static RequestController controller;
@@ -53,20 +55,20 @@ public class RequestController
             
             String v = "n/d";
             
-            if ( value != null )
+            if ( value != null && !value.toString().isEmpty() && !value.toString().equals("n/d") )
             {
                 v = value.toString();
-            }
-            
-            if ( field.getType() == Field.TYPE_FILE )
-            {
-                File f = (File) value;
                 
-                if ( f != null )
+                if ( field.getType() == Field.TYPE_FILE )
                 {
-                    v = f.getName();
-                    
-                    FileUtilities.copyFile( f.getAbsolutePath(), v, valueRequest );
+                    File f = (File) value;
+
+                    if ( f != null )
+                    {
+                        v = f.getName();
+
+                        FileUtilities.copyFile( f.getAbsolutePath(), v, valueRequest );
+                    }
                 }
             }
             
@@ -89,6 +91,8 @@ public class RequestController
             requestRoute.setRequest( request.getId() );
             requestRoute.setTypeRoute( route.getId() );
             requestRoute.setSequence( route.getSequence() );
+            requestRoute.setUser( route.getUser() );
+            requestRoute.setSetor( route.getSector() );
             
             
             requestRoute.setState( (!hasPassed)? RequestRoute.STOPED : RequestRoute.WAINTING );
@@ -127,5 +131,20 @@ public class RequestController
     public List<Field> getFields( int id ) throws Exception
     {
         return com.paa.requestnow.model.ModuleContext.getInstance().getFieldManager().getFieldsType( id );
+    }
+
+    @Override
+    public String onEdit(Request item) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String onDelete(Request item) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String onAdd(Request item) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

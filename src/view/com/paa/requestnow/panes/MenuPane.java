@@ -1,5 +1,7 @@
 package com.paa.requestnow.panes;
 
+import com.paa.requestnow.control.RequestController;
+import com.paa.requestnow.control.RequestRouteController;
 import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.panes.modules.AbstractModulesPane;
 import com.paa.requestnow.panes.modules.ReportPane;
@@ -18,12 +20,22 @@ public class MenuPane
     extends 
         VBox
 {
+    RequestController requestController           = RequestController.getInstance();
+    RequestRouteController requestRouteController = RequestRouteController.getInstance();
+    
     public MenuPane( EventHandler handler ) 
     {
         this.handler = handler;
         
         initComponents();
         initListeners();
+        composePermission();
+    }
+    
+    private void composePermission()
+    {
+        itemRequests.setDisable( requestController.hasPermissionView() );
+        itemRequestRoute.setDisable( requestRouteController.hasPermissionView() );        
     }
     
     private void refreshContent( AbstractModulesPane pane )
@@ -46,7 +58,7 @@ public class MenuPane
     }
     
     private void initComponents()
-    {       
+    {
         reportPane.setMenuItem( itemReport );
         entriePane.setMenuItem( itemEntries );
         requestPane.setMenuItem( itemRequests );

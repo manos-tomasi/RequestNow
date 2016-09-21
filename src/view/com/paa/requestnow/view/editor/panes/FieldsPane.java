@@ -73,7 +73,12 @@ public class FieldsPane
             Field field   = entry.getKey();
             Node  element = entry.getValue();
             
-            properties.put(field, getValue(element) );
+            Object value = getValue(element);
+            if( value == null )
+            {
+                value = "n/d";
+            }
+            properties.put(field, value );
         }
         
         return properties;
@@ -88,7 +93,7 @@ public class FieldsPane
             
             if( field.isRequired() )
             {
-                if( getValue(element) == null )
+                if( getValue(element) == null || getValue(element).toString().equals("<html dir=\"ltr\"><head></head><body contenteditable=\"true\"></body></html>") )
                 {
                     erros.add( field.getLabel() +" é requerido!" );
                 }

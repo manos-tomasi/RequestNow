@@ -67,6 +67,8 @@ public class RequestEditor
                 fieldsPane.loadFields( tree.getSelectedType() );
             }
         });
+        
+        tree.requestFocus();
     }
     
     private BorderPane   pane       = new BorderPane();    

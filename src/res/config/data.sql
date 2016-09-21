@@ -50,12 +50,12 @@ INSERT INTO requests VALUES (17, 2, 1, '2016-08-13 23:23:27.945', NULL, 4);
 
 SELECT pg_catalog.setval('requests_id_seq', 17, true);
 
-INSERT INTO requests_routes VALUES (7, 15, 3, '2016-08-13 22:54:16.286', NULL, 0, 1, NULL, 1);
-INSERT INTO requests_routes VALUES (8, 15, 4, NULL, NULL, 0, 1, NULL, 2);
-INSERT INTO requests_routes VALUES (9, 16, 3, '2016-08-13 22:59:08.147', '2016-08-13 23:16:01.87', 0, 1, NULL, 1);
-INSERT INTO requests_routes VALUES (10, 16, 4, NULL, '2016-08-13 23:16:01.888', 0, 1, NULL, 2);
-INSERT INTO requests_routes VALUES (11, 17, 3, '2016-08-13 23:23:27.988', NULL, 4, NULL, NULL, 1);
-INSERT INTO requests_routes VALUES (12, 17, 4, NULL, NULL, 3, NULL, NULL, 2);
+INSERT INTO requests_routes VALUES (7, 15, 3, '2016-08-13 22:54:16.286', NULL, 0, 1, NULL, 1, NULL);
+INSERT INTO requests_routes VALUES (8, 15, 4, NULL, NULL, 0, 1, NULL, 2, NULL);
+INSERT INTO requests_routes VALUES (9, 16, 3, '2016-08-13 22:59:08.147', '2016-08-13 23:16:01.87', 0, 1, NULL, 1, NULL);
+INSERT INTO requests_routes VALUES (10, 16, 4, NULL, '2016-08-13 23:16:01.888', 0, 1, NULL, 2, NULL);
+INSERT INTO requests_routes VALUES (11, 17, 3, '2016-08-13 23:23:27.988', NULL, 4, NULL, NULL, 1, NULL);
+INSERT INTO requests_routes VALUES (12, 17, 4, NULL, NULL, 3, NULL, NULL, 2, NULL);
 
 SELECT pg_catalog.setval('requests_routes_id_seq', 12, true);
 

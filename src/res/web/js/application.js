@@ -60,15 +60,30 @@ function setRequest( request )
         $('#request_dt_start').html( request[ 'dt_start'  ] );
         $('#request_state').html( request[ 'state'  ] );
     }
+}
 
-//    if ( fields )
-//    {
-//        $( '#request_field' ).html( String( fields ) );
-//    }
-//    else
-//    {
-//        $( '#request_field' ).html( "String( fields )" );
-//    }
+function setFields( fields )
+{
+    if( fields )
+    {
+        fields.forEach( function( element ){
+            if( element['type'] != 4 )
+            {
+                $('#campos').after( "<tr><td class='myfield'>"+ element['field'] +"</td><td class='myvalue'>"+ element['value'] +"</td></tr>" );
+            }
+            else
+            {
+                var src = "/" + element['request'] + "/" + element['id'] + "/" + element['value'];
+                $('#campos').after( "<tr><td class='myfield'>"+ element['field'] +"</td><td class='myvalue'><div style='color:red' onclick='download(" + src + ");'>"+ element['value'] +"</div></td></tr>" );
+            }
+        });
+    }           
+}
+
+function download( src )
+{
+    $('#request_state').html( 'request[  ]' );
+    application.download( src );
 }
 
 function definePermissions( permissions )

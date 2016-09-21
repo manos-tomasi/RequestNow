@@ -36,7 +36,7 @@ public class RequestTable
             {
                 ImageView image = new ImageView( state == Request.APPROVED    ? aprovedImage    :  
                                                  state == Request.CANCELED    ? canceledImage   :
-                                                 state == Request.REPROVED    ? reprovedImage   :
+                                                 state == Request.DISAPPROVED ? reprovedImage   :
                                                  state == Request.IN_PROGRESS ? inProgressImage : null );
                 
                 image.setFitHeight( 20 );

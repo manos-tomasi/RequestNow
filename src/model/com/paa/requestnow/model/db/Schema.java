@@ -617,6 +617,7 @@ public class Schema
             public String OUT;
             public String INFO;
             public String SEQUENCE;
+            public String SECTOR;
             
             public Columns( String alias )
             {
@@ -629,6 +630,7 @@ public class Schema
                 OUT        = alias + "date_out";
                 INFO       = alias + "info";
                 SEQUENCE   = alias + "sequence";
+                SECTOR     = alias + "ref_sector";
             }
 
             @Override
@@ -642,7 +644,8 @@ public class Schema
                        IN          + ", " +
                        OUT         + ", " +
                        INFO        + ", " +
-                       SEQUENCE;
+                       SEQUENCE    + ", " +
+                       SECTOR;
             }
         }
 
