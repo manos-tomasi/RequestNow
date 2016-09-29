@@ -7,6 +7,7 @@ import com.paa.requestnow.model.data.Sector;
 import com.paa.requestnow.model.data.User;
 import com.paa.requestnow.view.tables.DefaultTable.ItemColumn;
 import com.paa.requestnow.view.tables.DefaultTable.ItemColumn.ColumnCallback;
+import com.paa.requestnow.view.tables.DefaultTable.ItemColumn.IconCallback;
 import javafx.scene.control.Labeled;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -23,7 +24,7 @@ public class UserTable
     
     public UserTable() 
     {
-        setColumns( new ItemColumn( "#", "state", new ColumnCallback<User, Integer>()  
+        setColumns( new ItemColumn( "#", "state", new IconCallback<User, Integer>()  
         {
             @Override
             public void renderer(Integer value, Labeled cell) 

@@ -5,6 +5,7 @@ import com.paa.requestnow.model.data.Request;
 import com.paa.requestnow.model.data.Type;
 import com.paa.requestnow.model.data.User;
 import com.paa.requestnow.view.tables.DefaultTable.ItemColumn.ColumnCallback;
+import com.paa.requestnow.view.tables.DefaultTable.ItemColumn.IconCallback;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import javafx.scene.control.Labeled;
@@ -28,7 +29,7 @@ public class RequestTable
 
     public RequestTable() 
     {
-        setColumns( new ItemColumn("#", "state", new ColumnCallback<Request, Integer>() 
+        setColumns( new ItemColumn("#", "state", new IconCallback<Request, Integer>() 
         {
             
             @Override

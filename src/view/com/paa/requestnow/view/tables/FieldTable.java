@@ -4,6 +4,7 @@ import com.paa.requestnow.model.ResourceLocator;
 import com.paa.requestnow.model.data.Field;
 import com.paa.requestnow.model.data.Sector;
 import com.paa.requestnow.view.tables.DefaultTable.ItemColumn.ColumnCallback;
+import com.paa.requestnow.view.tables.DefaultTable.ItemColumn.IconCallback;
 import javafx.scene.control.Labeled;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -20,7 +21,7 @@ public class FieldTable
     
     public FieldTable() 
     {
-        setColumns( new ItemColumn( "#", "state", new ColumnCallback<Field, Integer>() 
+        setColumns( new ItemColumn( "#", "state", new IconCallback<Field, Integer>() 
                     {
                         @Override
                         public void renderer( Integer value, Labeled cell )

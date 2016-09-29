@@ -63,12 +63,9 @@ public class RequestController
                 {
                     File f = (File) value;
 
-                    if ( f != null )
-                    {
-                        v = f.getName();
+                    v = f.getName();
 
-                        FileUtilities.copyFile( f.getAbsolutePath(), v, valueRequest );
-                    }
+                    FileUtilities.copyFile( f.getAbsolutePath(), v, valueRequest );
                 }
             }
             

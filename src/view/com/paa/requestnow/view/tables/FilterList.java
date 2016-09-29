@@ -1,14 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.paa.requestnow.view.tables;
 
-import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.ResourceLocator;
 import com.paa.requestnow.model.data.Attachment;
-import com.paa.requestnow.view.util.FileUtilities;
 import com.paa.requestnow.view.util.Prompts;
 import java.util.Arrays;
 import java.util.List;

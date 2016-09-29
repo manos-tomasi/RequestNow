@@ -90,7 +90,7 @@ public class DefaultTable<T>
                     column.setPrefWidth( item.getWidth() );
                 
                 if( item.getCallback() != null )
-                    column.setCellFactory( item.getCallback() );
+                    column.setCellFactory( (Callback) item.getCallback() );
 
                 tableView.getColumns().add( column );
             }
@@ -109,6 +109,7 @@ public class DefaultTable<T>
             list.setAll( items );
             
             tableView.setItems( list );
+            tableView.requestFocus();
             tableView.requestLayout();
         }
         
@@ -152,7 +153,7 @@ public class DefaultTable<T>
     {
         private String label = "";
         private String attribute = "";
-        private ColumnCallback callback;
+        private AbstractCallback callback;
         private Double width;
         
         public ItemColumn( String label, String attribute )
@@ -165,12 +166,12 @@ public class DefaultTable<T>
             this( label, attribute, width, null );
         }
         
-        public ItemColumn( String label, String attribute, ColumnCallback calback )
+        public ItemColumn( String label, String attribute, AbstractCallback calback )
         {
             this( label, attribute, Double.NaN, calback );
         }
         
-        public ItemColumn( String label, String attribute, Double width, ColumnCallback calback ) 
+        public ItemColumn( String label, String attribute, Double width, AbstractCallback calback ) 
         {
             this.label = label;
             this.attribute = attribute;
@@ -188,7 +189,7 @@ public class DefaultTable<T>
             return attribute;
         }
 
-        public ColumnCallback getCallback()
+        public AbstractCallback getCallback()
         {
             return callback;
         }
@@ -200,7 +201,7 @@ public class DefaultTable<T>
         
         public abstract static class ColumnCallback<A, T>
             implements 
-                Callback< TableColumn<A,T>, TableCell<A,T>> 
+                Callback< TableColumn<A,T>, TableCell<A,T>>, AbstractCallback<T>
         {
             @Override
             public TableCell<A, T> call( TableColumn<A, T> p ) 
@@ -215,8 +216,6 @@ public class DefaultTable<T>
                         if ( bln || t == null )
                         {
                             setText( null);
-                            setTextFill( null);
-                            setGraphic( null );
                         }
 
                         else if( ! bln )
@@ -237,6 +236,51 @@ public class DefaultTable<T>
             }
             
             public abstract void renderer( T value, Labeled cell ) throws Exception;
+        }
+        
+        public abstract static class IconCallback<A, T>
+            implements 
+                Callback< TableColumn<A,T>, TableCell<A,T>>, AbstractCallback<T>
+        {
+            @Override
+            public TableCell<A, T> call( TableColumn<A, T> p ) 
+            {
+                return new TableCell<A, T>()
+                {
+                    @Override
+                    protected void updateItem( T t, boolean bln ) 
+                    {
+                        super.updateItem( t, bln );
+                        
+                        if ( bln || t == null )
+                        {
+                            setGraphic( null);
+                        }
+
+                        else if( ! bln )
+                        {
+                            try
+                            {
+                                renderer( t, this );
+                            }
+                            
+                            catch ( Exception e )
+                            {
+                                ApplicationUtilities.logException( e );
+                            }
+                        }
+                    }
+                  
+                };
+            }
+            
+            @Override
+            public abstract void renderer( T value, Labeled cell ) throws Exception;
+        }
+        
+        public interface AbstractCallback<T>
+        {
+            public void renderer( T value, Labeled cell ) throws Exception;
         }
     }
 }

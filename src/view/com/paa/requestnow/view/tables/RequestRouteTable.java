@@ -7,6 +7,7 @@ import com.paa.requestnow.model.data.Sector;
 import com.paa.requestnow.model.data.Type;
 import com.paa.requestnow.model.data.User;
 import com.paa.requestnow.view.tables.DefaultTable.ItemColumn.ColumnCallback;
+import com.paa.requestnow.view.tables.DefaultTable.ItemColumn.IconCallback;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import javafx.scene.control.Labeled;
@@ -31,7 +32,7 @@ public class RequestRouteTable
 
     public RequestRouteTable() 
     {        
-        setColumns( new ItemColumn("#", "state", new ColumnCallback<RequestRoute, Integer>() 
+        setColumns( new ItemColumn("#", "state", new IconCallback<RequestRoute, Integer>() 
         {
             
             @Override
@@ -105,6 +106,7 @@ public class RequestRouteTable
             }
             
         }),
+        
         new ItemColumn( "Data de Saída", "out", 200.0, new ColumnCallback<Request, Timestamp>()
         {
             @Override
