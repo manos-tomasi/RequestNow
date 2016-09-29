@@ -89,7 +89,7 @@ public class FilterEditor
     {
         try
         {
-            filters.open( "Escolha seu animal" );
+            filters.open( "Escolha seu filtro" );
 
             DefaultFilter.FilterItem c  = filters.getSelected();
 

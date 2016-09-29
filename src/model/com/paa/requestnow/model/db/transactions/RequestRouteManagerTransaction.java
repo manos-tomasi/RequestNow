@@ -1,5 +1,6 @@
 package com.paa.requestnow.model.db.transactions;
 
+import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.data.Option;
 import com.paa.requestnow.model.data.Request;
 import com.paa.requestnow.model.data.RequestRoute;
@@ -186,6 +187,21 @@ public class RequestRouteManagerTransaction
                         conditions += S.columns.SEQUENCE + " = " + values.get( i );
                     }
                     break;
+                    
+                    case RequestRouteFilter.MYRESPONSE :
+                    {
+                        if( values.get(i) instanceof Option )
+                        {
+                            if( ((Option)values.get(i)) == Option.YES )
+                            {
+                                User user = ApplicationUtilities.getInstance().getActiveUser();
+                                conditions += S.columns.USER   + " = " + user.getId()     + 
+                                   " OR ( " + S.columns.SECTOR + " = " + user.getSector() + 
+                                   " AND "  + S.columns.USER   + " IS NULL "              + " ) ";
+                            }
+                        }
+                    }
+                    break;
                 }
                 conditions += i == values.size() - 1 ? " ) " : " or ";    
             }
@@ -284,6 +300,20 @@ public class RequestRouteManagerTransaction
                         conditions += S.columns.SEQUENCE + " = " + values.get( i );
                     }
                     break;
+                    
+                    case RequestRouteFilter.MYRESPONSE :
+                    {
+                        if( values.get(i) instanceof User )
+                        {
+                            if( ((Option)values.get(i)) == Option.YES )
+                            {
+                                User user = ApplicationUtilities.getInstance().getActiveUser();
+                                conditions += S.columns.USER   + " = " + user.getId()     + 
+                                   " OR ( " + S.columns.SECTOR + " = " + user.getSector() + 
+                                   " AND "  + S.columns.USER   + " IS NULL "              + ") ";
+                            }
+                        }
+                    }
                 }
                 conditions += i == values.size() - 1 ? " ) " : " or ";    
             }

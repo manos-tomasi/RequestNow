@@ -42,7 +42,8 @@ public class RequestRoutePane
         controller = RequestRouteController.getInstance();
         requestRouteFilter = new RequestRouteFilter();
         
-        requestRouteFilter.addCondition( RequestRouteFilter.USER , ApplicationUtilities.getInstance().getActiveUser() );
+        requestRouteFilter.addCondition( RequestRouteFilter.MYRESPONSE , Option.YES );
+        requestRouteFilter.setBlockedFilters( RequestRouteFilter.MYRESPONSE );
         requestRouteFilter.addCondition( RequestRouteFilter.STATE, new Option( RequestRoute.STOPED, "Em Andamento") );
                 
         refreshContent();
@@ -69,6 +70,7 @@ public class RequestRoutePane
             if( route.getState() == RequestRoute.STOPED )
             {
                 DispatchEditor.edit( route );
+                refreshContent();
             }
             else
             {
@@ -111,6 +113,8 @@ public class RequestRoutePane
             table.setItems( com.paa.requestnow.model.ModuleContext.getInstance()
                             .getRequestRouteManager()
                             .get(requestRouteFilter));
+            requestLayout();
+            requestFocus();
         }
         catch( Exception e )
         {
