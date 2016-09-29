@@ -4,6 +4,7 @@ import com.paa.requestnow.model.data.Category;
 import com.paa.requestnow.model.data.Core;
 import com.paa.requestnow.model.data.Option;
 import com.paa.requestnow.model.data.Type;
+import com.paa.requestnow.model.data.TypeRoute;
 import com.paa.requestnow.model.db.Database;
 import com.paa.requestnow.model.db.Schema;
 import com.paa.requestnow.model.db.Schema.Fields;
@@ -77,6 +78,27 @@ public class TypeManagerTransactions
                     S.columns.STATE +  " = " + Type.STATE_ACTIVE;
        
         return  db.fetchAll( sql , S.fetcher );
+    }    
+
+    public List<Type> getTypesCategoryWithRoute( Database db, int id ) throws Exception
+    {
+        Schema.Types T = Schema.Types.alias( "T" );
+        Schema.TypesRoutes R = Schema.TypesRoutes.alias( "R" );
+        
+        String sql = T.select + " inner join " +
+                     R.name +
+                     " on " +
+                     R.columns.TYPE     + " = " + T.columns.ID +
+                     " where " + 
+                     T.columns.CATEGORY + " = " + id +
+                     " and " +
+                     R.columns.STATE    + " = " + TypeRoute.STATE_ACTIVE +
+                     " and " +
+                     T.columns.STATE    +  " = " + Type.STATE_ACTIVE +
+                     "group by " +
+                     T.columns;
+       
+        return  db.fetchAll( sql , T.fetcher );
     }    
 
     @Override

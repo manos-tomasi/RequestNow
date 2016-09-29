@@ -152,7 +152,23 @@ public class CategoryTree
      */
     private void loadTypes( TreeItem item, Category category ) throws Exception
     {
-        List<Type> types = com.paa.requestnow.model.ModuleContext.getInstance().getTypeManager().getTypesCategory( category.getId() );
+        List<Type> types;
+        
+        if ( MODE_REQUEST == mode )
+        {
+            types = com.paa.requestnow.model.ModuleContext
+                                                        .getInstance()
+                                                        .getTypeManager()
+                                                        .getTypesCategoryWithRoute( category.getId() );
+        }
+        
+        else
+        {    
+            types = com.paa.requestnow.model.ModuleContext
+                                                        .getInstance()
+                                                        .getTypeManager()
+                                                        .getTypesCategory( category.getId() );
+        }
 
         for( Type type : types )
         {

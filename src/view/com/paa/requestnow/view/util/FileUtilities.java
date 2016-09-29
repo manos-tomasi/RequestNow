@@ -58,11 +58,19 @@ public class FileUtilities
         if( url.startsWith( File.separator ) )
             url = url.replaceFirst( File.separator, "" );
         
-        return home + 
-                "attachments"  + File.separator +
-                r.getRequest() + File.separator +
-                r.getField()   + File.separator +
-                url;
+        if ( r != null )
+        {
+            return home + 
+                    "attachments"  + File.separator +
+                    r.getRequest() + File.separator +
+                    r.getField()   + File.separator +
+                    url;
+        }
+        
+        else
+        {
+            return home + "attachments" + File.separator + "/" + url;
+        }
     }
     
     
@@ -312,6 +320,11 @@ public class FileUtilities
     }
     
     
+    public static void download( String path, String target )
+    {
+        download( path, target, null );
+    }
+            
     public static void download( String path, String target, ValueRequest r )
     {
         download( path, target, true, r );

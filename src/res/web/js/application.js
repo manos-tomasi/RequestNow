@@ -67,23 +67,32 @@ function setFields( fields )
     if( fields )
     {
         fields.forEach( function( element ){
+            
             if( element['type'] != 4 )
             {
                 $('#campos').after( "<tr><td class='myfield'>"+ element['field'] +"</td><td class='myvalue'>"+ element['value'] +"</td></tr>" );
             }
+            
             else
             {
                 var src = "/" + element['request'] + "/" + element['id'] + "/" + element['value'];
-                $('#campos').after( "<tr><td class='myfield'>"+ element['field'] +"</td><td class='myvalue'><div style='color:red' onclick='download(" + src + ");'>"+ element['value'] +"</div></td></tr>" );
+                
+                $('#campos').after( "<tr>" +
+                                        "<td class=\"myfield\">"+ 
+                                            element['field'] + 
+                                        "</td>" + 
+                                        "<td class=\"myvalue\">" + 
+                                            "<i class=\"fa fa-download fa-2x\"" +
+                                               "onclick=\"application.download( '" + src + "' );\"" +
+                                               " style=\"float: left; cursor: pointer; padding-right: 10px; vertical-align: middle;\" aria-hidden=\"true\"></i>" +
+                                            "<div style=\"cursor: pointer;\" onclick=\"application.download( '" + src + "' );\">"+ 
+                                                element['value'] +
+                                            "</div>" + 
+                                        "</td>" +
+                                    "</tr>" );
             }
-        });
+        } );
     }           
-}
-
-function download( src )
-{
-    $('#request_state').html( 'request[  ]' );
-    application.download( src );
 }
 
 function definePermissions( permissions )

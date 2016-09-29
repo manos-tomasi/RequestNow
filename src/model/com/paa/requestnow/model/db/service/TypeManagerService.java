@@ -45,6 +45,21 @@ public class TypeManagerService
             db.release();
         }
     }
+    
+    public List<Type> getTypesCategoryWithRoute( int categoryId ) throws Exception
+    {
+        Database db = Database.getInstance();
+    
+        try
+        {
+            return transactions.getTypesCategoryWithRoute( db , categoryId );
+        }
+
+        finally
+        {
+            db.release();
+        }
+    }
      
     public String getJson( Type type ) throws Exception
     {
