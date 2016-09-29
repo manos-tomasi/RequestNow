@@ -17,6 +17,8 @@ public abstract class DefaultFilter
     public DefaultFilter() 
     {
         createComponents( items );
+        
+        allowItems = items;
     }
     
     
