@@ -1,6 +1,5 @@
 package com.paa.requestnow.view.editor;
 
-import com.paa.requestnow.control.RequestRouteController;
 import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.data.RequestRoute;
 import com.paa.requestnow.panes.TabDispatch;
@@ -23,30 +22,21 @@ import javafx.stage.Stage;
 /*
  * @author lucas
  */
-public class DispatchEditor  
+public abstract class DispatchEditor  
 {
-    public static void edit( RequestRoute requestRoute )
-    {
-        DispatchEditor editor = new DispatchEditor();
-        editor.setSource( requestRoute );
-        editor.show();
-    }
- 
-    private RequestRoute           source;
-    private RequestRouteController controller = RequestRouteController.getInstance();
+    private RequestRoute source;
     
-    private DispatchEditor() 
+    private DispatchEditor(){}
+    
+    public DispatchEditor( RequestRoute source ) 
     {
+        this.source = source;
+        
         initComponents();
     }
     
-    private void setSource( RequestRoute requestRoute )
-    {
-        source = requestRoute;
-        tabRequest.setSource( requestRoute );
-    }
     
-    private void show()
+    public void open()
     {
         stage.setMaximized(true);
         stage.showAndWait();
@@ -69,18 +59,42 @@ public class DispatchEditor
     {
         try
         {
-            obtainInput( state );
-            controller.dispatch( source );
-            Prompts.info( "A rota foi "+ RequestRoute.STATES[state]  +" , com sucesso!" );
-            stage.close();
+            if ( tabDispatch.obtainInfo() == null || tabDispatch.obtainInfo().isEmpty() )
+            {
+                Prompts.info( "Preencha uma justificativa para o despacho!" );
+            }
+            
+            else
+            {
+                obtainInput( state );
+
+                onDispatch( source );
+    
+                stage.close();
+            }
         }
         catch( Exception e )
         {
-            Prompts.error( "Houve um erro ao despachar" );
             ApplicationUtilities.logException(e);
         }
     }
+    
+    private void cancel()
+    {
+        try
+        {
+            onCancel();
 
+            stage.close();
+        }
+        catch ( Exception e )
+        {
+            ApplicationUtilities.logException(e);
+        }
+    }
+    
+    protected abstract void onCancel() throws Exception;
+    protected abstract void onDispatch( RequestRoute source ) throws Exception;
     
     private void initComponents()
     {
@@ -124,7 +138,8 @@ public class DispatchEditor
                 resize();
             }
         });
-
+        
+        stage.setOnCloseRequest(eh -> cancel() );
     }  
     
     private Stage           stage           = new Stage();
@@ -158,7 +173,7 @@ public class DispatchEditor
         @Override
         public void onEvent(Event t) throws Exception 
         {
-            stage.close();
+            cancel();
         }
     });
 }
