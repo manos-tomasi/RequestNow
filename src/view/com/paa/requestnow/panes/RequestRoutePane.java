@@ -2,8 +2,10 @@ package com.paa.requestnow.panes;
 
 import com.paa.requestnow.control.RequestRouteController;
 import com.paa.requestnow.model.ApplicationUtilities;
+import com.paa.requestnow.model.data.Lock;
 import com.paa.requestnow.model.data.Option;
 import com.paa.requestnow.model.data.RequestRoute;
+import com.paa.requestnow.model.data.User;
 import com.paa.requestnow.model.filter.DefaultFilter;
 import com.paa.requestnow.model.filter.RequestRouteFilter;
 import com.paa.requestnow.panes.modules.AbstractModulesPane;
@@ -62,15 +64,52 @@ public class RequestRoutePane
         }).open();    
     }
     
-    private void onDispatch()
+    private void onDispatch() throws Exception
     {
         if( isSelected() )
         {
             RequestRoute route = table.getSelectedItem();
+            
             if( route.getState() == RequestRoute.STOPED )
             {
-                DispatchEditor.edit( route );
-                refreshContent();
+                final User user = ApplicationUtilities.getInstance().getActiveUser();
+                
+                String hasLock = controller.hasLock( route, user );
+                    
+                if ( hasLock == null )
+                {
+                    final Lock lock = controller.lock( route, user );
+                    
+                    new DispatchEditor( route )
+                    {
+                        @Override
+                        protected void onDispatch (RequestRoute source ) throws Exception
+                        {
+                            try
+                            {
+                                controller.dispatch( source );
+                                
+                                refreshContent();
+                            }
+                            
+                            finally
+                            {
+                                controller.unLock( lock );
+                            }
+                        }
+
+                        @Override
+                        protected void onCancel() throws Exception
+                        {
+                            controller.unLock( lock );
+                        }
+                    }.open();
+                }
+                
+                else
+                {
+                    Prompts.alert( hasLock );
+                }
             }
             else
             {
@@ -146,7 +185,7 @@ public class RequestRoutePane
     private ActionButton dispatch = new ActionButton( "Despachar", "dispatch.png", new ActionButton.ActionHandler() 
     {
         @Override
-        public void onEvent( Event t ) 
+        public void onEvent( Event t )  throws Exception
         {
             onDispatch();
         }

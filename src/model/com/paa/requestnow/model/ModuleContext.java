@@ -98,4 +98,9 @@ public class ModuleContext
     {
         return PermissionManagerService.getInstance();
     }
+    
+    public LockManagerService getLockManager()
+    {
+        return LockManagerService.getInstance();
+    }
 }

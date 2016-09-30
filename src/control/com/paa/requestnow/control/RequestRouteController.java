@@ -1,7 +1,9 @@
 package com.paa.requestnow.control;
 
+import com.paa.requestnow.model.data.Lock;
 import com.paa.requestnow.model.data.Request;
 import com.paa.requestnow.model.data.RequestRoute;
+import com.paa.requestnow.model.data.User;
 import java.sql.Timestamp;
 
 /**
@@ -68,6 +70,51 @@ public class RequestRouteController
         }
         
         return message;
+    }
+    
+    public Lock lock( RequestRoute requestRoute, User user ) throws Exception
+    {
+        Lock lock = new Lock( user.getId(), requestRoute.getId() );
+         
+        com.paa.requestnow.model.ModuleContext.getInstance().getLockManager().add( lock );
+        
+        return lock;
+    }
+    
+    public String hasLock( RequestRoute requestRoute, User user ) throws Exception
+    {
+        Lock lock = com.paa.requestnow.model.ModuleContext
+                                        .getInstance()
+                                        .getLockManager()
+                                        .get( requestRoute.getId() );
+        if ( lock != null )
+        {
+            if ( lock.getUser() != user.getId() )
+            {
+                return "Item bloqueado por " + com.paa.requestnow.model.ModuleContext
+                                                                .getInstance()
+                                                                .getUserManager()
+                                                                .get( lock.getUser() );
+            }
+            
+            else 
+            {
+                com.paa.requestnow.model.ModuleContext
+                                        .getInstance()
+                                        .getLockManager()
+                                        .delete( lock );
+            }
+        }
+        
+        return null;
+    }
+    
+    public void unLock( Lock lock ) throws Exception
+    {
+        if ( lock != null )
+        {
+            com.paa.requestnow.model.ModuleContext.getInstance().getLockManager().delete( lock );
+        }
     }
     
     @Override

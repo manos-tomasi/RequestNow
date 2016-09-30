@@ -22,19 +22,24 @@ public class LocksManagerTransactions
         String sql = " insert into "          + S.name + 
                      " values "               + "("    + 
                      " DEFAULT"               + ", "   +
-                      obj.getDate()           + ", "   +
+                      " now() "               + ", "   +
                       obj.getRoute()          + ", "   +
                       obj.getUser()           + ")";
         
         db.executeCommand(sql);
     }
     
+    @Override
     public void delete( Database db, Lock obj ) throws Exception
     {
         Schema.Locks S = Schema.Locks.table;
         
-        String sql = " delete "    + S.name + " where "  + 
-                     S.columns.ID  + " = "  + obj.getId();
+        String sql = " delete from " +
+                     S.name + 
+                    " where "  + 
+                     S.columns.ROUTE  + " = "  + obj.getRoute() +
+                    " and  " +
+                    S.columns.USER    + " = " + obj.getUser() ;
         
         db.executeCommand( sql);
     }
@@ -50,7 +55,7 @@ public class LocksManagerTransactions
     {
         Schema.Locks S = Schema.Locks.table;
         
-        String sql = S.select + " where " + S.columns.ID + " = " + id;
+        String sql = S.select + " where " + S.columns.ROUTE + " = " + id;
         
         return  db.fetchOne( sql , S.fetcher );
     }    
