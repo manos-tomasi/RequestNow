@@ -12,11 +12,11 @@ public class ServerTest
         try
         {
             Server server = new Server();
-            server.run();
+            server.start();
 
             while ( true ) 
             {   
-                Thread.sleep( 5000 );
+                Thread.sleep( 500 );
                 server.sendPacket( new Serial( "Test = " + System.currentTimeMillis() ) );
             }
         }

@@ -3,6 +3,7 @@ package com.paa.requestnow.control.socket;
 import com.paa.requestnow.control.util.Serializer;
 import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.ConfigurationManager;
+import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
@@ -11,8 +12,8 @@ import java.net.MulticastSocket;
  * @author artur
  */
 public abstract class Client
-    implements 
-        Runnable
+    extends 
+        Thread
 {
     private static final String HOST = ConfigurationManager.getInstance().getProperty( "server.host", "127.0.0.1" );
     private static final Integer PORT = Integer.parseInt( ConfigurationManager.getInstance().getProperty( "server.port", "12345" ) );
@@ -36,36 +37,36 @@ public abstract class Client
             socket = new MulticastSocket( PORT );
             
             socket.joinGroup( grupo );
-        
-            try
-            {
-                while ( true ) 
-                {
-                    // prepara buffer (vazio)
-                    byte[] buf = new byte[256];
-
-                    // prepara pacote para resposta
-                    DatagramPacket pacote = new DatagramPacket( buf, buf.length );
-
-                    // recebe pacote
-                    socket.receive( pacote );
-
-                    onRecive( Serializer.deserialize( pacote.getData() ) );
-                }
-            }
-            
-            catch ( Exception e )
-            {
-                ApplicationUtilities.logException( e );
-            }
-            
-            // fecha socket
-            socket.close();
         }
         
-        catch ( Exception e )
+        catch ( IOException e )
         {
             ApplicationUtilities.logException( e );
         }
+        
+        try
+        {
+            while ( true ) 
+            {
+                // prepara buffer (vazio)
+                byte[] buf = new byte[256];
+
+                // prepara pacote para resposta
+                DatagramPacket pacote = new DatagramPacket( buf, buf.length );
+
+                // recebe pacote
+                socket.receive( pacote );
+
+                onRecive( Serializer.deserialize( pacote.getData() ) );
+            }
+        }
+
+        catch ( Exception ex )
+        {
+            ApplicationUtilities.logException( ex );
+        }
+            
+        // fecha socket
+        socket.close();
     }
 }

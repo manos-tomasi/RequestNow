@@ -8,14 +8,13 @@ import java.io.Serializable;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.ServerSocket;
 
 /**
  * @author artur
  */
 public class Server
-    implements 
-        Runnable
+    extends
+        Thread
 {
     private Serializable source;
     
@@ -24,15 +23,6 @@ public class Server
 
     public Server() 
     {
-        try
-        {
-            new ServerSocket( PORT );
-        }
-        
-        catch ( Exception e )
-        {
-            e.printStackTrace();
-        }
     }
 
     public void sendPacket( Serializable source ) 
