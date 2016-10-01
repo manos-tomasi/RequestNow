@@ -1,7 +1,7 @@
 package com.paa.requestnow.panes;
 
 import com.paa.requestnow.control.RequestController;
-import com.paa.requestnow.inspectors.RequestInspector;
+import com.paa.requestnow.view.inspectors.RequestInspector;
 import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.data.Request;
 import com.paa.requestnow.model.filter.DefaultFilter;

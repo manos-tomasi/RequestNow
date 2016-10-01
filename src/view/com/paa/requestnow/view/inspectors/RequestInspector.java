@@ -1,4 +1,4 @@
-package com.paa.requestnow.inspectors;
+package com.paa.requestnow.view.inspectors;
 
 import com.paa.requestnow.control.util.JsonUtilities;
 import com.paa.requestnow.model.ApplicationUtilities;
