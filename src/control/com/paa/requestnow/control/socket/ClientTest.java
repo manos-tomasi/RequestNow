@@ -1,8 +1,5 @@
 package com.paa.requestnow.control.socket;
 
-import com.paa.requestnow.view.util.Prompts;
-import java.io.Serializable;
-
 /**
  * @author artur
  */
@@ -15,10 +12,10 @@ public class ClientTest
             @Override
             public void onRecive( Object data ) throws Exception 
             {
-                Prompts.alert( data.toString() );
+                System.out.println( data );
             }
         };
         
-        client.run();
+        client.start();
     }
 }
