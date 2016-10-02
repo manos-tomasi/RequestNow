@@ -15,8 +15,8 @@ public class RequestRoute
 {
     private int request;
     private int typeRoute;
-    private Timestamp in;
-    private Timestamp out;
+    private transient Timestamp in;
+    private transient Timestamp out;
     private int user;
     private int sector;
     private int sequence;

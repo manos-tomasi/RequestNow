@@ -3,6 +3,7 @@ package com.paa.requestnow.panes;
 import com.paa.requestnow.control.socket.Client;
 import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.data.RequestRoute;
+import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -74,9 +75,18 @@ public class HeaderPane
         @Override
         public void onRecive( Object data ) throws Exception 
         {
+            System.out.println( data );
             if ( data instanceof RequestRoute )
             {
-                RequestRoute req = (RequestRoute) data;
+                Platform.runLater( new Runnable() {
+                    @Override
+                    public void run() {
+                        RequestRoute req = (RequestRoute) data;
+
+                        lbApplication.setText( lbApplication.getText() + req.getId() );
+                        lbApplication.requestLayout();
+                    }
+                });
             }
         }
     };

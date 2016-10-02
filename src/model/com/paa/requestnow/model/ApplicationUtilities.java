@@ -1,5 +1,6 @@
 package com.paa.requestnow.model;
 
+import com.paa.requestnow.control.socket.Server;
 import com.paa.requestnow.model.data.User;
 import com.paa.requestnow.view.util.FileUtilities;
 import com.paa.requestnow.view.util.Prompts;
@@ -9,14 +10,19 @@ import javafx.stage.Window;
 
 public class ApplicationUtilities
 {
-    private ApplicationUtilities(){}
-
     private static ApplicationUtilities ac = null;
     private static User activeUser;
     private static Locale locale = new Locale( "pt", "BR" );
     private Parent root;
     private Window window;
-
+    private Server server;
+    
+    private ApplicationUtilities()
+    {
+        server = new Server();
+        server.start();
+    }
+ 
     public static ApplicationUtilities getInstance()
     {
         if ( ac == null )
@@ -115,6 +121,11 @@ public class ApplicationUtilities
     public String getCompanny()
     {
         return "RequestNow";
+    }
+    
+    public Server getServer()
+    {
+        return server;
     }
     
     public void logout()
