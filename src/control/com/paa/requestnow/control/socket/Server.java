@@ -18,14 +18,14 @@ public class Server
 {
     private Serializable source;
     
-    private static final String HOST = ConfigurationManager.getInstance().getProperty( "server.host", "127.0.0.1" );
-    private static final Integer PORT = Integer.parseInt( ConfigurationManager.getInstance().getProperty( "server.port", "12345" ) );
+    private static final String HOST = ConfigurationManager.getInstance().getProperty( "server.host", "224.0.0.2" );
+    private static final Integer PORT = Integer.parseInt( ConfigurationManager.getInstance().getProperty( "server.port", "5555" ) );
 
     public Server() 
     {
     }
 
-    public void sendPacket( Serializable source ) 
+    public void send( Serializable source ) 
     {
         this.source = source;
     }
@@ -44,8 +44,10 @@ public class Server
                     byte[] b = Serializer.serialize( source );
                     
                     InetAddress addr   = InetAddress.getByName( HOST );
+                
                     DatagramSocket ds  = new DatagramSocket();
-                    DatagramPacket pkg = new DatagramPacket(b, b.length, addr, PORT );
+                    
+                    DatagramPacket pkg = new DatagramPacket( b, b.length, addr, PORT );
                     
                     ds.send( pkg );
                     

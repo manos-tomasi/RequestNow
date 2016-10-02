@@ -17,7 +17,7 @@ public class ServerTest
             while ( true ) 
             {   
                 Thread.sleep( 500 );
-                server.sendPacket( new Serial( "Test = " + System.currentTimeMillis() ) );
+                server.send( new Serial( "lucas = " + System.currentTimeMillis() ) );
             }
         }
         
@@ -46,7 +46,8 @@ public class ServerTest
         }
 
         @Override
-        public String toString() {
+        public String toString() 
+        {
             return "Serial{" + "name=" + name + '}';
         }
     }

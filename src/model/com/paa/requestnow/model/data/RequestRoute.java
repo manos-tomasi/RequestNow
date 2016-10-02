@@ -1,5 +1,6 @@
 package com.paa.requestnow.model.data;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
@@ -7,8 +8,10 @@ import java.sql.Timestamp;
  * @author lucas
  */
 public class RequestRoute 
-        extends 
-            Core<Request>
+    extends 
+        Core<Request>
+            implements 
+                Serializable
 {
     private int request;
     private int typeRoute;

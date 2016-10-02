@@ -4,7 +4,9 @@ import com.paa.requestnow.control.util.Serializer;
 import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.ConfigurationManager;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 
@@ -15,11 +17,29 @@ public abstract class Client
     extends 
         Thread
 {
-    private static final String HOST = ConfigurationManager.getInstance().getProperty( "server.host", "127.0.0.1" );
-    private static final Integer PORT = Integer.parseInt( ConfigurationManager.getInstance().getProperty( "server.port", "12345" ) );
+    private static final String HOST = ConfigurationManager.getInstance().getProperty( "server.host", "224.0.0.2" );
+    private static final Integer PORT = Integer.parseInt( ConfigurationManager.getInstance().getProperty( "server.port", "5555" ) );
     
-    public Client(){}
+    public Client()
+    {
+    }
+
     
+    public void send( Serializable  source ) throws Exception
+    {
+        if ( source != null ) 
+        {
+            byte[] b = Serializer.serialize( source );
+
+            InetAddress addr   = InetAddress.getByName( HOST );
+
+            DatagramSocket ds  = new DatagramSocket();
+
+            DatagramPacket pkg = new DatagramPacket( b, b.length, addr, PORT );
+
+            ds.send( pkg );
+        }
+    }
     
     public abstract void onRecive( Object  data ) throws Exception;
     

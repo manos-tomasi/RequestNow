@@ -3,7 +3,6 @@ package com.paa.requestnow.view.util;
 import com.paa.requestnow.control.util.JsonUtilities;
 import com.paa.requestnow.model.ResourceLocator;
 import com.paa.requestnow.model.data.Request;
-import com.paa.requestnow.model.data.Type;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;

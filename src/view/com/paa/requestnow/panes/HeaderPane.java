@@ -1,6 +1,8 @@
 package com.paa.requestnow.panes;
 
+import com.paa.requestnow.control.socket.Client;
 import com.paa.requestnow.model.ApplicationUtilities;
+import com.paa.requestnow.model.data.RequestRoute;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -60,8 +62,23 @@ public class HeaderPane
         
         setStyle( "-fx-border-color:" + ApplicationUtilities.getColor() + "-fx-border-width: 0 0 2 0; -fx-padding: 4 0 4 0;" + ApplicationUtilities.getBackground2() );
         getChildren().addAll( lbModule, lbApplication );
+        
+        client.start();
     }
     
     private Label lbApplication = new Label();
     private Label lbModule = new Label();
+    
+    private Client client = new Client() 
+    {
+        @Override
+        public void onRecive( Object data ) throws Exception 
+        {
+            if ( data instanceof RequestRoute )
+            {
+                RequestRoute req = (RequestRoute) data;
+            }
+        }
+    };
+    
 }
