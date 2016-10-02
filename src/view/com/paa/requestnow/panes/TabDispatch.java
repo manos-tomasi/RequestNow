@@ -25,6 +25,10 @@ public class TabDispatch
     
     public String obtainInfo()
     {
+        if( info.isEmpty() )
+        {
+            return null;
+        }
         return info.getHtmlText();
     }
      
