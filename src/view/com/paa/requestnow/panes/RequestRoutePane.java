@@ -11,6 +11,7 @@ import com.paa.requestnow.model.filter.RequestRouteFilter;
 import com.paa.requestnow.panes.modules.AbstractModulesPane;
 import com.paa.requestnow.view.editor.DispatchEditor;
 import com.paa.requestnow.view.editor.FilterEditor;
+import com.paa.requestnow.view.inspectors.RequestRouteInspector;
 import com.paa.requestnow.view.tables.RequestRouteTable;
 import com.paa.requestnow.view.util.ActionButton;
 import com.paa.requestnow.view.util.EditorCallback;
@@ -121,10 +122,17 @@ public class RequestRoutePane
             Prompts.alert( "Selecione a rota que deseja despachar!" );
         }
     }
-    
-    private void onInspect()
+
+    private void inspect()
     {
-        
+        if( isSelected() )
+        {
+            RequestRouteInspector.inspect( table.getSelectedItem() );
+        }
+        else
+        {
+            Prompts.alert( "Selecione a requisição que deseja visualisar!" );
+        }
     }
     
     private boolean isSelected()
@@ -196,7 +204,7 @@ public class RequestRoutePane
         @Override
         public void onEvent( Event t ) 
         {
-            onInspect();
+            inspect();
         }
     });
     

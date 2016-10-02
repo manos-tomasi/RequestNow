@@ -77,4 +77,17 @@ public class RequestRouteManagerService
             db.release();
         }
     }
+    
+    public String getJson( RequestRoute dispatch ) throws Exception
+    {
+        Database db = Database.getInstance();
+        try 
+        {
+            return transactions.getJson( db, dispatch );
+        } 
+        finally 
+        {
+            db.release();
+        }
+    }
 }

@@ -391,4 +391,14 @@ public class RequestRouteManagerTransaction
             }
         }
     }
+    
+    public String getJson( Database db, RequestRoute dispatch ) throws Exception
+    {
+        if ( dispatch == null )
+        {
+            throw new IllegalArgumentException( "Request cannot be null!" );
+        }
+         
+        return db.queryString( "select getJson( " + dispatch.getRequest() + ", 'dispatch' )" );
+    }
 }

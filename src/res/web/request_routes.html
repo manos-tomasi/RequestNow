@@ -1,0 +1,48 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" href="css/inspect.css"                       type="text/css">
+        <link rel="stylesheet" href="font_awesome/css/font-awesome.min.css" type="text/css">
+        <script src="js/jquery-2.1.4.min.js" type="text/javascript" ></script>
+        <script src="js/application.js"      type="text/javascript" ></script>
+    </head>
+    <body>
+        <table>
+            <tr>
+                <th id="request_type" colspan="1" class="head"></th>
+                <th><img src="../images/posting.png" ></th>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td class="myfield">Usuário</td>
+                <td id="request_user" class="myvalue"></td>
+            </tr>
+            <tr>
+                <td class="myfield">Código:</td>
+                <td id="request_id" class="myvalue"></td>
+            </tr>
+            <tr>
+                <td class="myfield">Data Inícial</td>
+                <td id="request_dt_start" class="myvalue"></td>
+            </tr>
+            <tr>
+                <td class="myfield">Data Final</td>
+                <td id="request_dt_end" class="myvalue"></td>
+            </tr>
+            <tr>
+                <td class="myfield">Situação</td>
+                <td id="request_state" class="myvalue"></td>
+            </tr>
+        </table>
+        <table id="table">
+            <tr id="campos">
+                <th id="request_type" colspan="1" class="head">Campos</th>
+                <th><div style="text-align: right;"><i style="color: #2f4e76" class="fa fa-cubes fa-3x"></i></div></th>
+            </tr>
+            
+        </table>
+        <table id="request_route">
+        </table>
+    </body>
+</html>

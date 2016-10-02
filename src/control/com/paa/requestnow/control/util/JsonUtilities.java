@@ -4,6 +4,7 @@ import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.data.Category;
 import com.paa.requestnow.model.data.Field;
 import com.paa.requestnow.model.data.Request;
+import com.paa.requestnow.model.data.RequestRoute;
 import com.paa.requestnow.model.data.Type;
 import com.paa.requestnow.model.data.TypeRoute;
 
@@ -27,6 +28,22 @@ public class JsonUtilities
         }
         
         return  null;
+    }
+
+    public static String getDispatchs( RequestRoute dispatch )
+    {
+        try 
+        {
+            return com.paa.requestnow.model.ModuleContext
+                                .getInstance()
+                                .getRequestRouteManager()
+                                .getJson( dispatch );
+        } 
+        catch (Exception e) 
+        {
+            ApplicationUtilities.logException( e );
+        }
+        return null;
     }
     
     public static String getType( Type type )

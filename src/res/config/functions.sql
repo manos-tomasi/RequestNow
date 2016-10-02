@@ -119,6 +119,36 @@ and
 and 
     v.ref_request = r.id;
 
+
+
+/*############################################################################*/
+/*                            view para despachos                             */
+/*############################################################################*/
+create or replace view view_dispatch as 
+select rr.id          as dispatch, 
+       rr.ref_request as request, 
+       coalesce( to_char( rr.date_in , 'dd/MM/YYYY HH24:MI' ), 'n/d' ) as date_in, 
+       coalesce( to_char( rr.date_out, 'dd/MM/YYYY HH24:MI' ), 'n/d' ) as date_out,
+       vr.sequence, 
+       vr.type, 
+       case when rr.state = 0 
+                then 'Cancelada' 
+            when rr.state = 1 
+                then 'Desaprovada' 
+            when rr.state = 2 
+                then 'Aprovada' 
+            when rr.state = 3 
+                then 'Esperando' 
+            else 'Parada para ser despachada' 
+        end  as state, 
+        coalesce(u.name,'n/d') as user,
+        coalesce(s.name,'n/d') as sector, 
+        coalesce(rr.info, '') as info 
+   from requests_routes rr 
+  inner join view_routes vr on ( rr.ref_type_route = vr.id ) 
+   left join sectors s      on ( rr.ref_sector     = s.id  ) 
+   left join users u        on ( rr.ref_user       = u.id  );
+
 /*############################################################################*/
 /*                  Define Sequencia para os campos                           */
 /*############################################################################*/
@@ -239,7 +269,7 @@ begin
                             'sector:'''   || r.sector   || ''','  || 
                             'sequence:''' || r.sequence || ''','  || 
                             'type:'''     || r.type     || ''','  || 
-                            'days:'''     || r.days     || ''''  || 
+                            'days:'''     || r.days     || ''''   || 
                         '}' 
                from 
                    view_routes r
@@ -317,7 +347,27 @@ begin
                         view_values v
                     where 
                         v.request = $1  ) );
-    end if; 
+    
+    elseif ( $2 = 'dispatch' ) then
+
+            return ( array( select '{'          ||
+                                'dispatch:'''   || v.dispatch  || ''',' || 
+                                'date_in:'''    || v.date_in   || ''',' || 
+                                'date_out:'''   || v.date_out  || ''',' || 
+                                'request:'''    || v.request   || ''',' || 
+                                'state:'''      || v.state     || ''',' || 
+                                'user:'''       || v.user      || ''',' || 
+                                'sector:'''     || v.sector    || ''',' || 
+                                'sequence:'''   || v.sequence  || ''',' || 
+                                'info:'''       || v.info      || ''',' || 
+                                'type:'''       || v.type      || ''''  || 
+                            '}'
+                    from 
+                        view_dispatch v
+                    where 
+                        v.request = $1 
+                    order by sequence asc ) );
+    end if;
 
     return null;
 
@@ -357,4 +407,3 @@ $body$
 
 drop trigger if exists makePermissionsDefaults on roles;
 create trigger makePermissionsDefaults after insert on roles for each row execute procedure makePermissionsDefaults();
-
