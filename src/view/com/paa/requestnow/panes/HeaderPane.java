@@ -7,8 +7,8 @@ import com.paa.requestnow.model.data.RequestRoute;
 import com.paa.requestnow.model.filter.RequestRouteFilter;
 import com.paa.requestnow.view.util.NotificationItem;
 import com.paa.requestnow.view.util.Prompts;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -17,6 +17,7 @@ import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
@@ -27,7 +28,7 @@ public class HeaderPane
     extends 
         HBox
 {
-    private Set<RequestRoute> routes = new HashSet();
+    private List<RequestRoute> routes;
     
     public HeaderPane() 
     {
@@ -51,7 +52,7 @@ public class HeaderPane
             filter.addCondition( RequestRouteFilter.MYRESPONSE, Option.YES );
             filter.addCondition( RequestRouteFilter.STATE, new Option( RequestRoute.STOPED, "Em Andamento") );
 
-            routes.addAll( com.paa.requestnow.model.ModuleContext.getInstance().getRequestRouteManager().get( filter ) );
+            routes = com.paa.requestnow.model.ModuleContext.getInstance().getRequestRouteManager().get( filter );
             
             refreshNotifications();
         }
@@ -64,34 +65,54 @@ public class HeaderPane
     
     private void refreshNotifications()
     {
-        try
+        Platform.runLater( new Runnable() 
         {
-            menu.getItems().clear();
-            
-            for ( RequestRoute r : routes )
+            @Override
+            public void run() 
             {
-                String text = com.paa.requestnow.model.ModuleContext.getInstance().getRequestManager().getRequestNotification( r.getRequest() );
-
-                menu.getItems().add( new NotificationItem( text, "orders_white.png", new EventHandler() 
+                try
                 {
-                    @Override
-                    public void handle( Event t )
+                    menu.getItems().clear();
+
+                    for ( RequestRoute r : routes )
                     {
-                        Prompts.alert( "Compre a versão FULL para essa funcionalidade" );
+                        String text = com.paa.requestnow.model.ModuleContext.getInstance().getRequestManager().getRequestNotification( r.getRequest() );
+
+                        menu.getItems().add( new NotificationItem( text, "orders_white.png", new EventHandler() 
+                        {
+                            @Override
+                            public void handle( Event t )
+                            {
+                                Prompts.alert( "Compre a versão FULL para essa funcionalidade" );
+                            }
+                        } ) );
+
                     }
-                } ) );
-                
-                btnNotifications.setText( String.valueOf( routes.size() ) );
-                btnNotifications.requestLayout();
-                
-                requestLayout();
+
+                    if ( routes.size() > 0 )
+                    {
+                        btnNotifications.setText( String.valueOf( routes.size() ) );
+                        btnNotifications.setVisible( true );
+                    }
+
+                    else
+                    {
+                        btnNotifications.setVisible( false );
+                    }
+
+                    btnNotifications.requestLayout();
+                    
+                    hbox.requestLayout();
+                    
+                    requestLayout();
+                }
+
+                catch ( Exception e )
+                {
+                    ApplicationUtilities.logException( e );
+                }
             }
-        }
-        
-        catch ( Exception e )
-        {
-            ApplicationUtilities.logException( e );
-        }
+        } );
     }
     
     public void setApplicationName( String text )
@@ -170,12 +191,9 @@ public class HeaderPane
         @Override
         public void onRecive( Object data ) throws Exception 
         {
-            if ( data instanceof RequestRoute )
-            {
-                load();
-                
-                refreshNotifications();
-            }
+            load();
+
+            refreshNotifications();
         }
     };
     

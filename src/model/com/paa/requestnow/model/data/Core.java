@@ -1,7 +1,5 @@
 package com.paa.requestnow.model.data;
 
-import com.paa.requestnow.model.db.Schema;
-
 /**
  * @author artur
  * @param <T>

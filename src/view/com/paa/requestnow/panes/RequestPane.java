@@ -9,6 +9,7 @@ import com.paa.requestnow.model.filter.RequestFilter;
 import com.paa.requestnow.panes.modules.AbstractModulesPane;
 import com.paa.requestnow.view.editor.FilterEditor;
 import com.paa.requestnow.view.editor.RequestEditor;
+import com.paa.requestnow.view.selectors.RequestStateSelector;
 import com.paa.requestnow.view.tables.RequestTable;
 import com.paa.requestnow.view.util.ActionButton;
 import com.paa.requestnow.view.util.EditorCallback;
@@ -54,6 +55,7 @@ public class RequestPane
         {
             requestFilter.setBlockedFilters( RequestFilter.USER );
             requestFilter.addCondition( RequestFilter.USER, ApplicationUtilities.getInstance().getActiveUser() );
+            requestFilter.addCondition( RequestFilter.STATE, RequestStateSelector.IN_PROGRESS );
         }
         
     }

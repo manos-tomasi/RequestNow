@@ -1,5 +1,6 @@
 package com.paa.requestnow.control;
 
+import com.paa.requestnow.control.socket.SocketData;
 import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.data.Field;
 import com.paa.requestnow.model.data.Request;
@@ -98,6 +99,13 @@ public class RequestController
             
             hasPassed = true;
         }
+        
+        sendNotification();
+    }
+    
+    private void sendNotification() throws Exception
+    {
+        ApplicationUtilities.getInstance().getServer().send( new SocketData( "ok" ) );
     }
     
     public void cancel( Request request ) throws Exception

@@ -1,18 +1,21 @@
 package com.paa.requestnow.model.data;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
  * @author artur
  */
 public class Request
-        extends 
-            Core<Request>
+    extends 
+        Core<Request>
+            implements 
+                Serializable
 {
-    private int type;
-    private int user;
-    private Timestamp start;
-    private Timestamp end;
+    private transient int type;
+    private transient int user;
+    private transient Timestamp start;
+    private transient Timestamp end;
 
     public static final int IN_PROGRESS = 0;
     public static final int APPROVED    = 1;

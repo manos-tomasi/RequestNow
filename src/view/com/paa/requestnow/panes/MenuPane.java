@@ -124,5 +124,5 @@ public class MenuPane
     private ReportPane        reportPane        = new ReportPane();
     
     
-    private AbstractModulesPane selectedPane = entriePane;
+    private AbstractModulesPane selectedPane = requestRoutePane;
 }

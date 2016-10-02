@@ -1,14 +1,12 @@
 package com.paa.requestnow.control;
 
+import com.paa.requestnow.control.socket.SocketData;
 import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.data.Lock;
-import com.paa.requestnow.model.data.Option;
 import com.paa.requestnow.model.data.Request;
 import com.paa.requestnow.model.data.RequestRoute;
 import com.paa.requestnow.model.data.User;
-import com.paa.requestnow.model.filter.RequestRouteFilter;
 import java.sql.Timestamp;
-import java.util.List;
 
 /**
  *
@@ -58,26 +56,13 @@ public class RequestRouteController
             com.paa.requestnow.model.ModuleContext.getInstance().getRequestManager().update( request );
         }
         
-        sendNotification(dispatch);
+        sendNotification();
     }
    
     
-    private void sendNotification( RequestRoute requestroute ) throws Exception
+    private void sendNotification() throws Exception
     {
-        RequestRouteFilter filter = new RequestRouteFilter();
-        filter.addCondition(RequestRouteFilter.SEQUENCE, requestroute.getSequence() + 1 );
-        filter.addCondition(RequestRouteFilter.STATE, new Option( RequestRoute.STOPED, "Stoped in sector or in user" ) );
-        List<RequestRoute> nexts = com.paa.requestnow.model.ModuleContext.getInstance().getRequestRouteManager().get(filter);
-        
-        if( nexts.size() > 1 )
-        {
-            throw new IllegalArgumentException( "It must be only one route" );
-        }
-        
-        if( nexts.size() == 1 )
-        {
-            ApplicationUtilities.getInstance().getServer().send( nexts.get(0) );
-        }
+        ApplicationUtilities.getInstance().getServer().send( new SocketData( "ok" ) );
     }
     
     public Lock lock( RequestRoute requestRoute, User user ) throws Exception

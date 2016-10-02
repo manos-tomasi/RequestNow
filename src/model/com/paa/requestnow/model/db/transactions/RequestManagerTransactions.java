@@ -10,7 +10,6 @@ import com.paa.requestnow.model.db.Schema.Requests;
 import com.paa.requestnow.model.filter.DefaultFilter;
 import com.paa.requestnow.model.filter.RequestFilter;
 import java.sql.Date;
-import java.sql.ResultSet;
 import java.util.List;
 
 /**
