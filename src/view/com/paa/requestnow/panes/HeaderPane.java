@@ -3,11 +3,9 @@ package com.paa.requestnow.panes;
 import com.paa.requestnow.control.socket.Client;
 import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.data.Option;
-import com.paa.requestnow.model.data.Request;
 import com.paa.requestnow.model.data.RequestRoute;
-import com.paa.requestnow.model.data.User;
 import com.paa.requestnow.model.filter.RequestRouteFilter;
-import com.paa.requestnow.view.util.ContextMenuItem;
+import com.paa.requestnow.view.util.NotificationItem;
 import com.paa.requestnow.view.util.Prompts;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,10 +13,10 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Side;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
@@ -34,13 +32,14 @@ public class HeaderPane
     public HeaderPane() 
     {
         initComponents();
+        load();
     }
    
     
     public void resize( BorderPane pane )
     {
         setLayoutX( pane.getWidth() );
-        setSpacing( pane.getWidth() - lbApplication.getWidth() - lbModule.getWidth() );
+        setSpacing( pane.getWidth() - hbox.getWidth() - lbModule.getWidth() );
         requestLayout();
     }
 
@@ -50,21 +49,11 @@ public class HeaderPane
         {
             RequestRouteFilter filter = new RequestRouteFilter();
             filter.addCondition( RequestRouteFilter.MYRESPONSE, Option.YES );
-            filter.addCondition( RequestRouteFilter.STATE, RequestRoute.STATE_ACTIVE );
+            filter.addCondition( RequestRouteFilter.STATE, new Option( RequestRoute.STOPED, "Em Andamento") );
 
             routes.addAll( com.paa.requestnow.model.ModuleContext.getInstance().getRequestRouteManager().get( filter ) );
             
-            for ( RequestRoute r : routes )
-            {
-                String text = com.paa.requestnow.model.ModuleContext.getInstance().getRequestManager().getRequestNotification( r.getRequest() );
-
-                menu.getItems().add( new ContextMenuItem( text, "dispatch.png", new EventHandler() {
-                    @Override
-                    public void handle(Event t) {
-                        Prompts.alert( "Compre a versão FULL para essa funcionalidade" );
-                    }
-                } ) );
-            }
+            refreshNotifications();
         }
         
         catch ( Exception e )
@@ -73,22 +62,29 @@ public class HeaderPane
         }
     }
     
-    private void refreshNotifications( RequestRoute req )
+    private void refreshNotifications()
     {
         try
         {
-            if ( req != null )
+            menu.getItems().clear();
+            
+            for ( RequestRoute r : routes )
             {
-                String text = com.paa.requestnow.model.ModuleContext.getInstance().getRequestManager().getRequestNotification( req.getRequest() );
+                String text = com.paa.requestnow.model.ModuleContext.getInstance().getRequestManager().getRequestNotification( r.getRequest() );
 
-                menu.getItems().add( new ContextMenuItem( text, "dispatch.png", new EventHandler() {
+                menu.getItems().add( new NotificationItem( text, "orders_white.png", new EventHandler() 
+                {
                     @Override
-                    public void handle(Event t) {
+                    public void handle( Event t )
+                    {
                         Prompts.alert( "Compre a versão FULL para essa funcionalidade" );
                     }
                 } ) );
                 
-                lbApplication.requestLayout();
+                btnNotifications.setText( String.valueOf( routes.size() ) );
+                btnNotifications.requestLayout();
+                
+                requestLayout();
             }
         }
         
@@ -121,7 +117,24 @@ public class HeaderPane
                                 "-fx-font-size: 26pt;" +
                                 "-fx-font-family: \"Helvetica, Verdana, sans-serif\";" +
                                 "-fx-text-fill: " + ApplicationUtilities.getColor() );
+        
+        btnNotifications.setCache( true );
+        btnNotifications.setCursor( Cursor.HAND );
+        btnNotifications.setStyle(  "-fx-font-weight: bolder;" +
+                                    "-fx-font-size: 10pt;" +
+                                    "-fx-padding: 5px;" +
+                                    "-fx-border-radius: 100;" +
+                                    "-fx-border-width: 10px;" +
+                                    "-fx-min-width: 25px;" +
+                                    "-fx-font-family: \"Helvetica, Verdana, sans-serif\";" +
+                                    ApplicationUtilities.getBackground() +
+                                    "-fx-background-radius: 25;" +
+                                    "-fx-text-fill: " + ApplicationUtilities.getColor2() );
       
+        btnNotifications.setContextMenu( menu );
+        
+        menu.setStyle( ApplicationUtilities.getBackground2() );
+        
         lbModule.setCache( true );
         lbModule.setText( "Home" );
         lbModule.setStyle( "-fx-padding: 10 0 0 10;" +
@@ -131,25 +144,26 @@ public class HeaderPane
                            "-fx-text-fill: " + ApplicationUtilities.getColor() );
         
         setStyle( "-fx-border-color:" + ApplicationUtilities.getColor() + "-fx-border-width: 0 0 2 0; -fx-padding: 4 0 4 0;" + ApplicationUtilities.getBackground2() );
-        getChildren().addAll( lbModule, lbApplication );
+        
+        getChildren().addAll( lbModule, hbox );
         
         client.start();
-        
-        lbApplication.setContextMenu( menu );
-        
-        
-        lbApplication.setOnAction( new EventHandler<ActionEvent>()
+
+        btnNotifications.setOnAction( new EventHandler<ActionEvent>()
         {
             @Override
             public void handle( ActionEvent t )
             {
-                menu.show( lbApplication, Side.BOTTOM, 0, 0 );
+                menu.show( btnNotifications, Side.BOTTOM, 0, 0 );
             }
         } );
     }
     
-    private Button lbApplication = new Button();
+    private Label lbApplication = new Label();
     private Label lbModule = new Label();
+    private Button btnNotifications = new Button();
+    
+    private HBox hbox = new HBox(lbApplication, btnNotifications ); 
     
     private Client client = new Client() 
     {
@@ -158,9 +172,9 @@ public class HeaderPane
         {
             if ( data instanceof RequestRoute )
             {
-                RequestRoute req = (RequestRoute) data;
+                load();
                 
-                refreshNotifications( req );
+                refreshNotifications();
             }
         }
     };

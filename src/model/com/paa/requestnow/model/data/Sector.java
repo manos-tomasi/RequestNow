@@ -1,12 +1,14 @@
 package com.paa.requestnow.model.data;
 
+import java.io.Serializable;
+
 /**
  *
  * @author lucas
  */
 public class Sector 
-    extends
-        Core<Sector>
+        extends
+            Core<Sector>
 {
     private String name;
     private int    state;

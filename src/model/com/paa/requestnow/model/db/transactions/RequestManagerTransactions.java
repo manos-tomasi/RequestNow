@@ -224,6 +224,6 @@ public class RequestManagerTransactions
     
     public String getRequestNotification( Database db, int id ) throws Exception
     {
-        return db.queryString( "select type || '-' || user from view_request where id = " + id );
+        return db.queryString( "select v.type || ' \n' || v.user from view_requests v where v.id = " + id );
     }
 }

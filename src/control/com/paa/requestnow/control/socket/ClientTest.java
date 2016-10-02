@@ -1,5 +1,6 @@
 package com.paa.requestnow.control.socket;
 
+import com.paa.requestnow.model.data.RequestRoute;
 import java.io.Serializable;
 
 /**
@@ -16,7 +17,14 @@ public class ClientTest
                 @Override
                 public void onRecive( Object data ) throws Exception 
                 {
-                    System.out.println( data );
+                    if( data instanceof RequestRoute )
+                    {
+                        RequestRoute r = (RequestRoute) data;
+                        if( r.getUser() != 6 )
+                        {
+                            System.out.println( ((RequestRoute)data).getUser());
+                        }
+                    }
                 }
             };
             
@@ -24,8 +32,14 @@ public class ClientTest
             
             while ( true )
             {
-                Thread.sleep( 1000 );
-                client.send( new Serial( "oiiiiii" ) );
+                Thread.sleep( 1000 );  
+                RequestRoute r = new RequestRoute();
+                r.setUser(5);
+                client.send( r );
+                
+                RequestRoute r3 = new RequestRoute();
+                r3.setUser(2);
+                client.send( r3 );
             }
         
         }

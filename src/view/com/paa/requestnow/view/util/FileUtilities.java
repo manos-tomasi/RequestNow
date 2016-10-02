@@ -216,7 +216,7 @@ public class FileUtilities
 
                 validadeFile( file );
 
-                FileWriter fw = new FileWriter( file.getAbsoluteFile(), true) ; 
+                FileWriter fw = new FileWriter( file.getAbsoluteFile(), true ) ; 
                 BufferedWriter bw = new BufferedWriter( fw ); 
 
                 DateFormat df = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss" );

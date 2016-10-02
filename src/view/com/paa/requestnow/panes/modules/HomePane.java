@@ -1,13 +1,8 @@
 package com.paa.requestnow.panes.modules;
 
 import com.paa.requestnow.model.ResourceLocator;
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeSet;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker.State;
