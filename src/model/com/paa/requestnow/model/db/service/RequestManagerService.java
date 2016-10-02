@@ -60,6 +60,21 @@ public class RequestManagerService
         }
     }
     
+    public String getRequestNotification( int id ) throws Exception
+    {
+        Database db = Database.getInstance();
+        
+        try
+        {
+            return transactions.getRequestNotification( db, id );
+        }
+        
+        finally
+        {
+            db.release();
+        }
+    }
+    
     public String getJsonField( Request request ) throws Exception
     {
         Database db = Database.getInstance();

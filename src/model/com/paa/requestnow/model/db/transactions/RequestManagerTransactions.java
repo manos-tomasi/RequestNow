@@ -10,6 +10,7 @@ import com.paa.requestnow.model.db.Schema.Requests;
 import com.paa.requestnow.model.filter.DefaultFilter;
 import com.paa.requestnow.model.filter.RequestFilter;
 import java.sql.Date;
+import java.sql.ResultSet;
 import java.util.List;
 
 /**
@@ -219,5 +220,10 @@ public class RequestManagerTransactions
         }
          
         return db.queryString( "select getJson( " + request.getId() + ", 'requestField' )" );
+    }
+    
+    public String getRequestNotification( Database db, int id ) throws Exception
+    {
+        return db.queryString( "select type || '-' || user from view_request where id = " + id );
     }
 }
