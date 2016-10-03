@@ -3,7 +3,6 @@ package com.paa.requestnow.view.editor;
 import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.data.RequestRoute;
 import com.paa.requestnow.panes.TabDispatch;
-import com.paa.requestnow.panes.TabRequest;
 import com.paa.requestnow.panes.TabRequestRoute;
 import com.paa.requestnow.view.util.ActionButton;
 import com.paa.requestnow.view.util.Prompts;
@@ -97,8 +96,9 @@ public abstract class DispatchEditor
     protected abstract void onDispatch( RequestRoute source ) throws Exception;
     
     private void initComponents()
-    {
-        tab.getTabs().addAll( tabDispatch, tabRequest, tabRequestRoute );
+    {        
+        tabRequestRoute.setSource( source );
+        tab.getTabs().addAll( tabDispatch, tabRequestRoute );
         
         boxButton.getChildren().addAll( btnCancel, btnApprove, btnDisapprove );
         boxButton.setPadding( new Insets( 20, 20, 20, 20 ) );
@@ -147,7 +147,6 @@ public abstract class DispatchEditor
     private BorderPane      panel           = new BorderPane();
     private TabPane         tab             = new TabPane();
     private TabDispatch     tabDispatch     = new TabDispatch();
-    private TabRequest      tabRequest      = new TabRequest();
     private TabRequestRoute tabRequestRoute = new TabRequestRoute();
     
     private ActionButton    btnApprove    = new ActionButton( "Approve"   , "finish.png",  new ActionButton.ActionHandler() 

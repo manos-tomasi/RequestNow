@@ -1,9 +1,12 @@
 package com.paa.requestnow.panes;
 
+import com.paa.requestnow.control.webservices.WebService;
 import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.view.util.ContextMenuItem;
 import com.paa.requestnow.view.util.FileUtilities;
 import com.paa.requestnow.view.util.Prompts;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -16,6 +19,7 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import org.json.JSONObject;
 
 /**
  * @author artur
@@ -45,6 +49,26 @@ public class FooterPane
         fireEvent( new Event( Events.ON_LOGOUT ) );
     }
     
+    private void getQuotation()
+    {
+        try
+        {
+            JSONObject cotacao = WebService.get( "http://api.promasters.net.br/cotacao/v1/valores" ).getJSONObject("valores");
+            SimpleDateFormat df = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss" );
+            String title = "Cotação: " + df.format( new Date( cotacao.getJSONObject("USD").getLong("ultima_consulta" ) ) );
+            String message = "Dólar:   R$" + cotacao.getJSONObject("USD").get( "valor" ) + " - Fonte: " + cotacao.getJSONObject("USD").get( "fonte" ) +   "\n"+ 
+                             "Bitcoin: R$" + cotacao.getJSONObject("BTC").get( "valor" ) + " - Fonte: " + cotacao.getJSONObject("BTC").get( "fonte" ) +   "\n"+
+                             "Euro:    R$" + cotacao.getJSONObject("EUR").get( "valor" ) + " - Fonte: " + cotacao.getJSONObject("EUR").get( "fonte" ) +   "\n";
+            
+            Prompts.error( title , message );
+        }
+        catch( Exception e )
+        {
+            ApplicationUtilities.logException( e );
+            Prompts.error( "Houve um erro ao buscar a cotação" );
+        }
+        
+    }
     
     private void backup()
     {
@@ -122,5 +146,15 @@ public class FooterPane
             {
                 logout();
             }
-        } ) );
+        } ),
+        
+        new ContextMenuItem( "Cotação", "currency.png", new EventHandler<ActionEvent>() 
+        {
+            @Override
+            public void handle(ActionEvent t) 
+            {
+                getQuotation();
+            }
+    })
+    );
 }
