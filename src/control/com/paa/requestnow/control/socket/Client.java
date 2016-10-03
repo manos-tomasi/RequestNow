@@ -1,6 +1,5 @@
 package com.paa.requestnow.control.socket;
 
-import com.paa.requestnow.control.util.Serializer;
 import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.ConfigurationManager;
 import java.io.IOException;

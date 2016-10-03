@@ -1,4 +1,4 @@
-package com.paa.requestnow.control.util;
+package com.paa.requestnow.control.socket;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
