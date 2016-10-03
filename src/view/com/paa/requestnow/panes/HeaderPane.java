@@ -1,6 +1,7 @@
 package com.paa.requestnow.panes;
 
 import com.paa.requestnow.control.socket.Client;
+import com.paa.requestnow.control.util.MediaPlayer;
 import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.data.Option;
 import com.paa.requestnow.model.data.RequestRoute;
@@ -46,21 +47,35 @@ public class HeaderPane
 
     private void load()
     {
-        try
+        Platform.runLater( new Runnable() 
         {
-            RequestRouteFilter filter = new RequestRouteFilter();
-            filter.addCondition( RequestRouteFilter.MYRESPONSE, Option.YES );
-            filter.addCondition( RequestRouteFilter.STATE, new Option( RequestRoute.STOPED, "Em Andamento") );
+            @Override
+            public void run() 
+            {
+                try
+                {
+                    RequestRouteFilter filter = new RequestRouteFilter();
+                    filter.addCondition( RequestRouteFilter.MYRESPONSE, Option.YES );
+                    filter.addCondition( RequestRouteFilter.STATE, new Option( RequestRoute.STOPED, "Em Andamento") );
 
-            routes = com.paa.requestnow.model.ModuleContext.getInstance().getRequestRouteManager().get( filter );
-            
-            refreshNotifications();
-        }
-        
-        catch ( Exception e )
-        {
-            ApplicationUtilities.logException( e );
-        }
+                    int size = routes != null ? routes.size() : -1;
+
+                    routes = com.paa.requestnow.model.ModuleContext.getInstance().getRequestRouteManager().get( filter );
+
+                    if ( size < routes.size() && size != -1 )
+                    {
+                        MediaPlayer.alert();
+                    }
+
+                    refreshNotifications();
+                }
+
+                catch ( Exception e )
+                {
+                    ApplicationUtilities.logException( e );
+                }
+            }
+        } );
     }
     
     private void refreshNotifications()

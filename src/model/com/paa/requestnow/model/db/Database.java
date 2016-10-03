@@ -42,9 +42,9 @@ public class Database
         if( database == null )
         {
             database = new Database();
-            initConnection();
         }
         
+        initConnection();
         return database;
     }
     
@@ -60,10 +60,10 @@ public class Database
     
     public void release() throws Exception
     {
-//        if( connection != null && statment != null )
-//        {
-//            statment.close();
-//        }
+        if( connection != null && statment != null )
+        {   
+            statment.close();
+        }
     }
     
     public void executeCommand( String sql ) throws Exception

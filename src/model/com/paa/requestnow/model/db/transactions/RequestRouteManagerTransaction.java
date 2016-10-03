@@ -209,7 +209,7 @@ public class RequestRouteManagerTransaction
             sql.append(conditions);
         });
         
-        return db.fetchAll(sql.toString() , S.fetcher );
+        return db.fetchAll( sql.toString() , S.fetcher );
     }
     
     public RequestRoute getOne(Database db, DefaultFilter filter) throws Exception 

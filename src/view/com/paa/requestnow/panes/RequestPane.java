@@ -71,8 +71,6 @@ public class RequestPane
                 {
                     controller.save( properties, source );
                     refreshContent();
-                    
-                    Prompts.info( "Requisição criada com sucesso!" );
                 } 
                 catch (Exception e) 
                 {
