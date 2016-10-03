@@ -12,7 +12,6 @@ import com.paa.requestnow.view.util.HtmlEditorField;
 import com.paa.requestnow.view.util.LabelField;
 import com.paa.requestnow.view.util.MaskTextField;
 import com.paa.requestnow.view.util.NumberTextField;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
