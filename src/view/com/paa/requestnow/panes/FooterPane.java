@@ -8,6 +8,7 @@ import com.paa.requestnow.view.util.Prompts;
 import java.sql.Date;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -59,12 +60,13 @@ public class FooterPane
             SimpleDateFormat df = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss" );
             String title   = "Cotação - "   + df.format( new Date( System.currentTimeMillis() ) );
             
-            NumberFormat.getCurrencyInstance().setMaximumFractionDigits(3);
-            NumberFormat.getCurrencyInstance().setMinimumFractionDigits(3);
+            NumberFormat nf = NumberFormat.getCurrencyInstance( new Locale("pt","BR") );
+            nf.setMaximumFractionDigits(3);
+            nf.setMinimumFractionDigits(3);
             
-            String usd = NumberFormat.getCurrencyInstance().format( cotacao.getJSONObject("USD").getDouble("valor" ) );
-            String btc = NumberFormat.getCurrencyInstance().format( cotacao.getJSONObject("BTC").getDouble("valor" ) );
-            String eur = NumberFormat.getCurrencyInstance().format( cotacao.getJSONObject("EUR").getDouble("valor" ) );
+            String usd = nf.format( cotacao.getJSONObject("USD").getDouble("valor" ) );
+            String btc = nf.format( cotacao.getJSONObject("BTC").getDouble("valor" ) );
+            String eur = nf.format( cotacao.getJSONObject("EUR").getDouble("valor" ) );
             
             String message = "Dólar:    \n" +
                              "   - Valor: " + usd + "\n" +
@@ -170,6 +172,6 @@ public class FooterPane
             {
                 getQuotation();
             }
-    })
+        })
     );
 }

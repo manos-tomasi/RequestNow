@@ -60,7 +60,7 @@ public class MediaPlayer
     
     public static void alert() throws Exception
     {
-        play( new File( new URI( ResourceLocator.getInstance().getSondsResource( "chewbacca.aiff" ) ) ) , 1 );        
+        play( new File( new URI( ResourceLocator.getInstance().getSondsResource( "chewbacca.aiff" ) ) ) );        
     }
     
     public static void error() throws Exception
