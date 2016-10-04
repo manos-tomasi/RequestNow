@@ -6,6 +6,7 @@ import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.data.Option;
 import com.paa.requestnow.model.data.RequestRoute;
 import com.paa.requestnow.model.filter.RequestRouteFilter;
+import com.paa.requestnow.view.inspectors.RequestRouteInspector;
 import com.paa.requestnow.view.util.NotificationItem;
 import com.paa.requestnow.view.util.Prompts;
 import java.util.List;
@@ -98,7 +99,7 @@ public class HeaderPane
                             @Override
                             public void handle( Event t )
                             {
-                                Prompts.alert( "Compre a versão FULL para essa funcionalidade" );
+                                RequestRouteInspector.inspect( r );
                             }
                         } ) );
 
