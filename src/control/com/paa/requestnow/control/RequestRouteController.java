@@ -1,6 +1,7 @@
 package com.paa.requestnow.control;
 
 import com.paa.requestnow.control.socket.SocketData;
+import com.paa.requestnow.control.util.NotificationManager;
 import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.data.Lock;
 import com.paa.requestnow.model.data.Request;
@@ -42,6 +43,8 @@ public class RequestRouteController
                 request.setState( Request.APPROVED );
                 
                 com.paa.requestnow.model.ModuleContext.getInstance().getRequestManager().update( request );
+                
+                NotificationManager.getInstance().notify( request, dispatch );
             }
         }
         else
@@ -54,6 +57,8 @@ public class RequestRouteController
             request.setState( Request.DISAPPROVED );
             
             com.paa.requestnow.model.ModuleContext.getInstance().getRequestManager().update( request );
+            
+            NotificationManager.getInstance().notify( request, dispatch );
         }
         
         sendNotification();

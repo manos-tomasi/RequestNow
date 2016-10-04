@@ -3,6 +3,7 @@ package com.paa.requestnow.control.mail;
 /**
  * @author artur
  */
+import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.ConfigurationManager;
 import java.util.Properties;
 import javax.mail.Address;
@@ -37,6 +38,7 @@ public class MailManager
     
     private String subject;
     private String text;
+    private String html;
     private String fileName;
     
     private MailManager()
@@ -82,6 +84,16 @@ public class MailManager
         this.text = text;
     }
 
+    public String getHtml() 
+    {
+        return html;
+    }
+
+    public void setHtml( String html ) 
+    {
+        this.html = html;
+    }
+    
     public String getFileName() 
     {
         return fileName;
@@ -108,17 +120,41 @@ public class MailManager
         message.setRecipients( Message.RecipientType.TO, toUser );
         
         message.setSubject( subject );//Assunto
-        message.setText( text );
+        
+        if ( html != null )
+        {
+            message.setContent( html, "text/html; charset=utf-8" );
+        }
+        
+        else if ( text != null )
+        {
+            message.setText( text );
+        }
         
         if ( fileName != null && ! fileName.isEmpty() )
         {
             message.setFileName( fileName );
         }
         
-        /**Método para enviar a mensagem criada*/
-        Transport.send( message );
-
-        System.out.println("Feito!!!");
+        
+        new Thread( new Runnable() 
+        {
+            @Override
+            public void run() 
+            {
+                try
+                {
+                    /**Método para enviar a mensagem criada*/
+                    Transport.send( message );
+                }
+                
+                catch ( Exception e )
+                {
+                    ApplicationUtilities.logException( e );
+                }
+            }
+        } ).start();
+        
     }
     
     private Session session;
