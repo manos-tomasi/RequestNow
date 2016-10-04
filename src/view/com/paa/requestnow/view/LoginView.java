@@ -1,6 +1,7 @@
 package com.paa.requestnow.view;
 
 import com.paa.requestnow.control.LoginController;
+import com.paa.requestnow.control.util.MediaPlayer;
 import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.ResourceLocator;
 import com.paa.requestnow.model.data.User;
@@ -47,11 +48,20 @@ public class LoginView
         
         if( user == null )
         {
-            Prompts.alert( "Login Inválido", "Seu Login ou senha não estão corretos. \nTente outra vez !" );
-            
-            txLogin.setText( "" );
-            txPassword.setText( "" );
-            txLogin.requestFocus();
+            try 
+            {
+                MediaPlayer.loginError();
+                
+                Prompts.alert( "Login Inválido", "Seu Login ou senha não estão corretos. \nTente outra vez !" );
+
+                txLogin.setText( "" );
+                txPassword.setText( "" );
+                txLogin.requestFocus();
+            } 
+            catch (Exception e) 
+            {
+                ApplicationUtilities.logException(e);
+            }
         }
         
         else

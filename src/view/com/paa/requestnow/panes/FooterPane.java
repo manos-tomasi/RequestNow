@@ -6,6 +6,7 @@ import com.paa.requestnow.view.util.ContextMenuItem;
 import com.paa.requestnow.view.util.FileUtilities;
 import com.paa.requestnow.view.util.Prompts;
 import java.sql.Date;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -54,18 +55,32 @@ public class FooterPane
         try
         {
             JSONObject cotacao = WebService.get( "http://api.promasters.net.br/cotacao/v1/valores" ).getJSONObject("valores");
-            SimpleDateFormat df = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss" );
-            String title = "Cotação: " + df.format( new Date( cotacao.getJSONObject("USD").getLong("ultima_consulta" ) ) );
-            String message = "Dólar:   R$" + cotacao.getJSONObject("USD").get( "valor" ) + " - Fonte: " + cotacao.getJSONObject("USD").get( "fonte" ) +   "\n"+ 
-                             "Bitcoin: R$" + cotacao.getJSONObject("BTC").get( "valor" ) + " - Fonte: " + cotacao.getJSONObject("BTC").get( "fonte" ) +   "\n"+
-                             "Euro:    R$" + cotacao.getJSONObject("EUR").get( "valor" ) + " - Fonte: " + cotacao.getJSONObject("EUR").get( "fonte" ) +   "\n";
             
-            Prompts.error( title , message );
+            SimpleDateFormat df = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss" );
+            String title   = "Cotação - "   + df.format( new Date( System.currentTimeMillis() ) );
+            
+            NumberFormat.getCurrencyInstance().setMaximumFractionDigits(3);
+            NumberFormat.getCurrencyInstance().setMinimumFractionDigits(3);
+            
+            String usd = NumberFormat.getCurrencyInstance().format( cotacao.getJSONObject("USD").getDouble("valor" ) );
+            String btc = NumberFormat.getCurrencyInstance().format( cotacao.getJSONObject("BTC").getDouble("valor" ) );
+            String eur = NumberFormat.getCurrencyInstance().format( cotacao.getJSONObject("EUR").getDouble("valor" ) );
+            
+            String message = "Dólar:    \n" +
+                             "   - Valor: " + usd + "\n" +
+                             "   - Fonte: " + cotacao.getJSONObject("USD").get( "fonte" ) + "\n"+ 
+                             "Bitcoin:  \n" +
+                             "   - Valor: " + btc + "\n" + 
+                             "   - Fonte: " + cotacao.getJSONObject("BTC").get( "fonte" ) + "\n"+
+                             "\bEuro\b:     \n" +
+                             "   - Valor: " + eur + "\n" +
+                             "   - Fonte: " + cotacao.getJSONObject("EUR").get( "fonte" ) + "\n";
+            
+            Prompts.info( title , message );
         }
         catch( Exception e )
         {
             ApplicationUtilities.logException( e );
-            Prompts.error( "Houve um erro ao buscar a cotação" );
         }
         
     }

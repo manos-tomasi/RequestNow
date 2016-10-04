@@ -1,5 +1,6 @@
 package com.paa.requestnow.view.util;
 
+import com.paa.requestnow.control.util.MediaPlayer;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.scene.control.Alert;
@@ -20,20 +21,22 @@ public class Prompts
     public static void info ( String title, String message )
     {
         Alert dialogoInfo = new Alert( Alert.AlertType.INFORMATION );
-        dialogoInfo.getDialogPane().setPrefSize( 400, 200 );
+        dialogoInfo.getDialogPane().setPrefSize( 800, 400 );
         dialogoInfo.setTitle( "Informação" );
         dialogoInfo.setHeaderText( title == null ? "Informação" : title );
         dialogoInfo.setContentText( message );
         dialogoInfo.showAndWait();
     }
     
-    public static void error ( String message )
+    public static void error ( String message ) throws Exception
     {
         error( null, message );
     }
     
-    public static void error ( String title, String message )
+    public static void error ( String title, String message ) throws Exception
     {            
+        MediaPlayer.error();
+        
         Alert dialogoErro = new Alert( Alert.AlertType.ERROR );
         dialogoErro.getDialogPane().setPrefSize( 800,  400 );
         dialogoErro.setTitle( "Erro" );

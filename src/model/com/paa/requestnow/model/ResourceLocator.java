@@ -13,6 +13,7 @@ public class ResourceLocator
     private String configurationPath;
     private String webPath;
     private String imagesPath;
+    private String sondsPath;
         
     private ResourceLocator()
     {
@@ -40,6 +41,8 @@ public class ResourceLocator
         this.configurationPath = getClass().getClassLoader().getResource( "config" ).getPath() + File.separator;
         
         this.imagesPath = getClass().getClassLoader().getResource( "images" ).toString() + File.separator;
+        
+        this.sondsPath = getClass().getClassLoader().getResource( "sonds" ).toString() + File.separator;
     }
     
     
@@ -64,6 +67,11 @@ public class ResourceLocator
     }
     
     
+    public String getSondsPath()
+    {
+        return sondsPath;
+    }
+   
     
     public String getImagesPath()
     {
@@ -94,5 +102,10 @@ public class ResourceLocator
     public String getImageResource( String name )
     {
         return getImagesPath() + name;
+    }
+    
+    public String getSondsResource( String name )
+    {
+        return getSondsPath() + name;
     }
 }
