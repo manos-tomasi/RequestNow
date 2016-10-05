@@ -1,6 +1,5 @@
 package com.paa.requestnow.view.util;
 
-import com.paa.requestnow.control.util.MediaPlayer;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.scene.control.Alert;
@@ -34,14 +33,14 @@ public class Prompts
     }
     
     public static void error ( String title, String message ) throws Exception
-    {            
-        MediaPlayer.error();
-        
+    {       
         Alert dialogoErro = new Alert( Alert.AlertType.ERROR );
         dialogoErro.getDialogPane().setPrefSize( 800,  400 );
         dialogoErro.setTitle( "Erro" );
         dialogoErro.setHeaderText( title == null ? "Ocorreu um erro inesperado" : title );
         dialogoErro.setContentText( message );
+        dialogoErro.getDialogPane().requestLayout();
+        dialogoErro.getDialogPane().requestFocus();
         dialogoErro.showAndWait();
     }
     
@@ -53,10 +52,12 @@ public class Prompts
     public static void alert( String title, String message )
     {
         Alert dialogoAlert = new Alert( Alert.AlertType.WARNING );
-        dialogoAlert.getDialogPane().setPrefSize( 400,  200 );
+        dialogoAlert.getDialogPane().setPrefSize( 800,  400 );
         dialogoAlert.setTitle( "Aviso" );
         dialogoAlert.setHeaderText( title == null ? "Aviso Importante..." : title );
         dialogoAlert.setContentText( message );
+        dialogoAlert.getDialogPane().requestLayout();
+        dialogoAlert.getDialogPane().requestFocus();
         dialogoAlert.showAndWait();
     }
     
@@ -76,6 +77,8 @@ public class Prompts
         dialogoConfirm.setHeaderText( title == null ? "Você tem certeza ?" : title );
         dialogoConfirm.setContentText( message );
         dialogoConfirm.getButtonTypes().setAll( btnSim, btnNao );
+        dialogoConfirm.getDialogPane().requestLayout();
+        dialogoConfirm.getDialogPane().requestFocus();
         dialogoConfirm.showAndWait();
         
         return dialogoConfirm.getResult() == btnSim;
@@ -89,6 +92,8 @@ public class Prompts
         dialogInput.setHeaderText( message );
         dialogInput.setContentText( content );
         dialogInput.getDialogPane().getButtonTypes().remove( ButtonType.CANCEL );
+        dialogInput.getDialogPane().requestLayout();
+        dialogInput.getDialogPane().requestFocus();
         dialogInput.showAndWait();
         
         return dialogInput.getResult();

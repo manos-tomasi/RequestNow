@@ -1,6 +1,7 @@
 package com.paa.requestnow.model;
 
 import com.paa.requestnow.control.socket.Server;
+import com.paa.requestnow.control.util.MediaPlayer;
 import com.paa.requestnow.model.data.User;
 import com.paa.requestnow.view.util.FileUtilities;
 import com.paa.requestnow.view.util.Prompts;
@@ -37,6 +38,7 @@ public class ApplicationUtilities
     {
         try
         {   
+            MediaPlayer.error();
             FileUtilities.logException( e );
             e.printStackTrace();
             Prompts.error( "Ocorreu um Erro Inesperado !", e.getMessage() );

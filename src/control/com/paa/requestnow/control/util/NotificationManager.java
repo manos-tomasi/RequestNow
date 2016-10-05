@@ -61,18 +61,18 @@ public class NotificationManager
                                     "</tr>" +
                                     "<tr>" +
                                         "<td>" +
-                                            state + " em: " +
-                                        "</td>" +
-                                        "<td>" +
-                                            df.format( req.getEnd() ) +
-                                        "</td>" +
-                                    "</tr>" +
-                                    "<tr>" +
-                                        "<td>" +
                                             "Requisitada em: " +
                                         "</td>" +
                                         "<td>" +
                                             df.format( req.getStart() )+
+                                        "</td>" +
+                                    "</tr>" +
+                                    "<tr>" +
+                                        "<td>" +
+                                            state + " em: " +
+                                        "</td>" +
+                                        "<td>" +
+                                            df.format( req.getEnd() ) +
                                         "</td>" +
                                     "</tr>" +
                                 "</table>" +

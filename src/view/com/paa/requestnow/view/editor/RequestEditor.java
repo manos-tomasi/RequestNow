@@ -5,6 +5,7 @@ import com.paa.requestnow.model.data.Request;
 import com.paa.requestnow.view.editor.panes.FieldsPane;
 import com.paa.requestnow.view.tree.CategoryTree;
 import com.paa.requestnow.view.util.EditorCallback;
+import com.paa.requestnow.view.util.Prompts;
 import java.util.List;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -30,13 +31,20 @@ public class RequestEditor
     @Override
     protected void validadeInput(List<String> erros) throws Exception 
     {
-        fieldsPane.validateInput( erros );
+        if( tree.getSelectedType() != null )
+        {
+            fieldsPane.validateInput( erros );
+        }
+        else
+        {
+            erros.add( "Selecione um tipo de requisição" );
+        }
     }
 
     @Override
     protected void obtainInput() 
     {
-        source.setType( tree.getSelectedType().getId() );
+        source.setType( tree.getSelectedType() != null ? tree.getSelectedType().getId() : 0 );
         callback.properties = fieldsPane.getValuesDynamics();
     }
 
