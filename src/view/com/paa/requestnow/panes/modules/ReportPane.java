@@ -1,29 +1,12 @@
 package com.paa.requestnow.panes.modules;
 
-//import com.paa.requestnow.control.reports.MonthlyBalanceReport;
-import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.ResourceLocator;
-import com.paa.requestnow.panes.reports.ReportCenterPane;
-import com.paa.requestnow.view.util.ActionButton;
-import com.paa.requestnow.view.util.FileUtilities;
-import com.paa.requestnow.view.util.Prompts;
-import com.sun.javafx.tk.Toolkit;
-import java.io.File;
 import java.util.Collections;
 import java.util.List;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Task;
-import javafx.concurrent.Worker.State;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
+import javafx.concurrent.Worker;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import netscape.javascript.JSObject;
@@ -35,166 +18,65 @@ public class ReportPane
     extends 
         AbstractModulesPane
 {
-    public static final int VIEW_EMPTY      = -1;
-    public static final int VIEW_POSTING    = 0;
-    public static final int VIEW_USERS      = 1;
-    public static final int VIEW_ENTITY     = 2;
-    public static final int VIEW_COMPLETION = 3;
-    public static final int VIEW_CATEGORY   = 4;
-    
-    private int index = VIEW_EMPTY;
+  private String serie;
+    private String drilldown;
     
     public ReportPane() 
     {
-        initComponentes();
+        initComponents();
     }
-    
-    
-    
-    public void printMonthly()
-    {
-        File file = FileUtilities.saveFile( "Imprimir Relatório", "HelpFin(" + System.currentTimeMillis() +").pdf" );
 
-        if( file != null )
-        {
-            Prompts.process( "Gerando Relatório " + file.getName() + "..." , new Task<Void>() 
-            {
-                @Override
-                protected Void call() throws Exception 
-                {
-                    try
-                    {
-  //                      MonthlyBalanceReport report = new MonthlyBalanceReport();
-//                        report.generatePDF( file );
-                    }
-
-                    catch ( Exception e )
-                    {
-                        ApplicationUtilities.logException( e );
-                    }
-
-                    return null;
-                }
-            } );
-        }
-    }
-    
-    
-    
-    public void show( int index )
-    {
-        this.index = index;
-        
-        backLabel.setText( index == VIEW_USERS      ? "Relatório de Usuários"                  :
-                           index == VIEW_ENTITY     ? "Relatório de Entidades"                 :
-                           index == VIEW_POSTING    ? "Relatório de Lançamentos"               :
-                           index == VIEW_COMPLETION ? "Relatório de Tipos de Finalizações"     :
-                           index == VIEW_CATEGORY   ? "Relatório de Categorias de Lançamentos" : "" );
-           
-        
-        getChildren().clear();
-        
-        if( index != VIEW_EMPTY )
-        {
-            backLabel.autosize();
-            reportPane.setSelectedReport( index );
-            getChildren().addAll( backBar, reportPane  );
-        }
-        
-        else 
-        {
-            getChildren().add( view );
-        }        
-        
-        getMenuItem().getOnAction().handle( new ActionEvent() );
-    } 
-    
-    
-    
     @Override
-    public List<Button> getActions()
+    public List<Button> getActions() 
     {
-        return index != VIEW_EMPTY ? reportPane.getActions() : Collections.EMPTY_LIST;
+        return Collections.EMPTY_LIST;
     }
 
-    
+    @Override
+    public void resizeComponents(double height, double width) 
+    {
+        webView.setMinSize( width, height );
+        webView.requestLayout();
+    }
     
     @Override
     public void refreshContent()
     {
-        if( index != VIEW_EMPTY )
+        try 
         {
-            reportPane.refreshContent();
+            makeJsonTypes();
+            
+            engine.executeScript( "drilldown( " + serie + ", " + drilldown + " );" );
         }
-    }
 
-    
-    
-    @Override
-    public void resizeComponents( double height, double width )
-    {
-        view.setPrefSize( width, height );
-        
-        if( index != VIEW_EMPTY  )
-        {
-            backBar.setPrefHeight( 35 );
-            
-            float labelWidth = Toolkit.getToolkit().getFontLoader().computeStringWidth( backLabel.getText(), 
-                                                                    Font.font( "Helvetica, Verdana, sans-serif", FontWeight.EXTRA_BOLD, FontPosture.REGULAR, 20 ) );
-        
-            
-            backBar.setSpacing( width - labelWidth - backButton.getMaxWidth() - 20 /*padding*/ );
-            
-            reportPane.setLayoutY( 35 );
-            reportPane.resizeComponents( height - 35, width );
-        }
-        
-        requestParentLayout();
+        catch ( Exception e) {/*ignore*/ }
     }
     
-    
-    
-    private void initComponentes()
+    private void makeJsonTypes() throws Exception
     {
-        backLabel.setFont( Font.font( "Helvetica, Verdana, sans-serif", FontWeight.EXTRA_BOLD, FontPosture.REGULAR, 20 ) );
-        backLabel.setStyle( "-fx-padding: 5 0 0 10;" +
-                            "-fx-text-fill: " + ApplicationUtilities.getColor() );
-        
-        backBar.setStyle( ApplicationUtilities.getBackground2() +
-                          "-fx-background-radius: 10; " +
-                          "-fx-padding: 1 10 0 0;" );
-        
-        backBar.getChildren().addAll( backLabel, backButton );
-        
-        engine.load( ResourceLocator.getInstance().getWebResource( "reportList.html" ) );
-        
-        engine.getLoadWorker().stateProperty().addListener( new ChangeListener<State>() 
+        serie = com.paa.requestnow.model.ModuleContext.getInstance().getCategoryManager().getDrilldownCategories();
+        drilldown = com.paa.requestnow.model.ModuleContext.getInstance().getTypeManager().getDrilldownTypes();
+    }
+    
+    private void initComponents()
+    {
+        engine.load( ResourceLocator.getInstance().getWebResource( "drilldown.html" ) );
+        engine.setJavaScriptEnabled( true );
+        engine.getLoadWorker().stateProperty().addListener(new ChangeListener<Worker.State>() 
         {  
             @Override 
-            public void changed( ObservableValue<? extends State> ov, State oldState, State newState )
+            public void changed( ObservableValue<? extends Worker.State> ov, Worker.State oldState, Worker.State newState )
             {
-              if ( newState == State.SUCCEEDED )
-                ( (JSObject) engine.executeScript( "window" ) ).setMember( "application", ReportPane.this );
+              if ( newState == Worker.State.SUCCEEDED )
+                ( (JSObject) engine.executeScript( "window" ) ).setMember("application", ReportPane.this );
             }
         } );
         
-        getChildren().add( view );
+        engine.documentProperty().addListener( ( t ) -> refreshContent() );
+        
+        getChildren().add( webView );
     }
     
-    private ActionButton backButton = new ActionButton( "Voltar", "back.png", new ActionButton.ActionHandler()
-    {
-        @Override
-        public void onEvent( Event t )
-        {
-            show( VIEW_EMPTY );
-        }
-    } );
-    
-    private Label backLabel = new Label();
-    
-    private HBox backBar = new HBox();
-    private WebView view = new WebView();
-    private WebEngine engine = view.getEngine();
-    
-    private ReportCenterPane reportPane = new ReportCenterPane();
+    private WebView webView = new WebView();
+    private WebEngine engine = webView.getEngine();
 }

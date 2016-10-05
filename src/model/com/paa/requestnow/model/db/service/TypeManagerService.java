@@ -88,4 +88,19 @@ public class TypeManagerService
             db.release();
         }
     }
+      
+    public String getDrilldownTypes() throws Exception
+    {
+        Database db = Database.getInstance();
+        
+        try
+        {
+            return transactions.getDrilldownTypes( db );
+        }
+        
+        finally
+        {
+            db.release();
+        }
+    }
 }

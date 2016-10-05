@@ -141,3 +141,40 @@ function composeInfo( info )
 {
     if( info ) return info.toString().replace( /\"/g , "'" );
 }
+
+function drilldown( serie, drilldownSeries )
+{
+    $(function () 
+    {
+        Highcharts.setOptions( { lang: { drillUpText: '◁ Voltar para {series.name}' } } );
+        
+        $('#drilldown').highcharts(
+        {
+            chart: { type: 'column', backgroundColor: '#ECEFF1' },
+
+            title: { text: 'RequestNow' , style: { fontWeight: 'bold', color: "#607D8B" } },
+
+            subtitle: { text: 'Quantidade de requisições por situação agrupadas por tipos e categorias', style: { color: "#607D8B" }  },
+
+            xAxis: [ { type: 'category' } ],
+
+            yAxis: [ { title: { text: 'Quantidade', style: { fontWeight: 'bold', color: "#607D8B" } } } ],
+
+            legend: { enabled: false },
+
+            plotOptions: { series: { borderWidth: 0, dataLabels: { enabled: true, format: '{point.y:.0f}' } } },
+
+            tooltip: { headerFormat: '<span style="font-size:11px">{series.name}</span><br>', 
+                       pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.0f}' +'</b><br/>' },
+
+            series: [{ 
+                    name: 'Categorias', colorByPoint: true,
+                    data: serie 
+                } ],
+            drilldown: {
+            series: drilldownSeries
+            },
+            credits: [ { enabled: false } ]
+        } );
+    });
+}

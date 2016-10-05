@@ -7,6 +7,9 @@ import com.paa.requestnow.model.filter.DefaultFilter;
 import com.paa.requestnow.model.db.Database;
 import com.paa.requestnow.model.db.Schema;
 import com.paa.requestnow.model.db.Schema.Types;
+import java.sql.Array;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -144,5 +147,39 @@ public class CategoryManagerTransactions
                      T.columns.CATEGORY + " = " + category.getId();
         
         return db.queryInteger( sql ) > 0;
+    }
+    
+    
+    public String getDrilldownCategories( Database db ) throws Exception
+    {
+        Schema.Types T = Schema.Types.alias( "T" );
+        Schema.Categories C = Schema.Categories.alias( "C" );
+        
+        String sql = " select count( " + T.columns.ID + "), " + C.columns.NAME + ", " + C.columns.ID +
+                     " from " +
+                     C.name + 
+                     " left join " +
+                     T.name + 
+                     " on " +
+                     T.columns.CATEGORY +  " = " + C.columns.ID +
+                     " group by " +
+                     C.columns.NAME + ", " + C.columns.ID;
+        
+        ResultSet set = db.query( sql );
+        
+        List<String> data = new ArrayList();
+        
+        while ( set.next() )
+        {
+            Integer count = set.getInt( 1 );
+            String name   = set.getString( 2 );
+            Integer id    = set.getInt( 3 );
+            
+            data.add( "{ name: '" + name + "', y: " + count + ", drilldown: '" + id + "' }" );
+        }
+        
+        set.close();
+        
+        return data.toString();
     }
 }

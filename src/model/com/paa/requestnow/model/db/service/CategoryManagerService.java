@@ -57,4 +57,19 @@ public class CategoryManagerService
             db.release();
         }
     }
+    
+    public String getDrilldownCategories() throws Exception
+    {
+        Database db = Database.getInstance();
+        
+        try
+        {
+            return transactions.getDrilldownCategories( db );
+        }
+        
+        finally
+        {
+            db.release();
+        }
+    }
 }

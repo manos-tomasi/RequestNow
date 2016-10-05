@@ -3,6 +3,7 @@ package com.paa.requestnow.model.db.transactions;
 import com.paa.requestnow.model.data.Category;
 import com.paa.requestnow.model.data.Core;
 import com.paa.requestnow.model.data.Option;
+import com.paa.requestnow.model.data.Request;
 import com.paa.requestnow.model.data.Type;
 import com.paa.requestnow.model.data.TypeRoute;
 import com.paa.requestnow.model.db.Database;
@@ -11,6 +12,9 @@ import com.paa.requestnow.model.db.Schema.Fields;
 import com.paa.requestnow.model.db.Schema.TypesRoutes;
 import com.paa.requestnow.model.filter.DefaultFilter;
 import com.paa.requestnow.model.filter.TypeFilter;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -202,5 +206,103 @@ public class TypeManagerTransactions
         hasDependence |= db.queryInteger( sql ) > 0;
         
         return hasDependence;
+    }
+    
+    public String getDrilldownTypes( Database db ) throws Exception
+    {
+        Schema.Types T = Schema.Types.alias( "T" );
+        Schema.Categories C = Schema.Categories.alias( "C" );
+        Schema.Requests R = Schema.Requests.alias( "R" );
+        
+        String categorySql = " select " + C.columns.NAME + ", " + C.columns.ID +
+                             " from " +
+                             C.name + 
+                             " left join " +
+                             T.name + 
+                             " on " +
+                             T.columns.CATEGORY +  " = " + C.columns.ID +
+                             " group by " +
+                             C.columns.NAME + ", " + C.columns.ID;
+        
+        ResultSet categorySet = db.query( categorySql );
+        
+        List<String> categoryData = new ArrayList();
+        
+        List<String> requestData = new ArrayList();
+        
+        while ( categorySet.next() )
+        {
+            String category      = categorySet.getString( 1 );
+            Integer ref_category = categorySet.getInt( 2 );
+            
+            String typeSql = " select " +  
+                             T.columns.NAME + ", " +
+                             "count( " + R.columns.TYPE + " ), " +
+                             T.columns.ID + 
+                             " from " +
+                             T.name +
+                             " left join " +
+                             R.name + 
+                             " on " +
+                             T.columns.ID + " = " + R.columns.TYPE +
+                             " where " +
+                             T.columns.CATEGORY + " = " + ref_category +
+                             " group by " +
+                             T.columns.ID + ", " + T.columns.NAME;
+            
+            ResultSet typeSet = db.query( typeSql );
+            
+            List<String> typeData = new ArrayList();
+            
+            while ( typeSet.next() )
+            {
+                String type   = typeSet.getString( 1 );
+                Integer count = typeSet.getInt( 2 );
+                Integer ref_type = typeSet.getInt( 3 );
+                
+                typeData.add( " { " +
+                                " name: '"     + type + "', " +
+                                " y: "         + count + ", "  +
+                                " drilldown:'T" + ref_type + "' "  +
+                              " } " );
+                              
+                String requestSql = " select "+
+                                    R.columns.STATE + ", count(*) " + 
+                                    " from " +
+                                    R.name +
+                                    " where " +
+                                    R.columns.TYPE + " = " + ref_type +
+                                    " group by " +
+                                    R.columns.STATE;
+                
+                HashMap<Integer, Integer> states = db.queryMap( requestSql );
+                
+                requestData.add( "{ id: 'T" + ref_type + "', name: '" + type + "', data : " +
+                              "[" +
+                                    "{ name: '" + Request.STATES[ Request.APPROVED ]   + "',  y: " + states.getOrDefault( Request.APPROVED, 0 )    + ", color: '#408c1b', drilldown: null }," + 
+                                    "{ name: '" + Request.STATES[ Request.DISAPPROVED ]+ "',  y: " + states.getOrDefault( Request.DISAPPROVED, 0 ) + ", color: '#3364c8', drilldown: null }," + 
+                                    "{ name: '" + Request.STATES[ Request.CANCELED ]   + "',  y: " + states.getOrDefault( Request.CANCELED, 0 )    + ", color: '#d82027', drilldown: null }," + 
+                                    "{ name: '" + Request.STATES[ Request.IN_PROGRESS ]+ "',  y: " + states.getOrDefault( Request.IN_PROGRESS, 0 ) + ", color: '#ded604', drilldown: null }" + 
+                              "] }" );
+                
+            }
+            
+            typeSet.close();
+            
+            categoryData.add( " { " +
+                                    " id: '"   + ref_category      + "'," +
+                                    " name: '" + category          + "'," + 
+                                    " data : " +typeData.toString() + 
+                              " }" );
+        }
+        
+        categorySet.close();
+        
+        for( String req : requestData )
+        {
+            categoryData.add( req );
+        }
+        
+        return categoryData.toString();
     }
 }
