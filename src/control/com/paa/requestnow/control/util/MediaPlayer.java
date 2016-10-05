@@ -3,10 +3,13 @@ package com.paa.requestnow.control.util;
 import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.ResourceLocator;
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
  * @author artur
@@ -15,8 +18,9 @@ public class MediaPlayer
 {
     private static void play( File file )
     {
-        play(file , 0);
+        play( file , 0 );
     }
+    
     private static void play( File file , int count )
     {
         new Thread( new Runnable() 
@@ -35,16 +39,14 @@ public class MediaPlayer
                     clip.loop(count);
                     clip.start(); 
 
-                    Thread.sleep( 90 );
-                    
-                    while ( clip.isRunning() )
+                    do
                     {
                         Thread.sleep( 90 );
                     }
-                    
+                    while ( clip.isRunning() );
                 }
                 
-                catch ( Exception e )
+                catch ( LineUnavailableException | UnsupportedAudioFileException | IOException | InterruptedException e )
                 {
                     ApplicationUtilities.logException( e );
                 }
