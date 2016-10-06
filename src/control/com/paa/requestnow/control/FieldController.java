@@ -2,7 +2,10 @@ package com.paa.requestnow.control;
 
 import com.paa.requestnow.model.data.Core;
 import com.paa.requestnow.model.data.Field;
+import com.paa.requestnow.model.data.FieldValue;
 import com.paa.requestnow.model.data.Type;
+import java.util.Properties;
+import javafx.collections.ObservableList;
 
 /**
  * @author artur
@@ -89,5 +92,61 @@ public class FieldController
         }
         
         return field;
+    }
+    
+    public void store( Field field, Properties properties ) throws Exception
+    {
+        if ( field == null )
+        {
+            throw new IllegalArgumentException( "Field cannot be null" );
+        }
+        
+        if ( field.getId() == 0 )
+        {
+            com.paa.requestnow.model.ModuleContext
+                                            .getInstance()
+                                            .getFieldManager()
+                                            .add( field );
+        }
+        
+        else
+        {
+            com.paa.requestnow.model.ModuleContext
+                                        .getInstance()
+                                        .getFieldManager()
+                                        .update( field );
+        }
+        
+        ObservableList<FieldValue> values = (ObservableList<FieldValue>) properties.get( "values" );
+        
+        for( FieldValue value : values )
+        {
+            value.setField( field.getId() );
+            
+            if ( value.getId() > 0 )
+            {
+                com.paa.requestnow.model.ModuleContext
+                                        .getInstance()
+                                        .getFieldValueManager()
+                                        .update( value );
+            }
+            
+            else 
+            {
+                com.paa.requestnow.model.ModuleContext
+                                        .getInstance()
+                                        .getFieldValueManager()
+                                        .add( value );
+            }
+        }
+        
+    }
+    
+    public void delete( Field field ) throws Exception
+    {
+        com.paa.requestnow.model.ModuleContext.getInstance()
+                                          .getFieldManager()
+                                          .delete( field );
+        
     }
 }

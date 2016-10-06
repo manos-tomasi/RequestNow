@@ -52,6 +52,11 @@ public class FieldsPane
             {
                 Node node = (Node)Class.forName(field.getHandler()).newInstance();
                 
+                if ( field.getType() == Field.TYPE_CHOICE )
+                {
+                    ( (ItemSelector) node ).setItems( com.paa.requestnow.model.ModuleContext.getInstance().getFieldValueManager().get( field ) );
+                }
+                
                 elements.put( field, node );
             }
             

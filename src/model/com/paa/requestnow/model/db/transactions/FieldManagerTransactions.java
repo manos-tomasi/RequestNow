@@ -23,9 +23,22 @@ public class FieldManagerTransactions
     {    
         Schema.Fields S = Schema.Fields.table;
         
+        if ( obj == null )
+        {
+            throw new IllegalArgumentException( "Field cannot be null!" );
+        }
+        
+        if ( obj.getId() != 0 )
+        {
+            throw new IllegalArgumentException( "Field id cannot be 0 !" );
+        }
+        
+        
+        obj.setId( db.nextId( S.name ) );
+        
         String sql = " insert into "           + S.name + 
                      " values "                + "("    + 
-                     " DEFAULT"                + ", "   +
+                      obj.getId()              + ", "   +
                       db.quote(obj.getLabel()) + ", "   +
                       obj.getType()            + ", "   +
                       db.flag(obj.isRequired())+ ", "   +

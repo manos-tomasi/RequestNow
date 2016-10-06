@@ -5,8 +5,11 @@
  */
 package com.paa.requestnow.model.db.service;
 
+import com.paa.requestnow.model.data.Field;
 import com.paa.requestnow.model.data.FieldValue;
+import com.paa.requestnow.model.db.Database;
 import com.paa.requestnow.model.db.transactions.FieldValueManagerTransactions;
+import java.util.List;
 
 /**
  *
@@ -31,5 +34,20 @@ public class FieldValueManagerService
     private FieldValueManagerService()
     {
         transactions = new FieldValueManagerTransactions();
-    }    
+    }   
+    
+    public List<FieldValue> get( Field field ) throws Exception 
+    {
+        Database db = Database.getInstance();
+        
+        try
+        {
+            return transactions.get( db, field );
+        }
+        
+        finally
+        {
+            db.release();
+        }
+    }
 }

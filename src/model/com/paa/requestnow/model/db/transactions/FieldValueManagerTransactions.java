@@ -27,7 +27,7 @@ public class FieldValueManagerTransactions
                      " DEFAULT"                + ", "   +
                       db.quote(obj.getField()) + ", "   +
                       obj.getState()           + ", "   +
-                      obj.getValue()           + ")";
+                      db.quote( obj.getValue() ) + ")";
         
         db.executeCommand(sql);
     }
@@ -60,6 +60,15 @@ public class FieldValueManagerTransactions
         String sql = S.select + " where " + S.columns.ID + " = " + id;
         
         return  db.fetchOne( sql , S.fetcher );
+    }
+
+    public List<FieldValue> get( Database db, Field field ) throws Exception 
+    {
+        Schema.FieldsValues S = Schema.FieldsValues.table;
+        
+        String sql = S.select + " where " + S.columns.FIELD + " = " + field.getId();
+        
+        return  db.fetchAll( sql , S.fetcher );
     }
     
     @Override

@@ -67,9 +67,7 @@ public class FieldController
                 {
                     try
                     {
-                        com.paa.requestnow.model.ModuleContext.getInstance()
-                                                            .getFieldManager()
-                                                            .add( source );
+                        controller.store( source, properties );
                         
                         refresh();
                     }
@@ -104,9 +102,8 @@ public class FieldController
                 {
                     try
                     {
-                        com.paa.requestnow.model.ModuleContext.getInstance()
-                                                            .getFieldManager()
-                                                            .update( source );
+                        controller.store( source, properties );
+                        
                         refresh();
                     }
 
@@ -134,9 +131,7 @@ public class FieldController
         {
             if( Prompts.confirm( "Você tem certeza que deseja excluir o campo\n" + item ) )
             {
-                com.paa.requestnow.model.ModuleContext.getInstance()
-                                          .getFieldManager()
-                                          .delete( item );
+                controller.delete( item );
 
                 refresh();
             }
@@ -148,7 +143,6 @@ public class FieldController
         }
     }
 
-    
     private void moveUp() throws Exception
     {
         Field field = tree.getSelectedField();
