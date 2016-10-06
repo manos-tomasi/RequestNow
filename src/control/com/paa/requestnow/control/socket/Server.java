@@ -22,6 +22,7 @@ public class Server
 
     public Server() 
     {
+        setDaemon(true);
     }
 
     public void send( Serializable source ) 

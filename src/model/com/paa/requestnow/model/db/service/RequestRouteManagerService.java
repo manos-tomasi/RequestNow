@@ -77,6 +77,21 @@ public class RequestRouteManagerService
             db.release();
         }
     }
+
+    public int getDays( RequestRoute requestRoute ) throws Exception
+    {
+        Database db = Database.getInstance();
+        
+        try
+        {
+            return transactions.getDays( db, requestRoute );
+        }
+        
+        finally
+        {
+            db.release();
+        }
+    }
     
     public String getJson( RequestRoute dispatch ) throws Exception
     {

@@ -10,6 +10,7 @@ import com.paa.requestnow.view.tables.DefaultTable.ItemColumn.ColumnCallback;
 import com.paa.requestnow.view.tables.DefaultTable.ItemColumn.IconCallback;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.concurrent.TimeUnit;
 import javafx.scene.control.Labeled;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -28,13 +29,12 @@ public class RequestRouteTable
     private final Image stopedImage     = new Image( ResourceLocator.getInstance().getImageResource( "play.png"     ) );
     private final Image waintingImage   = new Image( ResourceLocator.getInstance().getImageResource( "clock.png"    ) );
     
-    private final SimpleDateFormat sf   = new SimpleDateFormat("dd/mm/YYYY HH:mm");
+    private final SimpleDateFormat sf   = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
     public RequestRouteTable() 
     {        
         setColumns( new ItemColumn("#", "state", new IconCallback<RequestRoute, Integer>() 
         {
-            
             @Override
             public void renderer(Integer state, Labeled cell) throws Exception 
             {
@@ -48,6 +48,52 @@ public class RequestRouteTable
                 image.setFitWidth( 20 );
                 
                 cell.setGraphic( image );
+            }
+        }),
+        new ItemColumn("Situação", "id", 200.0, new ColumnCallback<RequestRoute, Integer>() 
+        {
+            @Override
+            public void renderer(Integer id, Labeled cell) throws Exception 
+            {
+                RequestRoute requestRoute = com.paa.requestnow.model.ModuleContext.getInstance().getRequestRouteManager().get( id );
+                int days                  = com.paa.requestnow.model.ModuleContext.getInstance().getRequestRouteManager().getDays( requestRoute );
+                Request request           = com.paa.requestnow.model.ModuleContext.getInstance().getRequestManager().get( requestRoute.getRequest() );
+                
+                Timestamp in  = request.getStart();
+                
+                if( in != null )
+                {
+                    Timestamp out;
+                    long diff, result;
+                    String text;
+                    
+                    if( requestRoute.getOut() != null )
+                    {
+                        out = requestRoute.getOut();
+                        diff  = TimeUnit.MILLISECONDS.toDays( out.getTime() - in.getTime() );
+                        result = days - diff;
+                        text = ( result == 0 )? "Finalizado no último dia" :
+                               ( result < -1 )? "Finalizado com " + result * -1 + " dias de atraso" :  
+                               ( result <  0 )? "Finalizado com " + result * -1 + " dia de atraso" :  
+                               ( result >  1 )? "Finalizado "     + result      + " dias adiantados" :  
+                                                "Finalizado "     + result      + " dia adiantado" ;
+                    }
+                    else
+                    {
+                        out = new Timestamp( System.currentTimeMillis() );
+                        diff  = TimeUnit.MILLISECONDS.toDays( out.getTime() - in.getTime() );
+                        result = days - diff;
+                        text = ( result == 0 )? "Último dia" :
+                               ( result < -1 )? "Atrasado: " + result * -1 + " dias" :  
+                               ( result <  0 )? "Atrasado: " + result * -1 + " dia " :  
+                               ( result >  1 )? "Faltam:   " + result      + " dias" :  
+                                                "Faltam:   " + result      + " dia " ;
+                    }
+                    
+                    
+                    
+                    cell.setText( text );
+                }
             }
         }),
         new ItemColumn( "Tipo de Requisição", "request", 300.0, new ColumnCallback<Request, Integer>()

@@ -21,6 +21,7 @@ public abstract class Client
     
     public Client()
     {
+        setDaemon(true);
     }
 
     
