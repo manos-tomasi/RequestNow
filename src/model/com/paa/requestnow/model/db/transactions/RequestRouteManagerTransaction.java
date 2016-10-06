@@ -410,8 +410,14 @@ public class RequestRouteManagerTransaction
                      "INNER JOIN requests x     ON ( x.id = r.ref_request ) " +
                      "WHERE r.id = " + requestRoute.getId();
         
-        db.query(sql).next();        
-        return db.query(sql).getInt(1);
+        ResultSet rs = db.query(sql);
+        
+        if( rs.next() )
+        {
+            return rs.getInt(1);
+        }
+        
+        return 0;
     }
     
     public String getJson( Database db, RequestRoute dispatch ) throws Exception
