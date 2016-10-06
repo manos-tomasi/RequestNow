@@ -11,6 +11,7 @@ import com.paa.requestnow.model.db.Schema;
 import com.paa.requestnow.model.filter.DefaultFilter;
 import com.paa.requestnow.model.filter.RequestRouteFilter;
 import java.sql.Date;
+import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -390,6 +391,27 @@ public class RequestRouteManagerTransaction
                 update( db, route );
             }
         }
+    }
+
+    public int getDays( Database db, RequestRoute requestRoute ) throws Exception
+    {
+        if( requestRoute == null )
+        {
+            throw new IllegalArgumentException( "RequestRoute cannot be null!" );
+        }
+        
+        String sql = "SELECT ( SELECT SUM(b.days) "       +
+                                "FROM requests_routes a " +
+                               "INNER JOIN types_routes b ON ( a.ref_type_route = b.id ) " +
+                              " WHERE a.ref_request = r.ref_request " + 
+                                " AND a.sequence   <= t.sequence ) AS days " +
+                      "FROM requests_routes r " +
+                     "INNER JOIN types_routes t ON ( r.ref_type_route = t.id ) " +
+                     "INNER JOIN requests x     ON ( x.id = r.ref_request ) " +
+                     "WHERE r.id = " + requestRoute.getId();
+        
+        db.query(sql).next();        
+        return db.query(sql).getInt(1);
     }
     
     public String getJson( Database db, RequestRoute dispatch ) throws Exception
