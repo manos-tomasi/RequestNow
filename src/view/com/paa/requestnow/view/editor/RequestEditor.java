@@ -5,7 +5,6 @@ import com.paa.requestnow.model.data.Request;
 import com.paa.requestnow.view.editor.panes.FieldsPane;
 import com.paa.requestnow.view.tree.CategoryTree;
 import com.paa.requestnow.view.util.EditorCallback;
-import com.paa.requestnow.view.util.Prompts;
 import java.util.List;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -49,7 +48,12 @@ public class RequestEditor
     }
 
     @Override
-    protected void resize(){}
+    protected void resize()
+    {
+        pane.setMinWidth( getWidth() - 100  );
+        fieldsPane.setPrefWidth( ApplicationUtilities.getInstance().getWindow().getWidth() - 500 );
+        getDialogPane().requestLayout();
+    }
 
     @Override
     protected void setSource(Request source) {}

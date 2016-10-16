@@ -185,14 +185,16 @@ public class FieldsPane
         colName.setHalignment( HPos.LEFT );
      
         ColumnConstraints colNode = new ColumnConstraints();
-        colNode.setFillWidth(true);
+        colNode.setMinWidth( ApplicationUtilities.getInstance().getWindow().getWidth() - 600 );
         colNode.setHalignment( HPos.LEFT );
         
         grid.getColumnConstraints().addAll( colName, colNode );
 
-        grid.setPrefWidth( ApplicationUtilities.getInstance().getWindow().getWidth() - 300 ); 
+        grid.setPrefWidth( ApplicationUtilities.getInstance().getWindow().getWidth() - 300 );
         
         setContent( grid );
+        
+        setHbarPolicy(ScrollBarPolicy.NEVER);
     }
     
     private GridPane grid = new GridPane();

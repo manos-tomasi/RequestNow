@@ -104,10 +104,7 @@ public class FieldEditor
     
         gridPane.add( lbLabel,          0, 0, 1, 1 );
         gridPane.add( labelField,       1, 0, 3, 1 );
-    
-        gridPane.add( lbType,           0, 1, 1, 1 );
-        gridPane.add( typeField,        1, 1, 3, 1 );
-    
+        
         gridPane.add( lbHandler,        0, 2, 1, 1 );
         gridPane.add( handlerField,     1, 2, 3, 1 );
     
