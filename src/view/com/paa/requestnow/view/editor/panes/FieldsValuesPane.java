@@ -12,6 +12,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.VPos;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
@@ -166,6 +167,12 @@ public class FieldsValuesPane
                     nameField.setText( current.getValue() );
                 }
             }
+        } );
+        
+        nameField.setOnKeyPressed( eh ->
+        {
+            if ( KeyCode.ENTER == eh.getCode() )
+                add() ;
         } );
     }
     

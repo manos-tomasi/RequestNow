@@ -5,8 +5,12 @@ import com.paa.requestnow.model.ApplicationUtilities;
 import com.paa.requestnow.model.ResourceLocator;
 import com.paa.requestnow.model.data.Request;
 import com.paa.requestnow.model.data.RequestRoute;
+import com.paa.requestnow.view.util.FileUtilities;
+import com.paa.requestnow.view.util.Prompts;
+import java.io.File;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Task;
 import javafx.concurrent.Worker;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
@@ -79,6 +83,25 @@ public class RequestRouteInspector
         catch ( Exception e )
         {
             ApplicationUtilities.logException( e );
+        }
+    }
+    
+    public void download( String url )
+    {
+        File file = FileUtilities.saveFile( "Salvar Anexo", url.substring( url.lastIndexOf( "/" ) + 1 ) );
+                
+        if( file != null && ! file.exists() )
+        {
+            Prompts.process( "Salvando arquivo..." , new Task<Void>() 
+            {
+                @Override
+                protected Void call() throws Exception 
+                {
+                    FileUtilities.download( url, file.getAbsolutePath() );
+
+                    return  null;
+                }
+            } );
         }
     }
     
