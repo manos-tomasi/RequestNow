@@ -115,7 +115,7 @@ function setDispatchs( dispatchs )
     if( dispatchs )
     {
         dispatchs.forEach( function( element ){ 
-            $('#request_route').append("<tr id='dispatchs_title'><th id='dispatch_title' colspan='1' class='head'>Despacho "+ element[ 'sequence' ]+" de " + dispatchs.length + "</th><th><div style='text-align: right;'><i style='color: #2f4e76' class='fa fa-legal fa-3x'></i></div></th></tr>");        
+            $('#request_route').append("<tr id='dispatchs_title'><th id='dispatch_title' colspan='1' class='head'>Despacho "+ ( parseInt(element[ 'sequence' ]) + 1 )+" de " + dispatchs.length + "</th><th><div style='text-align: right;'><i style='color: #2f4e76' class='fa fa-legal fa-3x'></i></div></th></tr>");        
             var info = composeInfo( element[ 'info' ] );
             if( info === undefined ) info = '';
             $('#request_route').append("<tr><td colspan='2'>"+ info  +"</td></tr>");        
