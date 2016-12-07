@@ -149,7 +149,7 @@ public abstract class DispatchEditor
     private TabDispatch     tabDispatch     = new TabDispatch();
     private TabRequestRoute tabRequestRoute = new TabRequestRoute();
     
-    private ActionButton    btnApprove    = new ActionButton( "Approve"   , "finish.png",  new ActionButton.ActionHandler() 
+    private ActionButton    btnApprove    = new ActionButton( "Aprovar"   , "finish.png",  new ActionButton.ActionHandler() 
     {
         @Override
         public void onEvent(Event t) throws Exception 
@@ -158,7 +158,7 @@ public abstract class DispatchEditor
         }
     });
     
-    private ActionButton    btnDisapprove = new ActionButton( "Disapprove", "reproved.png", new ActionButton.ActionHandler() 
+    private ActionButton    btnDisapprove = new ActionButton( "Rejeitar", "reproved.png", new ActionButton.ActionHandler() 
     {
         @Override
         public void onEvent(Event t) throws Exception 
