@@ -154,7 +154,7 @@ public class FileUtilities
     
     
     
-    public static void logException( Throwable e )
+    public synchronized static void logException( Throwable e )
     {
         try
         {
@@ -200,7 +200,7 @@ public class FileUtilities
     }
     
     
-    public static void logSQL( String sql )
+    public synchronized static void logSQL( String sql )
     {
         try
         {
