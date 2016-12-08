@@ -15,7 +15,6 @@ import java.lang.reflect.Type;
 public abstract class AbstractController <T, E>
 {
     private String  className ;
-    private User user;
     
     public AbstractController() 
     {
@@ -23,8 +22,6 @@ public abstract class AbstractController <T, E>
         Type type = ( ( ParameterizedType ) superClass ).getActualTypeArguments()[0];
         
         className = type.toString().split(" ")[1];
-        
-        user = ApplicationUtilities.getInstance().getActiveUser();
     }
      
     public boolean hasPermissionEdit()
@@ -33,7 +30,7 @@ public abstract class AbstractController <T, E>
         {
             return com.paa.requestnow.model.ModuleContext.getInstance()
                                                 .getPermissionManager()
-                                                .canPermission( user.getRole() , Action.EDIT, className );
+                                                .canPermission( getActiveUser().getRole() , Action.EDIT, className );
         }
         
         catch ( Exception e )
@@ -50,7 +47,7 @@ public abstract class AbstractController <T, E>
         {
             return com.paa.requestnow.model.ModuleContext.getInstance()
                                             .getPermissionManager()
-                                            .canPermission( user.getRole() , Action.ADD, className );
+                                            .canPermission( getActiveUser().getRole() , Action.ADD, className );
         }
         
         catch ( Exception e )
@@ -67,7 +64,7 @@ public abstract class AbstractController <T, E>
         {
            return com.paa.requestnow.model.ModuleContext.getInstance()
                                             .getPermissionManager()
-                                            .canPermission( user.getRole() , Action.DELETE, className );
+                                            .canPermission( getActiveUser().getRole() , Action.DELETE, className );
         }
         
         catch ( Exception e )
@@ -84,7 +81,7 @@ public abstract class AbstractController <T, E>
         {
            return com.paa.requestnow.model.ModuleContext.getInstance()
                                         .getPermissionManager()
-                                        .canPermission( user.getRole() , Action.VIEW, className );
+                                        .canPermission( getActiveUser().getRole() , Action.VIEW, className );
         }
         
         catch ( Exception e )
@@ -98,6 +95,11 @@ public abstract class AbstractController <T, E>
     public abstract String onEdit( E item ) throws Exception;
     public abstract String onDelete( E item ) throws Exception;
     public abstract String onAdd( E item ) throws Exception;
+
+    private User getActiveUser()
+    {
+        return ApplicationUtilities.getInstance().getActiveUser();
+    }
     
     protected void logException( Exception e )
     {

@@ -12,8 +12,8 @@ import javafx.stage.Window;
 public class ApplicationUtilities
 {
     private static ApplicationUtilities ac = null;
-    private static User activeUser;
     private static Locale locale = new Locale( "pt", "BR" );
+    private User activeUser;
     private Parent root;
     private Window window;
     private Server server;
